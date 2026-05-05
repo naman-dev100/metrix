@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Metrix - Personal Workout Tracker
+
+A full-stack workout tracking web application inspired by Hevy. Built with Next.js, PostgreSQL, Prisma, and Tailwind CSS.
+
+## Features
+
+- **Exercise Library**: 100+ pre-defined exercises with muscle group and category filtering
+- **Routines**: Create, edit, and delete custom workout routines
+- **Active Workout Session**: Real-time timer, set tracking, rest timer, and PR notifications
+- **Body Weight Tracking**: Log and visualize weight progress with charts
+- **Workout History**: View past workouts with volume, duration, and PR highlights
+- **Responsive Design**: Desktop sidebar navigation + mobile bottom navigation bar
+- **Dark Theme**: Sleek dark UI with emerald accents
+
+## Tech Stack
+
+- **Frontend & Backend**: Next.js 16 (App Router, TypeScript)
+- **Database**: PostgreSQL (Prisma ORM v7)
+- **Styling**: Tailwind CSS v4
+- **UI Components**: shadcn/ui (radix-ui)
+- **Icons**: lucide-react
+- **State Management**: Zustand
+- **Charts**: recharts
+- **Notifications**: sonner
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ (recommended: 20+)
+- PostgreSQL 15+
+- npm or pnpm
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Set Up Database
+
+Create a PostgreSQL database:
+
+```sql
+CREATE DATABASE metrix;
+```
+
+Update the `.env` file with your connection string:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/metrix?schema=public"
+```
+
+### 3. Run Database Migration
+
+```bash
+npm run db:push
+```
+
+### 4. Seed the Database
+
+```bash
+npm run seed
+```
+
+This will populate the database with 100+ exercises.
+
+### 5. Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── api/                    # API routes
+│   │   ├── bodyweight/         # Body weight CRUD
+│   │   ├── exercises/          # Exercise filtering
+│   │   ├── finish-workout/     # Finish & save workout
+│   │   ├── routines/           # Routine CRUD
+│   │   ├── start-workout/      # Start new session
+│   │   └── workouts/           # Fetch history
+│   ├── exercises/page.tsx      # Exercise library page
+│   ├── history/page.tsx        # Workout history page
+│   ├── workout/page.tsx        # Workout page (routines + active)
+│   ├── layout.tsx              # Root layout with nav
+│   └── page.tsx                # Dashboard page
+├── components/
+│   ├── dashboard/              # Dashboard components
+│   ├── exercises/              # Exercise components
+│   ├── navigation/             # Sidebar & BottomNav
+│   ├── workout/                # Workout components
+│   └── ui/                     # shadcn/ui components
+└── lib/
+    ├── prisma.ts               # Prisma client singleton
+    ├── utils.ts                # Utility functions
+    └── workout-store.ts        # Zustand store
+prisma/
+├── schema.prisma               # Database schema
+└── seed.ts                     # Exercise seed data
+```
 
-## Learn More
+## Database Schema
 
-To learn more about Next.js, take a look at the following resources:
+- **Exercise**: Predefined exercises with muscle group and category
+- **Routine**: Custom workout routines
+- **RoutineExercise**: Many-to-many relationship between routines and exercises
+- **WorkoutSession**: Individual workout sessions
+- **WorkoutSet**: Sets within a workout session (with PR tracking)
+- **BodyWeightLog**: Body weight entries over time
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/exercises` | List/filter exercises |
+| GET | `/api/routines` | List all routines |
+| POST | `/api/routines` | Create a routine |
+| PUT | `/api/routines/[id]` | Update a routine |
+| DELETE | `/api/routines/[id]` | Delete a routine |
+| POST | `/api/start-workout` | Start a new workout session |
+| POST | `/api/finish-workout` | Finish and save a workout |
+| GET | `/api/workouts` | Fetch workout history |
+| GET | `/api/bodyweight` | Get weight logs |
+| POST | `/api/bodyweight` | Log body weight |
 
-## Deploy on Vercel
+## Development Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run seed         # Seed the database
+npm run db:push      # Push schema to database
+npm run db:studio    # Open Prisma Studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DATABASE_URL` | PostgreSQL connection string | Required |
+| `NEXT_PUBLIC_APP_URL` | App base URL | `http://localhost:3000` |
+
+## License
+
+MIT
