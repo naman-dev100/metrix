@@ -15,7 +15,7 @@ const client = new PrismaClient({
 
 client.$connect().then(() => {
   console.log("[Prisma] Connected to database successfully");
-}).catch((err) => {
+}).catch((err: any) => {
   console.error("[Prisma] Connection error:", err.message);
 });
 
