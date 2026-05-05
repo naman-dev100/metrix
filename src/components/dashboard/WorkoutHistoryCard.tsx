@@ -40,7 +40,7 @@ export default function WorkoutHistoryCard({ workout }: WorkoutHistoryCardProps)
     setMounted(true);
   }, []);
 
-  const durationText = formatDuration(workout.duration_seconds);
+  const durationText = workout.duration_seconds ? formatDuration(workout.duration_seconds) : "N/A";
 
   return (
     <Link href={`/workout/${workout.id}`} className="block group">
@@ -51,7 +51,7 @@ export default function WorkoutHistoryCard({ workout }: WorkoutHistoryCardProps)
           <div className="flex items-center gap-1 mt-1">
             <Calendar className="w-3 h-3 text-[#5a5a6a]" />
             <span className="text-xs text-[#a3a3aa]">
-              {mounted ? format(parseDbDate(workout.start_time)!, "MMM dd, yyyy 'at' h:mm a") : ""}
+              {mounted && workout.start_time ? format(parseDbDate(workout.start_time)!, "MMM dd, yyyy 'at' h:mm a") : ""}
             </span>
           </div>
         </div>

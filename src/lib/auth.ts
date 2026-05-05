@@ -39,8 +39,8 @@ export const authOptions: NextAuthOptions = {
 
           console.log("[Auth] User found:", user.email);
           const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
+            credentials.password!,
+            user.password!
           );
 
           if (!isPasswordValid) {
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             email: user.email,
             name: user.name,
-          };
+          };;
         } catch (error) {
           console.error("[Auth] Error in authorize:", error);
           return null;

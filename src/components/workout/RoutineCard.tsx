@@ -52,7 +52,7 @@ export default function RoutineCard({ routine, onStart, onDelete, onUpdate }: Ro
           <div className="flex items-center gap-1 mt-1">
             <Calendar className="w-3 h-3 text-[#5a5a6a]" />
             <span className="text-xs text-[#8a8a9a]">
-              {format(parseDbDate(routine.created_at), "MMM dd, yyyy")}
+              {routine.created_at ? format(new Date(routine.created_at), "MMM dd, yyyy") : "N/A"}
             </span>
           </div>
         </div>

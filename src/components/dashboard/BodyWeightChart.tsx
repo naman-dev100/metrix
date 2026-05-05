@@ -83,9 +83,7 @@ export default function BodyWeightChart() {
   // Format data for recharts
   const chartData = logs.map((log) => {
     let dateObj: Date;
-    if (log.date instanceof Date) {
-      dateObj = log.date;
-    } else if (typeof log.date === 'string') {
+    if (typeof log.date === 'string') {
       dateObj = new Date(log.date);
     } else {
       dateObj = new Date();
