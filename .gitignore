@@ -49,6 +49,14 @@ debug_login.png
 error_state.png
 login_page.png
 nul
+
+# Project md files
+AGENTS.md
+CLAUDE.md
+DESIGN.md
+PRODUCT.md
+
+# prisma
 prisma/
 !prisma/schema.prisma
 !prisma/*.ts
