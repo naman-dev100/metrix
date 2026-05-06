@@ -1,10 +1,34 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { X, Plus, Search, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ExerciseCard from "@/components/exercises/ExerciseCard";
+
+// Muscle groups with their sub-groups
+const MUSCLE_GROUPS = {
+  "Chest": [],
+  "Back": [],
+  "Legs": [],
+  "Shoulders": [],
+  "Arms": ["Biceps", "Triceps", "Forearms"],
+  "Core": [],
+  "Cardio": [],
+};
+
+const CATEGORIES = [
+  "Barbell",
+  "Dumbbell",
+  "Machine",
+  "Cable",
+  "Bodyweight",
+  "Cardio",
+  "Kettlebell",
+  "Suspension",
+  "Band",
+  "Other",
+];
 
 interface CreateRoutineDialogProps {
   open: boolean;
@@ -17,9 +41,14 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
   const [notes, setNotes] = useState("");
   const [search, setSearch] = useState("");
   const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
-  const [filteredExercises, setFilteredExercises] = useState<any[]>([]);
+  const [exercises, setExercises] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [nameError, setNameError] = useState("");
+  const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<string[]>([]);
+  const [selectedSubGroups, setSelectedSubGroups] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+  // Fetch exercises when dialog opens
   useEffect(() => {
     if (open) {
       fetchExercises();
@@ -27,32 +56,53 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
       setNotes("");
       setSearch("");
       setSelectedExercises([]);
+      setSelectedMuscleGroups([]);
+      setSelectedSubGroups([]);
+      setSelectedCategories([]);
+      setNameError("");
     }
   }, [open]);
-
-  useEffect(() => {
-    if (search) {
-      const filtered = filteredExercises.filter((ex) =>
-        ex.name.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredExercises(filtered);
-    } else {
-      setFilteredExercises(filteredExercises);
-    }
-  }, [search, filteredExercises]);
 
   const fetchExercises = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/exercises");
       const data = await res.json();
-      setFilteredExercises(data);
+      setExercises(data);
     } catch (error) {
       console.error("Failed to fetch exercises:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  // Filter exercises based on search, muscle groups, sub-groups, and categories
+  const filteredExercises = useMemo(() => {
+    let filtered = exercises;
+
+    // Filter by muscle groups
+    if (selectedMuscleGroups.length > 0) {
+      filtered = filtered.filter((ex) => selectedMuscleGroups.includes(ex.muscle_group));
+    }
+
+    // Filter by sub-groups
+    if (selectedSubGroups.length > 0) {
+      filtered = filtered.filter((ex) => ex.sub_group && selectedSubGroups.includes(ex.sub_group));
+    }
+
+    // Filter by categories
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((ex) => selectedCategories.includes(ex.category));
+    }
+
+    // Filter by search
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter((ex) => ex.name.toLowerCase().includes(searchLower));
+    }
+
+    return filtered;
+  }, [exercises, search, selectedMuscleGroups, selectedSubGroups, selectedCategories]);
 
   const toggleExercise = (exerciseId: string) => {
     setSelectedExercises((prev) =>
@@ -62,12 +112,64 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
     );
   };
 
+  const toggleMuscleGroup = (group: string) => {
+    setSelectedMuscleGroups((prev) => {
+      if (prev.includes(group)) {
+        return prev.filter((g) => g !== group);
+      } else {
+        return [...prev, group];
+      }
+    });
+    // Clear sub-groups when deselecting Arms
+    if (group === "Arms" && selectedMuscleGroups.includes("Arms")) {
+      setSelectedSubGroups([]);
+    }
+  };
+
+  const toggleSubGroup = (subGroup: string) => {
+    setSelectedSubGroups((prev) => {
+      if (prev.includes(subGroup)) {
+        return prev.filter((sg) => sg !== subGroup);
+      } else {
+        return [...prev, subGroup];
+      }
+    });
+  };
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) => {
+      if (prev.includes(category)) {
+        return prev.filter((c) => c !== category);
+      } else {
+        return [...prev, category];
+      }
+    });
+  };
+
   const handleCreate = async () => {
-    if (!name.trim()) return;
+    if (!name.trim()) {
+      setNameError("Please enter a routine name");
+      return;
+    }
+    setNameError("");
 
     await onCreate(name, notes, selectedExercises);
     onOpenChange(false);
   };
+
+  // Get available sub-groups based on selected muscle groups
+  const getAvailableSubGroups = () => {
+    const subGroups: string[] = [];
+    selectedMuscleGroups.forEach((mg) => {
+      if (MUSCLE_GROUPS[mg as keyof typeof MUSCLE_GROUPS]) {
+        subGroups.push(...MUSCLE_GROUPS[mg as keyof typeof MUSCLE_GROUPS]);
+      }
+    });
+    return [...new Set(subGroups)];
+  };
+
+  const availableSubGroups = getAvailableSubGroups();
+  const hasFilters = selectedMuscleGroups.length > 0 || selectedCategories.length > 0 || selectedSubGroups.length > 0;
 
   if (!open) return null;
 
@@ -92,13 +194,21 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
         <div className="flex-1 overflow-hidden flex flex-col">
           {/* Name and Notes */}
           <div className="p-4 border-b border-[#1e1e2a] space-y-3">
-            <Input
-              placeholder="Routine name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-[#16161f] border-[#1e1e2a] text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-10"
-              aria-label="Routine name"
-            />
+            <div>
+              <Input
+                placeholder="Routine name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (nameError) setNameError("");
+                }}
+                className={`bg-[#16161f] border-${nameError ? "[#ef4444]" : "[#1e1e2a]"} text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-10`}
+                aria-label="Routine name"
+              />
+              {nameError && (
+                <p className="text-[#ef4444] text-sm mt-1 ml-1">{nameError}</p>
+              )}
+            </div>
             <Input
               placeholder="Notes (optional)"
               value={notes}
@@ -108,8 +218,9 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
             />
           </div>
 
-          {/* Search */}
-          <div className="p-4 border-b border-[#1e1e2a]">
+          {/* Filters */}
+          <div className="p-4 border-b border-[#1e1e2a] space-y-3">
+            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5a5a6a]" />
               <Input
@@ -120,6 +231,77 @@ export default function CreateRoutineDialog({ open, onOpenChange, onCreate }: Cr
                 aria-label="Search exercises"
               />
             </div>
+
+            {/* Muscle Groups - Toggleable */}
+            <div className="space-y-2">
+              <div className="flex gap-2 flex-wrap">
+                {Object.keys(MUSCLE_GROUPS).map((group) => (
+                  <button
+                    key={group}
+                    onClick={() => toggleMuscleGroup(group)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      selectedMuscleGroups.includes(group)
+                        ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
+                        : "bg-[#16161f] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
+                    }`}
+                  >
+                    {group}
+                  </button>
+                ))}
+              </div>
+
+              {/* Sub-Groups (only show if Arms is selected) */}
+              {availableSubGroups.length > 0 && (
+                <div className="flex gap-2 flex-wrap pl-4">
+                  {availableSubGroups.map((subGroup) => (
+                    <button
+                      key={subGroup}
+                      onClick={() => toggleSubGroup(subGroup)}
+                      className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                        selectedSubGroups.includes(subGroup)
+                          ? "bg-[#6d28d9] text-white"
+                          : "bg-[#1a1a24] border border-[#2e2e3a] text-[#8a8a9a] hover:text-white"
+                      }`}
+                    >
+                      {subGroup}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Categories - Toggleable */}
+            <div className="space-y-2">
+              <div className="flex gap-2 flex-wrap">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => toggleCategory(cat)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      selectedCategories.includes(cat)
+                        ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
+                        : "bg-[#16161f] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Clear Filters */}
+            {hasFilters && (
+              <button
+                onClick={() => {
+                  setSelectedMuscleGroups([]);
+                  setSelectedSubGroups([]);
+                  setSelectedCategories([]);
+                }}
+                className="text-sm text-[#5a5a6a] hover:text-red-400 transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
 
           {/* Exercise Grid */}
