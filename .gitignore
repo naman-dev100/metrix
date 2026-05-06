@@ -57,6 +57,7 @@ DESIGN.md
 PRODUCT.md
 
 # prisma
-prisma/
+prisma/*
+!prisma/
 !prisma/schema.prisma
 !prisma/*.ts
