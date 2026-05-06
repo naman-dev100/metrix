@@ -46,17 +46,17 @@ export default function DevLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-[#050505]">
-      <Card className="w-full max-w-md bg-[#0a0a0a] border-[#1a1a24]">
+      <Card className="w-full max-w-lg bg-[#0a0a0a] border-[#1a1a24]">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto w-12 h-12 rounded-2xl bg-orange-600 flex items-center justify-center mb-4">
             <Lock className="w-6 h-6 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold text-white">Developer Login</CardTitle>
-          <CardDescription className="text-[#a3a3aa]">
+          <CardTitle className="text-3xl font-bold text-white">Developer Login</CardTitle>
+          <CardDescription className="text-[#a3a3aa] text-lg">
             Credentials login for testing
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6 p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -80,7 +80,7 @@ export default function DevLoginPage() {
             </div>
             <Button 
               type="submit" 
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+              className="w-full bg-orange-600 hover:bg-orange-700 text-white h-12 text-base font-semibold"
               disabled={isLoading}
             >
               {isLoading ? (
