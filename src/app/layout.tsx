@@ -3,6 +3,9 @@ import "./globals.css";
 import ClientLayout from "@/components/navigation/ClientLayout";
 import { Toaster } from "@/components/ui/sonner";
 import SessionWrapper from "@/components/auth/SessionWrapper";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import PWADebug from "@/components/PWADebug";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "Metrix - Workout Tracker",
@@ -37,6 +40,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground antialiased dark:bg-background dark:text-white dark:font-['Outfit']">
         <SessionWrapper>
           <ClientLayout>{children}</ClientLayout>
+          <ServiceWorkerRegister />
+          <PWAInstallPrompt />
+          <PWADebug />
 
           {/* Toast Notifications */}
           <Toaster
