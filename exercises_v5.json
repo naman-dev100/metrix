@@ -1,0 +1,1514 @@
+{
+  "Arms": {
+    "Biceps": [
+      {
+        "name": "Alternating Biceps Curls With Dumbbell",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Alternating dumbbell hammer curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Barbell Curl",
+        "type": "Barbell"
+      },
+      {
+        "name": "Bicep Machine Curl",
+        "type": "Machine"
+      },
+      {
+        "name": "Biceps Curl Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Biceps Curl With Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Biceps Curls With Barbell",
+        "type": "Barbell"
+      },
+      {
+        "name": "Biceps Curls With Dumbbell",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Cable Bicep Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Concentration Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Curls",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Rope Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Concentration Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Curl with kettlebell two hands",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Dumbbell Bicep Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell bicep curl to press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Cheat Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Concentration Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell drag curls",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Incline Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell wide bicep curls",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Hammer Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Hammercurls on Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Incline Dumbbell Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Lying Dumbbell Curls",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "one-handed kettlebell curls",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Overhand Cable Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Preacher Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Reverse EZ Bar Cable Curls",
+        "type": "Cable"
+      },
+      {
+        "name": "Reverse Grip Barbell Curls",
+        "type": "Barbell"
+      },
+      {
+        "name": "Seated Dumbbell Curls",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Spider Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Straight Bar Cable Curls",
+        "type": "Cable"
+      },
+      {
+        "name": "TRX gorilla biceps curl",
+        "type": "Suspension"
+      },
+      {
+        "name": "TRX hammer curl",
+        "type": "Suspension"
+      },
+      {
+        "name": "Trx Single Arm Bicep Curl",
+        "type": "Suspension"
+      },
+      {
+        "name": "Zottman Curl",
+        "type": "Dumbbell"
+      }
+    ],
+    "Forearms": [
+      {
+        "name": "Barbell Reverse Curl",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Reverse Wrist Curl",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Wrist Curl",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Hammer Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Reverse Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Reverse Wrist Curl",
+        "type": "Cable"
+      },
+      {
+        "name": "Cross-Body Hammer Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dead Hang",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dumbbell Hammer Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Pronation / Supination",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Reverse Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Reverse Wrist Curl",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Farmer's Carry",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Farmer's Carry (Kettlebell)",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Finger Extension (Band)",
+        "type": "Band"
+      },
+      {
+        "name": "Plate Pinch",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Reverse EZ Bar Curl",
+        "type": "Barbell"
+      },
+      {
+        "name": "Wrist curl, cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Wrist curl, dumbbells",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Wrist Roller",
+        "type": "Bodyweight"
+      }
+    ],
+    "Triceps": [
+      {
+        "name": "Barbell Triceps Extension",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Overhead Extension",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Tricep Kickback",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Triceps Press",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Tricep Kickback",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Triceps Extension",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "High-Cable Cross Tricep Extention - NB",
+        "type": "Cable"
+      },
+      {
+        "name": "One Arm Overhead Cable Tricep Extension",
+        "type": "Cable"
+      },
+      {
+        "name": "One Arm Triceps Extensions on Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Overhead Cable Tricep Extension",
+        "type": "Cable"
+      },
+      {
+        "name": "Overhead Tricep Extension",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Reverse Grip Tricep Pushdown",
+        "type": "Cable"
+      },
+      {
+        "name": "Skull Crusher",
+        "type": "Barbell"
+      },
+      {
+        "name": "Tricep Dip Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Tricep Dips",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Tricep Dumbbell Kickback",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Tricep Extension (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Tricep Extension (Dumbbell)",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Tricep Pushdown (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Tricep Pushdown (Rope)",
+        "type": "Cable"
+      },
+      {
+        "name": "Tricep Pushdown (Straight Bar)",
+        "type": "Cable"
+      },
+      {
+        "name": "Tricep Pushdown on Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Triceps Dips (Assisted)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Triceps Extensions on Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Triceps Extensions on Cable With Bar",
+        "type": "Cable"
+      },
+      {
+        "name": "Triceps on Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Triceps Overhead (Dumbbell)",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "TRX Tricep Extension",
+        "type": "Suspension"
+      }
+    ]
+  },
+  "Back": {
+    "Lats": [
+      {
+        "name": "Archer Pull Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Assisted chin-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Assisted Pull-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Assisted Pull-up Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Australian pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Cable Lat Pulldown",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Straight Arm Pulldown",
+        "type": "Cable"
+      },
+      {
+        "name": "Chin Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Chin-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Chin-ups (Biceps)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Commando Pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Front lever pull-up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "L-Sit Pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Lat Pulldown Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Lat Pullover (Machine)",
+        "type": "Machine"
+      },
+      {
+        "name": "Neutral-grip pull-ups or TRX rows",
+        "type": "Suspension"
+      },
+      {
+        "name": "Pull Ups on Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Pull-Ups (Neutral Grip)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Pull-Ups (Wide Grip)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Side Straight-Arm Pulldown (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Straight-Arm Pulldown (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Supinated Lat Pulldown",
+        "type": "Machine"
+      },
+      {
+        "name": "Typewriter Pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "V-Bar Lat Pulldown",
+        "type": "Machine"
+      },
+      {
+        "name": "Wide Grip Lat Pulldown",
+        "type": "Machine"
+      },
+      {
+        "name": "Wide Grip Pull-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Wide Pull Up",
+        "type": "Bodyweight"
+      }
+    ],
+    "Lower Back": [
+      {
+        "name": "Barbell Deadlift",
+        "type": "Barbell"
+      },
+      {
+        "name": "Dumbbell Deadlift",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell sumo deadlift",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Kettlebell deadlifts",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Kettlebell One Legged Deadlift",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "kettlebell sumo deadlift",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Single-Leg Deadlift with Dumbbell",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Smith Machine Deadlift",
+        "type": "Smith Machine"
+      },
+      {
+        "name": "Sumo Deadlift",
+        "type": "Barbell"
+      }
+    ],
+    "Traps": [
+      {
+        "name": "Barbell Shrugs",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Silverback Shrug",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Upright Row",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Shrug-In",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Shrug",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Shrugs",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "SEATED CABLE MID TRAP SHRUG",
+        "type": "Cable"
+      },
+      {
+        "name": "Shrugs, Barbells",
+        "type": "Barbell"
+      },
+      {
+        "name": "Shrugs, Dumbbells",
+        "type": "Dumbbell"
+      }
+    ],
+    "Upper Back": [
+      {
+        "name": "Alternating High Cable Row",
+        "type": "Cable"
+      },
+      {
+        "name": "Barbell Bent Over Row",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Reverse Row",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Row (Overhand)",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Row (Underhand)",
+        "type": "Barbell"
+      },
+      {
+        "name": "Bent Over Dumbbell Rows",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Cable Row (Rope Handle)",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Seated Row",
+        "type": "Cable"
+      },
+      {
+        "name": "Chest Supported Row",
+        "type": "Machine"
+      },
+      {
+        "name": "Dumbbell Chest Supported Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Underhand Dead Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Incline Chest-Supported Dumbbell Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Incline Dumbbell Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Inverted Row",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Lateral Rows on Cable, One Armed",
+        "type": "Cable"
+      },
+      {
+        "name": "Leverage Machine Iso Row",
+        "type": "Machine"
+      },
+      {
+        "name": "LYING DUMBBELL ROW SS SEATED SHRUG",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Rowing with TRX band",
+        "type": "Suspension"
+      },
+      {
+        "name": "Seated Cable Row",
+        "type": "Cable"
+      },
+      {
+        "name": "Seated Cable Rows",
+        "type": "Cable"
+      },
+      {
+        "name": "Seated Row (Machine)",
+        "type": "Machine"
+      },
+      {
+        "name": "Single-Arm Dumbbell Row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "T-Bar Row Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "TRX Rows",
+        "type": "Suspension"
+      },
+      {
+        "name": "Unilateral Cable row",
+        "type": "Cable"
+      },
+      {
+        "name": "Upright Row w/ Dumbbells",
+        "type": "Dumbbell"
+      }
+    ]
+  },
+  "Cardio": {
+    "Conditioning": [
+      {
+        "name": "Assault Bike / Air Bike",
+        "type": "Cardio"
+      },
+      {
+        "name": "Battle Ropes",
+        "type": "Cardio"
+      },
+      {
+        "name": "Box Jumps",
+        "type": "Cardio"
+      },
+      {
+        "name": "Burpees",
+        "type": "Cardio"
+      },
+      {
+        "name": "Cycling",
+        "type": "Cardio"
+      },
+      {
+        "name": "Cycling cardio session",
+        "type": "Cardio"
+      },
+      {
+        "name": "Elliptical",
+        "type": "Cardio"
+      },
+      {
+        "name": "Jogging",
+        "type": "Cardio"
+      },
+      {
+        "name": "Jump Rope",
+        "type": "Cardio"
+      },
+      {
+        "name": "Jump rope: basic jumps",
+        "type": "Cardio"
+      },
+      {
+        "name": "No push-up burpees",
+        "type": "Cardio"
+      },
+      {
+        "name": "Recumbent Bike",
+        "type": "Cardio"
+      },
+      {
+        "name": "Rowing Machine",
+        "type": "Cardio"
+      },
+      {
+        "name": "Stationary Bike",
+        "type": "Cardio"
+      },
+      {
+        "name": "Treadmill Running",
+        "type": "Cardio"
+      },
+      {
+        "name": "Zone 2 Running",
+        "type": "Cardio"
+      }
+    ]
+  },
+  "Chest": {
+    "Lower Chest": [
+      {
+        "name": "Cable Chest Press - Decline",
+        "type": "Cable"
+      },
+      {
+        "name": "Chair dips",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Decline Barbell Bench Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Decline Bench Press Barbell",
+        "type": "Barbell"
+      },
+      {
+        "name": "Decline Bench Press Dumbbell",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Decline Dumbbell Bench Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Decline Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dips",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dips (Chest Focus)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dips Between Two Benches",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Floor dips",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Machine Dip (Chest)",
+        "type": "Machine"
+      },
+      {
+        "name": "Push-Ups | Decline",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Ring Dips",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "TRX dips",
+        "type": "Suspension"
+      }
+    ],
+    "Mid Chest": [
+      {
+        "name": "Barbell Bench Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Chest Fly",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Crossover (High to Low)",
+        "type": "Cable"
+      },
+      {
+        "name": "Chest Press Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Clap Push-UP",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Close-Grip Bench Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Deficit Push ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Diamond Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dumbbell Bench Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Chest Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell close grip bench press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Hex Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Push-Up",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Handstand Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "knee push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Leverage Machine Chest Press",
+        "type": "Machine"
+      },
+      {
+        "name": "Machine Chest Fly",
+        "type": "Machine"
+      },
+      {
+        "name": "Machine Chest Press",
+        "type": "Machine"
+      },
+      {
+        "name": "Machine Chest Press Exercise",
+        "type": "Machine"
+      },
+      {
+        "name": "No Leg Drive Dumbbell Chest Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "One armed push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Plyometric Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Pseudo Planche Push-up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Push-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Push-Ups | Parallettes",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Seated Cable chest fly",
+        "type": "Cable"
+      },
+      {
+        "name": "Shoulder width three-point push-up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Side to Side Push Ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Smith Machine Close-grip Bench Press",
+        "type": "Smith Machine"
+      },
+      {
+        "name": "Weighted push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Wide Push-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Wide Push-ups",
+        "type": "Bodyweight"
+      }
+    ],
+    "Upper Chest": [
+      {
+        "name": "Cable Chest Press - Incline",
+        "type": "Cable"
+      },
+      {
+        "name": "Incline Barbell Bench Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Incline Bench Press - Barbell",
+        "type": "Barbell"
+      },
+      {
+        "name": "Incline Bench Press - Dumbbell",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Incline Close Grip Barbell Bench Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Incline Dumbbell Bench Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Incline Push up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Incline Push-ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Push-Ups | Incline",
+        "type": "Bodyweight"
+      }
+    ]
+  },
+  "Core": {
+    "Lower Abs": [
+      {
+        "name": "Ab Wheel Rollout",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Captain's Chair Leg Raise",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Flutter Kicks",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Hanging Knee Raise",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Hanging Leg Raise",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Lying Leg Raise",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Mountain Climbers",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Reverse Crunch",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Scissor Kicks",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Toes to Bar",
+        "type": "Bodyweight"
+      }
+    ],
+    "Obliques": [
+      {
+        "name": "Bicycle Crunches",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Cable Oblique Crunch",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Woodchop",
+        "type": "Cable"
+      },
+      {
+        "name": "Copenhagen Plank",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dumbbell Side Bend",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Hanging Oblique Knee Raise",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Pallof Press",
+        "type": "Cable"
+      },
+      {
+        "name": "Plank",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Russian Twist",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Russian Twist (Weighted)",
+        "type": "Medicine Ball"
+      },
+      {
+        "name": "Shoulder Tap (Plank)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Side Bend (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Side Plank",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Weighted Plank",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Windmill",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Woodchop (Dumbbell)",
+        "type": "Dumbbell"
+      }
+    ],
+    "Upper Abs": [
+      {
+        "name": "Ab Wheel Rollout (Weighted)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Cable Crunch",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Crunch (Kneeling)",
+        "type": "Cable"
+      },
+      {
+        "name": "Crunches",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Crunches on Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Crunches With Cable",
+        "type": "Cable"
+      },
+      {
+        "name": "Dead Bug",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Decline Crunch",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Dumbbell Crunches",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Pullover Crunch",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Incline Sit-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Medicine Ball Booklet Crunch",
+        "type": "Medicine Ball"
+      },
+      {
+        "name": "Sit-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "V-Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Weighted Crunch",
+        "type": "Dumbbell"
+      }
+    ]
+  },
+  "Legs": {
+    "Calves": [
+      {
+        "name": "Cable Calf Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Calf Press Using Leg Press Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Calf Raise (Bodyweight)",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Calf Raise Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Calf Raise using Hack Squat Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Calf Raises on Hackenschmitt Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Dumbbell Calf Raise",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Seated Dumbbell Calf Raise",
+        "type": "Dumbbell"
+      }
+    ],
+    "Glutes": [
+      {
+        "name": "Barbell Hip Thrust",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Kickback",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Pull-through",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Hip Thrust",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Single-leg Hip Thrust",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Glute Bridge",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Glute Kickback (Machine)",
+        "type": "Machine"
+      },
+      {
+        "name": "Hip Thrust (Machine)",
+        "type": "Machine"
+      },
+      {
+        "name": "rubber band glute kickback",
+        "type": "Band"
+      },
+      {
+        "name": "Single Leg Glute Bridge",
+        "type": "Bodyweight"
+      }
+    ],
+    "Hamstrings": [
+      {
+        "name": "Barbell Good Morning",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Romanian Deadlift",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Romanian Deadlift (RDL)",
+        "type": "Barbell"
+      },
+      {
+        "name": "Dumbbell Romanian Deadlift",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Leg Curl (Lying)",
+        "type": "Machine"
+      },
+      {
+        "name": "Leg Curl (Seated)",
+        "type": "Machine"
+      },
+      {
+        "name": "Nordic Hamstring Curl",
+        "type": "Bodyweight"
+      }
+    ],
+    "Quads": [
+      {
+        "name": "Barbell Back Squat",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Front Squat",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Full Squat",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Hack Squats",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Lunges",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Lunges Standing",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Lunges Walking",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Step Back Lunge",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Step-up",
+        "type": "Barbell"
+      },
+      {
+        "name": "Bodyweight Squat",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Bulgarian Split Squat",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Bulgarian Squat with Dumbbells",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Cable Lunge",
+        "type": "Cable"
+      },
+      {
+        "name": "Double Kettlebell Front Squat",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Dumbbell Front Squat",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Goblet Squat",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Lunges",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Lunges Standing",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Lunges Walking",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Rear Lunge",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Side Squat",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Split Squat",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Squat",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Step-ups",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Jump Squat",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Leg Extension",
+        "type": "Machine"
+      },
+      {
+        "name": "Leg Press",
+        "type": "Machine"
+      },
+      {
+        "name": "Leg Press on Hackenschmidt Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Single-Leg Lunge with Kettlebell:",
+        "type": "Kettlebell"
+      },
+      {
+        "name": "Sissy Squat",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Smith Machine Split Squat",
+        "type": "Smith Machine"
+      },
+      {
+        "name": "Smith Machine Squat",
+        "type": "Smith Machine"
+      },
+      {
+        "name": "Walking Lunges",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Zercher Squat",
+        "type": "Barbell"
+      }
+    ]
+  },
+  "Shoulders": {
+    "Front Delts": [
+      {
+        "name": "Arnold Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Barbell Front Raise",
+        "type": "Barbell"
+      },
+      {
+        "name": "Barbell Overhead Press",
+        "type": "Barbell"
+      },
+      {
+        "name": "Cable Front Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Front Raise with a small bar",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Front Raise",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Shoulder Press",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Front Raise (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Handstand Push Up",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Pike Push Ups",
+        "type": "Bodyweight"
+      },
+      {
+        "name": "Shoulder Press Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Shoulder Press, Barbell",
+        "type": "Barbell"
+      },
+      {
+        "name": "Shoulder Press, Dumbbells",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Shoulder Press, on Machine",
+        "type": "Machine"
+      },
+      {
+        "name": "Straight Bar Cable Front Raise",
+        "type": "Cable"
+      }
+    ],
+    "Rear Delts": [
+      {
+        "name": "Cable Face Pull",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Rear Delt Fly",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Bent Over Face Pull",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell rear delt row",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Dumbbell Reverse Fly",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "Face pulls with yellow/green band",
+        "type": "Band"
+      }
+    ],
+    "Side Delts": [
+      {
+        "name": "Behind the Back Cable Lateral Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Lateral Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Lateral Raise (Single Arm)",
+        "type": "Cable"
+      },
+      {
+        "name": "Cable Lateral Raises (Single Arm)",
+        "type": "Cable"
+      },
+      {
+        "name": "Cross-Body Cable Y-Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Dumbbell Lateral Raise",
+        "type": "Dumbbell"
+      },
+      {
+        "name": "High-Cable Lateral Raise",
+        "type": "Cable"
+      },
+      {
+        "name": "Machine Side Lateral Raises",
+        "type": "Machine"
+      },
+      {
+        "name": "Side Lateral Raise (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Side lateral raise - Back (Cable)",
+        "type": "Cable"
+      },
+      {
+        "name": "Side lateral raise - Front (Cable)",
+        "type": "Cable"
+      }
+    ]
+  }
+}

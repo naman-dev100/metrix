@@ -62,3 +62,6 @@ prisma/*
 !prisma/
 !prisma/schema.prisma
 !prisma/*.ts
+
+# scripts (local dev scripts, already in repo)
+scripts/

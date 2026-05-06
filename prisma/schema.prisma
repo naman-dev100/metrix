@@ -62,6 +62,7 @@ model Exercise {
   name        String
   category    String   // Barbell, Dumbbell, Machine, Cable, Bodyweight
   muscle_group String  // Chest, Back, Legs, Shoulders, Arms, Core, Cardio
+  sub_group   String?  // Biceps, Triceps, Forearms (for Arms)
   image_url   String?
   routineExercises RoutineExercise[]
   workoutSets    WorkoutSet[]
