@@ -1,5 +1,5 @@
-import { NextAuthOptions } from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import NextAuth, { type NextAuthConfig } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 
 console.log("[Auth] authOptions initialized");
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -27,9 +27,11 @@ export const authOptions: NextAuthOptions = {
             console.log("[Auth] Missing credentials");
             return null;
           }
+          const email = String(credentials.email);
+          const password = String(credentials.password);
 
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: { email },
           });
 
           if (!user) {
@@ -39,7 +41,7 @@ export const authOptions: NextAuthOptions = {
 
           console.log("[Auth] User found:", user.email);
           const isPasswordValid = await bcrypt.compare(
-            credentials.password!,
+            password,
             user.password!
           );
 
@@ -90,13 +92,16 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       // For Google OAuth, allow sign-in; handle username setup via session
       if (account?.provider === 'google' && user.email) {
-        const dbUser = await prisma.user.findUnique({
+        await prisma.user.findUnique({
           where: { email: user.email },
           select: { username: true },
         });
         // Username check will be handled client-side after redirect
       }
       return true;
+    },
+    authorized({ auth }) {
+      return !!auth?.user;
     },
   },
   session: {
@@ -106,4 +111,6 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
-};
+} satisfies NextAuthConfig;
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
