@@ -35,6 +35,7 @@ next-env.d.ts
 
 # junk files
 *.png
+!public/icons/*.png
 *.log
 *.ps1
 test-*.js

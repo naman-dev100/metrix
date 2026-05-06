@@ -7,6 +7,23 @@ import SessionWrapper from "@/components/auth/SessionWrapper";
 export const metadata: Metadata = {
   title: "Metrix - Workout Tracker",
   description: "Track your workouts, monitor progress, and crush your fitness goals.",
+  manifest: "/manifest.json",
+  themeColor: [{ color: "#0a0a0a" }],
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Metrix",
+  },
+  icons: {
+    icon: "/icons/icon-192x192.png",
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export default function RootLayout({
