@@ -25,11 +25,20 @@ interface WorkoutHistoryItem {
   }[];
 }
 
+interface WeightLog {
+  id: string;
+  weight: number;
+  date: string;
+  notes?: string | null;
+}
+
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [workouts, setWorkouts] = useState<WorkoutHistoryItem[]>([]);
+  const [weightLogs, setWeightLogs] = useState<WeightLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [weightLoading, setWeightLoading] = useState(true);
 
   // Hook 1: Redirect if not logged in
   useEffect(() => {
@@ -45,10 +54,11 @@ export default function DashboardPage() {
     }
   }, [session, router]);
 
-  // Hook 3: Fetch workouts (always called, guarded inside)
+  // Hook 3: Fetch workouts and weight logs
   useEffect(() => {
     if (status === "authenticated" && session) {
       fetchWorkouts();
+      fetchWeightLogs();
     }
   }, [status, session]);
 
@@ -76,6 +86,23 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchWeightLogs = async () => {
+    setWeightLoading(true);
+    try {
+      const res = await fetch("/api/bodyweight");
+      const data = await res.json();
+      setWeightLogs(data);
+    } catch (error) {
+      console.error("Failed to fetch weight logs:", error);
+    } finally {
+      setWeightLoading(false);
+    }
+  };
+
+  const handleDeleteWorkout = (deletedId: string) => {
+    setWorkouts(prev => prev.filter(w => w.id !== deletedId));
   };
 
   const totalWorkouts = workouts.length;
@@ -149,7 +176,14 @@ export default function DashboardPage() {
       </div>
 
       {/* Body Weight Chart */}
-      <BodyWeightChart />
+      <BodyWeightChart 
+        logs={weightLogs}
+        loading={weightLoading}
+        showInput={true}
+        chartHeight={280}
+        showTitle={true}
+        onWeightAdded={fetchWeightLogs}
+      />
 
       {/* Recent Workouts */}
       <div>
@@ -171,7 +205,7 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {workouts.slice(0, 5).map((workout: any) => (
-              <WorkoutHistoryCard key={workout.id} workout={workout} />
+              <WorkoutHistoryCard key={workout.id} workout={workout} onDelete={handleDeleteWorkout} />
             ))}
           </div>
         )}

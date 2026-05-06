@@ -9,7 +9,10 @@ import {
   Dumbbell,
   TrendingUp,
   Calendar,
+  Trash2,
 } from "lucide-react";
+import { toast } from "sonner";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 
 interface WorkoutHistoryItem {
   id: string;
@@ -31,20 +34,66 @@ interface WorkoutHistoryItem {
 
 interface WorkoutHistoryCardProps {
   workout: WorkoutHistoryItem;
+  onDelete?: (id: string) => void;
 }
 
-export default function WorkoutHistoryCard({ workout }: WorkoutHistoryCardProps) {
+export default function WorkoutHistoryCard({ workout, onDelete }: WorkoutHistoryCardProps) {
   const [mounted, setMounted] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/workouts/${workout.id}`, {
+        method: "DELETE",
+      });
+      
+      if (res.ok) {
+        toast.success("Workout deleted");
+        onDelete?.(workout.id);
+      } else {
+        toast.error("Failed to delete workout");
+      }
+    } catch (error) {
+      toast.error("Failed to delete workout");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const handleCancelDelete = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (!isDeleting) {
+      setShowDeleteConfirm(false);
+    }
+  };
+
   const durationText = workout.duration_seconds ? formatDuration(workout.duration_seconds) : "N/A";
 
   return (
-    <Link href={`/workout/${workout.id}`} className="block group">
-      <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] group-hover:border-[#7c3aed]/50 transition-all">
+    <div className="group relative">
+      <Link href={`/workout/${workout.id}`} className="block">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] group-hover:border-[#7c3aed]/50 transition-all">
         {/* Header */}
         <div className="mb-3">
           <h3 className="text-sm font-semibold text-white">{workout.name}</h3>
@@ -111,6 +160,26 @@ export default function WorkoutHistoryCard({ workout }: WorkoutHistoryCardProps)
           )}
         </div>
       </div>
-    </Link>
+      </Link>
+      
+      {/* Delete Button - center right on hover */}
+      <button
+        onClick={handleDeleteClick}
+        className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-[#1a1a24] hover:bg-red-500/20 border border-[#2a2a3a] hover:border-red-500/50 rounded-lg text-[#5a5a6a] hover:text-red-500"
+        title="Delete workout"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
+      
+      {/* Confirm Delete Dialog */}
+      <ConfirmDeleteDialog
+        isOpen={showDeleteConfirm}
+        title="Delete Workout"
+        description="Are you sure you want to delete this workout? All associated sets will be deleted. This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        isDeleting={isDeleting}
+      />
+    </div>
   );
 }

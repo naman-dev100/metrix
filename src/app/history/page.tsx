@@ -64,6 +64,11 @@ export default function HistoryPage() {
     }
   };
 
+  const handleDeleteWorkout = (deletedId: string) => {
+    setWorkouts(prev => prev.filter(w => w.id !== deletedId));
+    setFilteredWorkouts(prev => prev.filter(w => w.id !== deletedId));
+  };
+
   const totalVolume = workouts.reduce((sum, w) => sum + w.total_volume, 0);
   const totalSets = workouts.reduce((sum, w) => sum + w.total_sets, 0);
   const totalPRs = workouts.reduce((sum, w) => sum + w.pr_count, 0);
@@ -131,7 +136,7 @@ export default function HistoryPage() {
       ) : (
         <div className="space-y-3">
           {filteredWorkouts.map((workout) => (
-            <WorkoutHistoryCard key={workout.id} workout={workout} />
+            <WorkoutHistoryCard key={workout.id} workout={workout} onDelete={handleDeleteWorkout} />
           ))}
         </div>
       )}

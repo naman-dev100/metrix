@@ -14,6 +14,7 @@ import {
   User,
   LogOut,
   Settings,
+  LineChart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -52,6 +53,12 @@ const navItems = [
     href: "/history",
     icon: Flame,
     ariaLabel: "Navigate to Workout History",
+  },
+  {
+    name: "Metrics",
+    href: "/metrics",
+    icon: LineChart,
+    ariaLabel: "Navigate to Metrics",
   },
 ];
 
