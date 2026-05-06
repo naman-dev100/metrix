@@ -10,7 +10,6 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 export const metadata: Metadata = {
   title: "Metrix - Workout Tracker",
   description: "Track your workouts, monitor progress, and crush your fitness goals.",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
