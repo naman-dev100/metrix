@@ -4,7 +4,6 @@ import ClientLayout from "@/components/navigation/ClientLayout";
 import { Toaster } from "@/components/ui/sonner";
 import SessionWrapper from "@/components/auth/SessionWrapper";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
-import PWADebug from "@/components/PWADebug";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
@@ -41,7 +40,6 @@ export default function RootLayout({
           <ClientLayout>{children}</ClientLayout>
           <ServiceWorkerRegister />
           <PWAInstallPrompt />
-          <PWADebug />
 
           {/* Toast Notifications */}
           <Toaster
