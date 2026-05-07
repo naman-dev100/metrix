@@ -10,6 +10,7 @@ import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
 import RoutineCard from "@/components/workout/RoutineCard";
 import CreateRoutineDialog from "@/components/workout/CreateRoutineDialog";
 import AddExerciseDialog from "@/components/workout/AddExerciseDialog";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { formatDuration } from "@/lib/utils";
 
 interface Routine {
@@ -45,6 +46,9 @@ export default function WorkoutPage() {
   const [loading, setLoading] = useState(true);
   const [showCreateRoutine, setShowCreateRoutine] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
+  const [routineToDelete, setRoutineToDelete] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Async loading states for buttons
   const [quickStartLoading, setQuickStartLoading] = useState(false);
@@ -194,6 +198,30 @@ export default function WorkoutPage() {
     }
   };
 
+  const handleConfirmDelete = async () => {
+    if (!routineToDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/routines/${routineToDelete}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setRoutines((prev) => prev.filter((r) => r.id !== routineToDelete));
+        toast.success("Routine deleted");
+      } else {
+        toast.error("Failed to delete routine");
+      }
+    } catch (error) {
+      toast.error("Failed to delete routine");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+      setRoutineToDelete(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -335,7 +363,8 @@ export default function WorkoutPage() {
                   onStart={handleStartRoutine}
                   onStartLoading={quickStartLoading}
                   onDelete={(id) => {
-                    setRoutines((prev) => prev.filter((r) => r.id !== id));
+                    setRoutineToDelete(id);
+                    setShowDeleteConfirm(true);
                   }}
                 />
               ))}
@@ -388,6 +417,21 @@ export default function WorkoutPage() {
             toast.error("Failed to create routine");
           }
         }}
+      />
+
+      {/* Delete Routine Confirmation Dialog */}
+      <ConfirmDeleteDialog
+        isOpen={showDeleteConfirm}
+        title="Delete Routine"
+        description="Are you sure you want to delete this routine? This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          if (!isDeleting) {
+            setShowDeleteConfirm(false);
+            setRoutineToDelete(null);
+          }
+        }}
+        isDeleting={isDeleting}
       />
     </div>
   );
