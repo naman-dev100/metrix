@@ -4,10 +4,12 @@ import { useSession } from "next-auth/react";
 import Sidebar from "./Sidebar";
 import BottomNav from "./BottomNav";
 import ActiveWorkoutBar from "@/components/workout/ActiveWorkoutBar";
+import useWorkoutStore from "@/lib/workout-store";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
+  const isActive = useWorkoutStore((s) => s.isActive);
 
   return (
     <>

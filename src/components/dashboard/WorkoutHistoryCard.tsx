@@ -147,7 +147,7 @@ export default function WorkoutHistoryCard({ workout, onDelete }: WorkoutHistory
                   PR
                 </span>
               )}
-              <span className="text-[#b0b0b8] font-medium truncate">{ex.exerciseName}</span>
+              <span className="text-[#b0b0b8] font-medium">{ex.exerciseName}</span>
               <span className="text-[#b0b0b8] ml-auto font-mono">
                 {ex.weight ? `${ex.weight}kg` : "-"} × {ex.reps}
               </span>

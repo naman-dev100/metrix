@@ -11,7 +11,7 @@ export async function GET() {
 
     const routines = await query(`
       SELECT r.id, r.name, r.notes, r.created_at,
-             re.id as exercise_id, re.order,
+             re.exercise_id, re.order,
              e.name as exercise_name, e.muscle_group, e.category
       FROM "Routine" r
       LEFT JOIN "RoutineExercise" re ON re.routine_id = r.id
@@ -38,7 +38,7 @@ export async function GET() {
         routine.routineExercises.push({
           id: row.exercise_id,
           exercise: {
-            id: row.exercise_id,
+            id: row.exercise_id, // This is the actual Exercise.id (from re.exercise_id)
             name: row.exercise_name,
             muscle_group: row.muscle_group,
             category: row.category,

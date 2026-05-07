@@ -81,7 +81,7 @@ export default function ExerciseCard({
 
       {/* Content */}
       <div className="p-3">
-        <h3 className="text-sm font-semibold text-white mb-2 truncate">
+        <h3 className="text-sm font-semibold text-white mb-2">
           {exercise.name}
         </h3>
 

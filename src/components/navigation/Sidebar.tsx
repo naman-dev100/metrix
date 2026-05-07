@@ -4,17 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
-  LayoutDashboard,
   Dumbbell,
-  Activity,
-  BookOpen,
-  Flame,
   ChevronFirst,
   ChevronLast,
   User,
   LogOut,
   Settings,
-  LineChart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -28,43 +23,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-const navItems = [
-  {
-    name: "Dashboard",
-    href: "/",
-    icon: LayoutDashboard,
-    ariaLabel: "Navigate to Dashboard",
-  },
-  {
-    name: "Workout",
-    href: "/workout",
-    icon: Activity,
-    ariaLabel: "Navigate to Workout page",
-  },
-  {
-    name: "Exercises",
-    href: "/exercises",
-    icon: BookOpen,
-    ariaLabel: "Navigate to Exercise Library",
-  },
-  {
-    name: "History",
-    href: "/history",
-    icon: Flame,
-    ariaLabel: "Navigate to Workout History",
-  },
-  {
-    name: "Metrics",
-    href: "/metrics",
-    icon: LineChart,
-    ariaLabel: "Navigate to Metrics",
-  },
-];
+import { navItems } from "@/lib/nav-config";
+import useWorkoutStore from "@/lib/workout-store";
 
 export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const isActive = useWorkoutStore((s) => s.isActive);
   const [isCollapsed, setIsCollapsed] = useState(collapsed || false);
 
   const user = session?.user;
@@ -105,13 +70,18 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
                   : "text-[#a3a3aa] hover:bg-[#16161f] hover:text-white"
               )}
             >
-              <item.icon
-                className={cn(
-                  "w-5 h-5 flex-shrink-0",
-                  isActive && "text-[#7c3aed]"
+              <div className="relative flex-shrink-0">
+                <item.icon
+                  className={cn(
+                    "w-5 h-5",
+                    isActive && "text-[#7c3aed]"
+                  )}
+                  aria-hidden="true"
+                />
+                {isActive && item.href === "/workout" && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#22c55e] border-2 border-gray-950 animate-pulse" />
                 )}
-                aria-hidden="true"
-              />
+              </div>
               {!isCollapsed && (
                 <span className="font-medium">{item.name}</span>
               )}

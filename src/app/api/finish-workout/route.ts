@@ -54,6 +54,22 @@ export async function POST(request: NextRequest) {
     const body: FinishPayload = await request.json();
     const { sessionId, routineId, name, exercises } = body;
 
+    // Validate required fields
+    if (!sessionId) {
+      return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+    }
+
+    if (!exercises || exercises.length === 0) {
+      return NextResponse.json({ error: "No exercises to save" }, { status: 400 });
+    }
+
+    for (const exercise of exercises) {
+      if (!exercise.exerciseId || !exercise.exerciseName) {
+        return NextResponse.json({ error: "Invalid exercise data" }, { status: 400 });
+      }
+      // Allow exercises with no sets — user can finish with empty exercises
+    }
+
     const result = await transaction(async (client: any) => {
       // Get start time
       const sessionResult = await client.query(
@@ -61,7 +77,7 @@ export async function POST(request: NextRequest) {
         [sessionId, session.user.id]
       );
       if (!sessionResult.rows.length) {
-        throw new Error("Session not found");
+        throw new Error("Workout session not found. It may have already been finished.");
       }
       const startTime = sessionResult.rows[0].start_time;
       const endTime = new Date();
@@ -116,8 +132,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
   } catch (error: any) {
     console.error("Error finishing workout:", error);
+    
+    const pgCode = error?.code;
+    let errorMessage = "Failed to finish workout";
+    
+    if (pgCode === "23503") {
+      errorMessage = error?.detail || "Exercise not found. Start a new workout to add exercises again.";
+    } else if (pgCode === "23505") {
+      errorMessage = "Duplicate set detected. Your workout was saved.";
+    } else if (error?.message) {
+      errorMessage = error.message;
+    }
+    
     return NextResponse.json(
-      { error: error.message || "Failed to finish workout" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

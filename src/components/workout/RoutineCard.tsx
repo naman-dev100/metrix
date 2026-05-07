@@ -26,10 +26,10 @@ interface RoutineCardProps {
   routine: Routine;
   onStart: (routineId: string, name: string) => void;
   onDelete: (id: string) => void;
-  onUpdate: (updated: Routine) => void;
+  onStartLoading?: boolean;
 }
 
-export default function RoutineCard({ routine, onStart, onDelete, onUpdate }: RoutineCardProps) {
+export default function RoutineCard({ routine, onStart, onDelete, onStartLoading }: RoutineCardProps) {
   const totalExercises = routine.routineExercises.length;
   const uniqueMuscleGroups = [...new Set(routine.routineExercises.map(re => re.exercise.muscle_group))];
 
@@ -101,17 +101,16 @@ export default function RoutineCard({ routine, onStart, onDelete, onUpdate }: Ro
       <div className="flex gap-2">
         <Button
           onClick={() => onStart(routine.id, routine.name)}
-          className="flex-1 bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-3 py-2 text-sm"
+          disabled={onStartLoading}
+          className="flex-1 bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-3 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Start
+          {onStartLoading ? "Starting..." : "Start"}
         </Button>
         <Button
           variant="outline"
-          onClick={() => {
-            console.log("Edit routine:", routine.id);
-          }}
-          aria-label={`Edit routine ${routine.name}`}
-          className="px-3 py-2 text-sm border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:bg-[#16161f]"
+          disabled
+          aria-label={`Edit routine ${routine.name} (coming soon)`}
+          className="px-3 py-2 text-sm border-[#1e1e2a] text-[#5a5a6a] cursor-not-allowed"
         >
           Edit
         </Button>

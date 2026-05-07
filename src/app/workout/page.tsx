@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Activity, Plus, Play, Calendar, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import useWorkoutStore from "@/lib/workout-store";
 import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
 import RoutineCard from "@/components/workout/RoutineCard";
 import CreateRoutineDialog from "@/components/workout/CreateRoutineDialog";
+import AddExerciseDialog from "@/components/workout/AddExerciseDialog";
 import { formatDuration } from "@/lib/utils";
 
 interface Routine {
@@ -43,6 +44,11 @@ export default function WorkoutPage() {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateRoutine, setShowCreateRoutine] = useState(false);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+
+  // Async loading states for buttons
+  const [quickStartLoading, setQuickStartLoading] = useState(false);
+  const [finishWorkoutLoading, setFinishWorkoutLoading] = useState(false);
 
   useEffect(() => {
     fetchRoutines();
@@ -62,46 +68,83 @@ export default function WorkoutPage() {
   };
 
   const handleQuickStart = async () => {
-    const res = await fetch("/api/start-workout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "Quick Workout" }),
-    });
+    if (quickStartLoading) return;
+    setQuickStartLoading(true);
+    try {
+      const res = await fetch("/api/start-workout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "Quick Workout" }),
+      });
 
-    if (res.ok) {
-      const data = await res.json();
-      startSession(data.sessionId);
-      toast.success("Workout started");
-    } else {
-      toast.error("Failed to start workout");
+      if (res.ok) {
+        const data = await res.json();
+        startSession(data.sessionId);
+        toast.success("Workout started");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || "Failed to start workout");
+      }
+    } catch (error) {
+      console.error("Quick start error:", error);
+      toast.error("Network error. Check your connection.");
+    } finally {
+      setQuickStartLoading(false);
     }
   };
 
   const handleStartRoutine = async (routineId: string, routineName: string) => {
-    const res = await fetch("/api/start-workout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ routineId, name: routineName }),
-    });
+    if (quickStartLoading) return;
+    setQuickStartLoading(true);
+    try {
+      const res = await fetch("/api/start-workout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ routineId, name: routineName }),
+      });
 
-    if (res.ok) {
-      const data = await res.json();
-      startSession(data.sessionId, routineName);
+      if (res.ok) {
+        const data = await res.json();
+        startSession(data.sessionId, routineName);
 
-      const routine = routines.find((r) => r.id === routineId);
-      if (routine) {
-        for (const re of routine.routineExercises) {
-          addExercise(re.exercise.id, re.exercise.name);
+        const routine = routines.find((r) => r.id === routineId);
+        if (routine) {
+          for (const re of routine.routineExercises) {
+            addExercise(re.exercise.id, re.exercise.name);
+          }
         }
-      }
 
-      toast.success(`Started: ${routineName}`);
-    } else {
-      toast.error("Failed to start workout");
+        toast.success(`Started: ${routineName}`);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || "Failed to start workout");
+      }
+    } catch (error) {
+      console.error("Routine start error:", error);
+      toast.error("Network error. Check your connection.");
+    } finally {
+      setQuickStartLoading(false);
     }
   };
 
   const handleFinishWorkout = async () => {
+    if (finishWorkoutLoading) return;
+
+    // Validate session exists
+    if (!sessionId) {
+      toast.error("No active workout session. Please restart your workout.");
+      stopSession();
+      return;
+    }
+
+    // Validate exercises have sets
+    const hasValidSets = activeExercises.some((ex) => ex.sets.length > 0);
+    if (!hasValidSets) {
+      toast.error("Add at least one set before finishing.");
+      return;
+    }
+
+    setFinishWorkoutLoading(true);
     try {
       const res = await fetch("/api/finish-workout", {
         method: "POST",
@@ -123,9 +166,9 @@ export default function WorkoutPage() {
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
+      if (res.ok) {
         if (data.prExercises && data.prExercises.length > 0) {
           data.prExercises.forEach((pr: any) => {
             toast.success(
@@ -139,10 +182,15 @@ export default function WorkoutPage() {
         );
         stopSession();
       } else {
-        toast.error("Failed to finish workout");
+        console.error("Finish workout failed:", data);
+        const msg = data?.error || res.statusText || "Failed to finish workout";
+        toast.error(msg);
       }
     } catch (error) {
-      toast.error("Failed to finish workout");
+      console.error("Finish workout error:", error);
+      toast.error("Network error. Check your connection and try again.");
+    } finally {
+      setFinishWorkoutLoading(false);
     }
   };
 
@@ -175,10 +223,18 @@ export default function WorkoutPage() {
                 </div>
                 <Button
                   onClick={handleFinishWorkout}
-                  aria-label="Finish current workout"
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4"
+                  disabled={finishWorkoutLoading}
+                  aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
+                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Finish Workout
+                  {finishWorkoutLoading ? (
+                    <>
+                      <span className="animate-spin mr-2">⟳</span>
+                      Finishing...
+                    </>
+                  ) : (
+                    "Finish Workout"
+                  )}
                 </Button>
               </div>
             </div>
@@ -200,11 +256,9 @@ export default function WorkoutPage() {
           {/* Add Exercise Button */}
           <Button
             variant="outline"
-            aria-label="Navigate to exercise library to add exercises"
+            aria-label="Add exercises to current workout"
             className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all"
-            onClick={() => {
-              window.location.href = "/exercises";
-            }}
+            onClick={() => setShowAddExercise(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Exercise
@@ -224,11 +278,21 @@ export default function WorkoutPage() {
               </div>
               <Button
                 onClick={handleQuickStart}
-                aria-label="Start a new quick workout session"
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6"
+                disabled={quickStartLoading}
+                aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Play className="w-4 h-4 mr-2" />
-                Start Workout
+                {quickStartLoading ? (
+                  <>
+                    <span className="animate-spin mr-2">⟳</span>
+                    Starting...
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 mr-2" />
+                    Start Workout
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -269,13 +333,9 @@ export default function WorkoutPage() {
                   key={routine.id}
                   routine={routine}
                   onStart={handleStartRoutine}
+                  onStartLoading={quickStartLoading}
                   onDelete={(id) => {
                     setRoutines((prev) => prev.filter((r) => r.id !== id));
-                  }}
-                  onUpdate={(updated) => {
-                    setRoutines((prev) =>
-                      prev.map((r) => (r.id === updated.id ? updated : r))
-                    );
                   }}
                 />
               ))}
@@ -283,6 +343,32 @@ export default function WorkoutPage() {
           )}
         </div>
       )}
+
+      {/* Add Exercise Dialog */}
+      <AddExerciseDialog
+        open={showAddExercise}
+        onOpenChange={setShowAddExercise}
+        selectedIds={activeExercises.map((e) => e.exerciseId)}
+        onAdd={async (exerciseId) => {
+          try {
+            const res = await fetch("/api/exercises");
+            const exercises: any[] = await res.json();
+            const exercise = exercises.find((e) => e.id === exerciseId);
+            if (exercise) {
+              addExercise(exerciseId, exercise.name);
+              toast.success(`Added ${exercise.name}`);
+            } else {
+              toast.error("Exercise not found in database");
+            }
+          } catch {
+            toast.error("Failed to add exercise");
+          }
+        }}
+        onRemove={(exerciseId) => {
+          removeExercise(exerciseId);
+          toast.info("Exercise removed");
+        }}
+      />
 
       {/* Create Routine Dialog */}
       <CreateRoutineDialog

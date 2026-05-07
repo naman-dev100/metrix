@@ -20,7 +20,7 @@ interface WorkoutExerciseCardProps {
 }
 
 export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardProps) {
-  const { addSet } = useWorkoutStore();
+  const { addSet, removeExercise } = useWorkoutStore();
 
   const totalVolume = exercise.sets.reduce((sum, s) => {
     return sum + (s.weight ? s.weight * s.reps : 0);
@@ -39,9 +39,7 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => {
-            console.log("Delete exercise:", exercise.exerciseId);
-          }}
+          onClick={() => removeExercise(exercise.exerciseId)}
           aria-label={`Delete exercise ${exercise.exerciseName}`}
           className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg"
         >

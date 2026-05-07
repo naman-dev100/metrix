@@ -6,13 +6,13 @@ import { Search, X, Dumbbell } from "lucide-react";
 
 // Muscle groups with their sub-groups
 const MUSCLE_GROUPS = {
-  "Chest": [],
-  "Back": [],
-  "Legs": [],
-  "Shoulders": [],
+  "Chest": ["Upper Chest", "Mid Chest", "Lower Chest"],
+  "Back": ["Lats", "Upper Back", "Lower Back", "Traps"],
+  "Legs": ["Quads", "Hamstrings", "Glutes", "Calves"],
+  "Shoulders": ["Front Delts", "Side Delts", "Rear Delts"],
   "Arms": ["Biceps", "Triceps", "Forearms"],
-  "Core": [],
-  "Cardio": [],
+  "Core": ["Upper Abs", "Lower Abs", "Obliques"],
+  "Cardio": ["Conditioning"],
 };
 
 const CATEGORIES = [
@@ -143,27 +143,28 @@ export default function ExerciseList({
   const hasFilters = search || selectedMuscleGroups.length > 0 || selectedCategories.length > 0;
   const availableSubGroups = getAvailableSubGroups();
 
-  // Filter exercises by sub-group on the client side (since sub-group is part of name or we need to add it to DB)
-  const filteredExercises = exercises;
-
   return (
     <div className="space-y-4">
       {/* Search and Filters */}
       <div className="space-y-3">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5a5a6a]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5a5a6a] pointer-events-none" />
           <input
-            type="text"
+            type="search"
             placeholder="Search exercises..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-[#111118] border border-[#1e1e2a] rounded-xl pl-10 pr-12 py-2.5 text-sm text-white placeholder-[#5a5a6a] focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-none transition-all shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
+            autoComplete="off"
+            aria-label="Search exercises"
           />
           {hasFilters && (
             <button
+              type="button"
               onClick={clearFilters}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5a5a6a] hover:text-[#8a8a9a]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5a5a6a] hover:text-[#8a8a9a] p-1"
+              aria-label="Clear all filters"
             >
               <X className="w-4 h-4" />
             </button>
@@ -177,8 +178,9 @@ export default function ExerciseList({
             {Object.keys(MUSCLE_GROUPS).map((group) => (
               <button
                 key={group}
+                type="button"
                 onClick={() => toggleMuscleGroup(group)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all  ${
                   selectedMuscleGroups.includes(group)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -195,8 +197,9 @@ export default function ExerciseList({
               {availableSubGroups.map((subGroup) => (
                 <button
                   key={subGroup}
+                  type="button"
                   onClick={() => toggleSubGroup(subGroup)}
-                  className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all  ${
                     selectedSubGroups.includes(subGroup)
                       ? "bg-[#6d28d9] text-white"
                       : "bg-[#1a1a24] border border-[#2e2e3a] text-[#8a8a9a] hover:text-white"
@@ -216,8 +219,9 @@ export default function ExerciseList({
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
+                type="button"
                 onClick={() => toggleCategory(cat)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all  ${
                   selectedCategories.includes(cat)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -232,6 +236,7 @@ export default function ExerciseList({
         {/* Clear Filters Button */}
         {hasFilters && (
           <button
+            type="button"
             onClick={clearFilters}
             className="text-sm text-[#5a5a6a] hover:text-red-400 transition-colors"
           >
@@ -242,12 +247,12 @@ export default function ExerciseList({
 
       {/* Results count */}
       <p className="text-sm text-[#8a8a9a]">
-        {loading ? "Loading..." : `${filteredExercises.length} exercises found`}
+        {loading ? "Loading..." : `${exercises.length} exercises found`}
       </p>
 
       {/* Grid */}
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
@@ -255,14 +260,14 @@ export default function ExerciseList({
             />
           ))}
         </div>
-      ) : filteredExercises.length === 0 ? (
+      ) : exercises.length === 0 ? (
         <div className="text-center py-12">
           <Dumbbell className="w-8 h-8 text-[#5a5a6a] mx-auto mb-3" aria-hidden="true" />
           <p className="text-[#a3a3aa]">No exercises found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredExercises.map((exercise) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {exercises.map((exercise) => (
             <ExerciseCard
               key={exercise.id}
               exercise={exercise}
