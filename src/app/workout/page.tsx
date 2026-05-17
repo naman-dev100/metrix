@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Activity, Plus, Play, Calendar, Dumbbell } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Activity, Plus, Play, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import useWorkoutStore from "@/lib/workout-store";
 import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
@@ -28,6 +27,19 @@ interface Routine {
     };
     order: number;
   }[];
+}
+
+interface DBExercise {
+  id: string;
+  name: string;
+  muscle_group: string;
+  category: string;
+}
+
+interface PRRecord {
+  name: string;
+  weight: number;
+  reps: number;
 }
 
 export default function WorkoutPage() {
@@ -55,11 +67,7 @@ export default function WorkoutPage() {
   const [quickStartLoading, setQuickStartLoading] = useState(false);
   const [finishWorkoutLoading, setFinishWorkoutLoading] = useState(false);
 
-  useEffect(() => {
-    fetchRoutines();
-  }, []);
-
-  const fetchRoutines = async () => {
+  async function fetchRoutines() {
     setLoading(true);
     try {
       const res = await fetch("/api/routines");
@@ -70,7 +78,12 @@ export default function WorkoutPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchRoutines();
+  }, []);
 
   const handleQuickStart = async () => {
     if (quickStartLoading) return;
@@ -175,7 +188,7 @@ export default function WorkoutPage() {
 
       if (res.ok) {
         if (data.prExercises && data.prExercises.length > 0) {
-          data.prExercises.forEach((pr: any) => {
+          data.prExercises.forEach((pr: PRRecord) => {
             toast.success(
               `New PR! ${pr.name} - ${pr.weight}kg × ${pr.reps} reps`
             );
@@ -373,7 +386,7 @@ export default function WorkoutPage() {
         onAdd={async (exerciseId) => {
           try {
             const res = await fetch("/api/exercises");
-            const exercises: any[] = await res.json();
+            const exercises: DBExercise[] = await res.json();
             const exercise = exercises.find((e) => e.id === exerciseId);
             if (exercise) {
               addExercise(exerciseId, exercise.name);

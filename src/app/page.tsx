@@ -40,6 +40,32 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [weightLoading, setWeightLoading] = useState(true);
 
+  const fetchWorkouts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/workouts");
+      const data = await res.json();
+      setWorkouts(data);
+    } catch (error) {
+      console.error("Failed to fetch workouts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchWeightLogs = async () => {
+    setWeightLoading(true);
+    try {
+      const res = await fetch("/api/bodyweight");
+      const data = await res.json();
+      setWeightLogs(data);
+    } catch (error) {
+      console.error("Failed to fetch weight logs:", error);
+    } finally {
+      setWeightLoading(false);
+    }
+  };
+
   // Hook 1: Redirect if not logged in
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -75,41 +101,15 @@ export default function DashboardPage() {
     return null;
   }
 
-  const fetchWorkouts = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/workouts");
-      const data = await res.json();
-      setWorkouts(data);
-    } catch (error) {
-      console.error("Failed to fetch workouts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchWeightLogs = async () => {
-    setWeightLoading(true);
-    try {
-      const res = await fetch("/api/bodyweight");
-      const data = await res.json();
-      setWeightLogs(data);
-    } catch (error) {
-      console.error("Failed to fetch weight logs:", error);
-    } finally {
-      setWeightLoading(false);
-    }
-  };
-
   const handleDeleteWorkout = (deletedId: string) => {
     setWorkouts(prev => prev.filter(w => w.id !== deletedId));
   };
 
   const totalWorkouts = workouts.length;
-  const totalVolume = workouts.reduce((sum: number, w: any) => sum + w.total_volume, 0);
-  const totalPRs = workouts.reduce((sum: number, w: any) => sum + w.pr_count, 0);
+  const totalVolume = workouts.reduce((sum: number, w: WorkoutHistoryItem) => sum + w.total_volume, 0);
+  const totalPRs = workouts.reduce((sum: number, w: WorkoutHistoryItem) => sum + w.pr_count, 0);
   const totalMinutes = workouts.reduce(
-    (sum: number, w: any) => sum + (w.duration_seconds ? w.duration_seconds / 60 : 0),
+    (sum: number, w: WorkoutHistoryItem) => sum + (w.duration_seconds ? w.duration_seconds / 60 : 0),
     0
   );
 
@@ -204,7 +204,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {workouts.slice(0, 5).map((workout: any) => (
+            {workouts.slice(0, 5).map((workout: WorkoutHistoryItem) => (
               <WorkoutHistoryCard key={workout.id} workout={workout} onDelete={handleDeleteWorkout} />
             ))}
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { X, Plus, Search, Dumbbell } from "lucide-react";
+import { X, Search, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ExerciseCard from "@/components/exercises/ExerciseCard";
@@ -53,12 +53,20 @@ interface RoutineDialogProps {
   initialData?: Routine | null;
 }
 
+interface DBExercise {
+  id: string;
+  name: string;
+  muscle_group: string;
+  sub_group?: string;
+  category: string;
+}
+
 export default function RoutineDialog({ open, onOpenChange, onSubmit, initialData }: RoutineDialogProps) {
   const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
   const [search, setSearch] = useState("");
   const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
-  const [exercises, setExercises] = useState<any[]>([]);
+  const [exercises, setExercises] = useState<DBExercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [nameError, setNameError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -68,13 +76,30 @@ export default function RoutineDialog({ open, onOpenChange, onSubmit, initialDat
 
   const isEditing = !!initialData;
 
+  async function fetchExercises() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/exercises");
+      const data = await res.json();
+      setExercises(data);
+    } catch (error) {
+      console.error("Failed to fetch exercises:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   // Fetch exercises when dialog opens
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchExercises();
       if (initialData) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setName(initialData.name);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNotes(initialData.notes || "");
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelectedExercises(initialData.routineExercises.map(re => re.exercise.id));
       } else {
         setName("");
@@ -88,19 +113,6 @@ export default function RoutineDialog({ open, onOpenChange, onSubmit, initialDat
       setNameError("");
     }
   }, [open, initialData]);
-
-  const fetchExercises = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/exercises");
-      const data = await res.json();
-      setExercises(data);
-    } catch (error) {
-      console.error("Failed to fetch exercises:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Filter exercises based on search, muscle groups, sub-groups, and categories
   const filteredExercises = useMemo(() => {

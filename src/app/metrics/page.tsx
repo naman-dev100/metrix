@@ -21,22 +21,23 @@ export default function MetricsPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
-    fetchLogs();
-  }, []);
-
-  const fetchLogs = async () => {
+  async function fetchLogs() {
     setLoading(true);
     try {
       const res = await fetch("/api/bodyweight");
       const data = await res.json();
       setLogs(data);
     } catch (error) {
-      console.error("Failed to fetch bodyweight logs:", error);
+      console.error("Failed to fetch logs:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
 
   const handleDeleteClick = (id: string) => {
     setDeleteId(id);
