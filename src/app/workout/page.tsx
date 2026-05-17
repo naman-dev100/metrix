@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import useWorkoutStore from "@/lib/workout-store";
 import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
 import RoutineCard from "@/components/workout/RoutineCard";
-import CreateRoutineDialog from "@/components/workout/CreateRoutineDialog";
+import RoutineDialog from "@/components/workout/RoutineDialog";
 import AddExerciseDialog from "@/components/workout/AddExerciseDialog";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import { formatDuration } from "@/lib/utils";
@@ -44,7 +44,8 @@ export default function WorkoutPage() {
 
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateRoutine, setShowCreateRoutine] = useState(false);
+  const [showRoutineDialog, setShowRoutineDialog] = useState(false);
+  const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [routineToDelete, setRoutineToDelete] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -251,18 +252,11 @@ export default function WorkoutPage() {
                 </div>
                 <Button
                   onClick={handleFinishWorkout}
-                  disabled={finishWorkoutLoading}
+                  loading={finishWorkoutLoading}
                   aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4"
                 >
-                  {finishWorkoutLoading ? (
-                    <>
-                      <span className="animate-spin mr-2">⟳</span>
-                      Finishing...
-                    </>
-                  ) : (
-                    "Finish Workout"
-                  )}
+                  Finish Workout
                 </Button>
               </div>
             </div>
@@ -306,21 +300,12 @@ export default function WorkoutPage() {
               </div>
               <Button
                 onClick={handleQuickStart}
-                disabled={quickStartLoading}
+                loading={quickStartLoading}
                 aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6"
               >
-                {quickStartLoading ? (
-                  <>
-                    <span className="animate-spin mr-2">⟳</span>
-                    Starting...
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4 mr-2" />
-                    Start Workout
-                  </>
-                )}
+                <Play className="w-4 h-4 mr-2" />
+                Start Workout
               </Button>
             </div>
           </div>
@@ -329,7 +314,10 @@ export default function WorkoutPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">My Routines</h2>
             <Button
-              onClick={() => setShowCreateRoutine(true)}
+              onClick={() => {
+                setRoutineToEdit(null);
+                setShowRoutineDialog(true);
+              }}
               aria-label="Create a new workout routine"
               variant="outline"
               className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all"
@@ -362,6 +350,10 @@ export default function WorkoutPage() {
                   routine={routine}
                   onStart={handleStartRoutine}
                   onStartLoading={quickStartLoading}
+                  onEdit={(r) => {
+                    setRoutineToEdit(r);
+                    setShowRoutineDialog(true);
+                  }}
                   onDelete={(id) => {
                     setRoutineToDelete(id);
                     setShowDeleteConfirm(true);
@@ -399,22 +391,35 @@ export default function WorkoutPage() {
         }}
       />
 
-      {/* Create Routine Dialog */}
-      <CreateRoutineDialog
-        open={showCreateRoutine}
-        onOpenChange={setShowCreateRoutine}
-        onCreate={async (name, notes, exerciseIds) => {
+      {/* Routine Dialog (Create/Edit) */}
+      <RoutineDialog
+        open={showRoutineDialog}
+        onOpenChange={setShowRoutineDialog}
+        initialData={routineToEdit}
+        onSubmit={async (name, notes, exerciseIds) => {
           if (exerciseIds.length === 0) return;
-          const res = await fetch("/api/routines", {
-            method: "POST",
+          
+          const url = routineToEdit 
+            ? `/api/routines/${routineToEdit.id}` 
+            : "/api/routines";
+          
+          const method = routineToEdit ? "PUT" : "POST";
+
+          const res = await fetch(url, {
+            method,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, notes, exercises: exerciseIds.map((id) => ({ exerciseId: id })) }),
+            body: JSON.stringify({ 
+              name, 
+              notes, 
+              exercises: exerciseIds.map((id) => ({ exerciseId: id })) 
+            }),
           });
+
           if (res.ok) {
-            toast.success("Routine created");
+            toast.success(routineToEdit ? "Routine updated" : "Routine created");
             await fetchRoutines();
           } else {
-            toast.error("Failed to create routine");
+            toast.error(routineToEdit ? "Failed to update routine" : "Failed to create routine");
           }
         }}
       />
