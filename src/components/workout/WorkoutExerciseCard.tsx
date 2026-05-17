@@ -29,31 +29,27 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
   const prCount = exercise.sets.filter(s => s.isPR).length;
 
   return (
-    <div className="py-2 border-b border-border/50 last:border-0">
+    <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-semibold text-foreground tracking-tight">{exercise.exerciseName}</h3>
-        <button
+      <div className="p-3 border-b border-[#1e1e2a] flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Activity className="w-4 h-4 text-[#7c3aed]" />
+          <h3 className="text-sm font-semibold text-white">{exercise.exerciseName}</h3>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => removeExercise(exercise.exerciseId)}
           aria-label={`Delete exercise ${exercise.exerciseName}`}
-          className="p-1.5 text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10 rounded transition-colors active-press"
+          className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg"
         >
           <Trash2 className="w-3.5 h-3.5" />
-        </button>
-      </div>
-
-      {/* Header labels for rows */}
-      <div className="flex items-center gap-3 px-1 mb-1">
-        <div className="w-6 text-center text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Set</div>
-        <div className="flex-1 text-right pr-3 text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">kg</div>
-        <div className="w-16 min-w-[64px] text-center text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Reps</div>
-        <div className="w-14 text-right pr-1 text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Vol</div>
-        <div className="w-8"></div> {/* Spacer for delete button */}
+        </Button>
       </div>
 
       {/* Sets */}
-      <div className="space-y-0.5">
-        {exercise.sets.map((set) => (
+      <div className="p-3 space-y-2">
+        {exercise.sets.map((set, index) => (
           <WorkoutSetRow
             key={set.id}
             exerciseId={exercise.exerciseId}
@@ -62,31 +58,31 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
         ))}
       </div>
 
-      {/* Footer / Add Set */}
-      <div className="flex items-center justify-between mt-2 pt-2">
+      {/* Footer */}
+      <div className="p-3 border-t border-[#1e1e2a] flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">Vol</span>
-            <span className="text-xs font-mono text-foreground">{totalVolume.toLocaleString()}</span>
+          <div className="text-right">
+            <p className="text-[10px] text-[#8a8a9a] uppercase tracking-wider">Total Volume</p>
+            <p className="text-sm font-mono text-white letter-spacing-0.02">
+              {totalVolume.toLocaleString()} kg
+            </p>
           </div>
-          {prCount > 0 && (
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">PRs</span>
-              <span className="text-xs font-mono text-primary">{prCount}</span>
-            </div>
-          )}
+          <div className="text-right">
+            <p className="text-[10px] text-[#8a8a9a] uppercase tracking-wider">PRs</p>
+            <p className="text-sm font-mono text-[#7c3aed] letter-spacing-0.02">
+              {prCount}
+            </p>
+          </div>
         </div>
-        
         <Button
-          variant="secondary"
-          size="xs"
           onClick={() => {
+            const newSetNumber = exercise.sets.length + 1;
             addSet(exercise.exerciseId, null, 10);
           }}
-          className="text-xs font-medium tracking-wide bg-muted/50 hover:bg-muted"
+          aria-label={`Add set for ${exercise.exerciseName}`}
+          className="w-8 h-8 p-0 rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
         >
-          <Plus className="w-3 h-3 mr-1" />
-          Add Set
+          <Plus className="w-4 h-4" />
         </Button>
       </div>
     </div>

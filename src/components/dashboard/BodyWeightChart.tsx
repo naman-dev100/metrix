@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -12,6 +12,7 @@ import {
   Area,
 } from "recharts";
 import { format } from "date-fns";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ export default function BodyWeightChart({
   loading = false,
   showInput = true, 
   chartHeight = 280,
+  showTitle = true,
   onWeightAdded,
 }: BodyWeightChartProps) {
   const [newWeight, setNewWeight] = useState("");
@@ -75,6 +77,7 @@ export default function BodyWeightChart({
     }
   };
 
+  // Format data for recharts
   const chartData = logs.map((log) => {
     let dateObj: Date;
     if (typeof log.date === 'string') {
@@ -92,7 +95,13 @@ export default function BodyWeightChart({
   const latestWeight = logs.length > 0 ? logs[logs.length - 1].weight : 0;
   const prevWeight = logs.length > 1 ? logs[logs.length - 2].weight : latestWeight;
   const weightChange = latestWeight - prevWeight;
+  const minWeight = logs.length > 0 ? Math.min(...logs.map((l) => l.weight)) : 0;
+  const maxWeight = logs.length > 0 ? Math.max(...logs.map((l) => l.weight)) : 0;
+  const avgWeight = logs.length > 0
+    ? logs.reduce((sum, l) => sum + l.weight, 0) / logs.length
+    : 0;
 
+  // Format date for x-axis
   const formatDateForAxis = (dateStr: string) => {
     const date = new Date(dateStr);
     const today = new Date();
@@ -105,141 +114,199 @@ export default function BodyWeightChart({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Current Weight & Trend */}
-      <div className="flex items-baseline gap-3">
-        <span className="text-4xl tabular-nums font-semibold text-foreground tracking-tight">
-          {latestWeight.toFixed(1)} kg
-        </span>
-        {weightChange !== 0 && (
-          <span
-            className={`flex items-center gap-1 text-sm font-medium ${
-              weightChange > 0
-                ? "text-destructive"
-                : weightChange < 0
-                ? "text-green-500" /* Good trend for most */
-                : "text-muted-foreground"
-            }`}
-          >
-            {weightChange > 0 ? (
-              <TrendingUp className="w-3.5 h-3.5" />
-            ) : weightChange < 0 ? (
-              <TrendingDown className="w-3.5 h-3.5" />
-            ) : (
-              <Minus className="w-3.5 h-3.5" />
-            )}
-            {Math.abs(weightChange).toFixed(1)} kg
-          </span>
-        )}
-      </div>
+    <Card className="bg-[#0a0a0a] border-[#1a1a24] rounded-2xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+      {/* Header */}
+      {showTitle && (
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-semibold text-white">
+            Body Weight Tracker
+          </CardTitle>
+        </CardHeader>
+      )}
 
-      {/* Chart Area */}
-      {chartHeight > 0 && (
-        <div style={{ height: chartHeight + 'px' }} className="w-full">
-          {loading ? (
-            <div className="h-full w-full flex items-center justify-center">
-              <div className="text-muted-foreground text-sm">Loading...</div>
-            </div>
-          ) : chartData.length === 0 ? (
-            <div className="h-full w-full flex items-center justify-center">
-              <div className="text-muted-foreground text-sm">No weight data yet</div>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{ top: 5, right: 0, bottom: 5, left: -20 }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="var(--border)"
-                  vertical={false}
-                />
-                <YAxis
-                  domain={['auto', 'auto']}
-                  orientation="right"
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11, fontFamily: 'var(--font-space)' }}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(value) => value.toFixed(0)}
-                />
-                <XAxis
-                  dataKey="fullDate"
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 11, fontFamily: 'var(--font-space)' }}
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={formatDateForAxis}
-                  minTickGap={60}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="weight"
-                  stroke="transparent"
-                  fill="var(--primary)"
-                  fillOpacity={0.05}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="weight"
-                  stroke="var(--primary)"
-                  strokeWidth={2}
-                  dot={{
-                    r: 4,
-                    fill: "var(--primary)",
-                    strokeWidth: 2,
-                    stroke: "var(--background)",
-                  }}
-                  activeDot={{
-                    r: 6,
-                    fill: "var(--primary)",
-                    strokeWidth: 0,
-                  }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'var(--popover)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                  }}
-                  itemStyle={{ color: 'var(--foreground)', fontFamily: 'var(--font-space)' }}
-                  labelStyle={{ color: 'var(--muted-foreground)', fontSize: '12px' }}
-                  formatter={(value: any) => value ? [value.toFixed(1), 'kg'] : ['-', '']}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+      <CardContent className="space-y-6">
+        {/* Current Weight & Trend */}
+        <div className="flex items-baseline gap-3">
+          <span className="text-4xl font-bold text-white tracking-tight">
+            {latestWeight.toFixed(1)} kg
+          </span>
+          {weightChange !== 0 && (
+            <span
+              className={`flex items-center gap-1 text-sm font-semibold ${
+                weightChange > 0
+                  ? "text-[#ef4444]"
+                  : weightChange < 0
+                  ? "text-[#22c55e]"
+                  : "text-[#5a5a6a]"
+              }`}
+            >
+              {weightChange > 0 ? (
+                <TrendingUp className="w-4 h-4" />
+              ) : weightChange < 0 ? (
+                <TrendingDown className="w-4 h-4" />
+              ) : (
+                <Minus className="w-4 h-4" />
+              )}
+              {Math.abs(weightChange).toFixed(1)} kg this month
+            </span>
           )}
         </div>
-      )}
 
-      {/* Input Field */}
-      {showInput && (
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <Label htmlFor="weight" className="sr-only">
-              Log Today&apos;s Weight
-            </Label>
-            <Input
-              id="weight"
-              type="number"
-              step="0.1"
-              placeholder="Log today's weight (e.g., 75.5)"
-              value={newWeight}
-              onChange={(e) => setNewWeight(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddWeight()}
-              className="bg-background border-border text-foreground placeholder:text-muted-foreground font-mono"
-            />
+        {/* Stats Row */}
+        <div className="grid grid-cols-3 gap-3">
+          {/* Min */}
+          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+            <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
+              Min
+            </p>
+            <p className="text-xl font-bold text-white tracking-tight">
+              {minWeight.toFixed(1)}
+            </p>
           </div>
-          <Button
-            onClick={handleAddWeight}
-            loading={adding}
-            disabled={!newWeight}
-            variant="default"
-          >
-            Log
-          </Button>
+
+          {/* Avg */}
+          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+            <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
+              Avg
+            </p>
+            <p className="text-xl font-bold text-white tracking-tight">
+              {avgWeight.toFixed(1)}
+            </p>
+          </div>
+
+          {/* Max */}
+          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+            <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
+              Max
+            </p>
+            <p className="text-xl font-bold text-white tracking-tight">
+              {maxWeight.toFixed(1)}
+            </p>
+          </div>
         </div>
-      )}
-    </div>
+
+        {/* Chart */}
+        {chartHeight > 0 && (
+          <div style={{ height: chartHeight + 'px' }} className="bg-[#050505] rounded-xl border border-[#1a1a24] p-4">
+            {loading ? (
+              <div className="h-full w-full flex items-center justify-center">
+                <div className="text-[#5a5a6a] text-sm">Loading...</div>
+              </div>
+            ) : chartData.length === 0 ? (
+              <div className="h-full w-full flex items-center justify-center">
+                <div className="text-[#5a5a6a] text-sm">No weight data yet</div>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={chartData}
+                  margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                >
+                  {/* Grid Lines */}
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#1a1a24"
+                    vertical={false}
+                  />
+
+                  {/* Y Axis */}
+                  <YAxis
+                    domain={['auto', 'auto']}
+                    orientation="right"
+                    tick={{ fill: "#5a5a6a", fontSize: 11, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => value.toFixed(0)}
+                  />
+
+                  {/* X Axis */}
+                  <XAxis
+                    dataKey="fullDate"
+                    tick={{ fill: "#5a5a6a", fontSize: 11, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={formatDateForAxis}
+                    minTickGap={60}
+                  />
+
+                  {/* Area Fill */}
+                  <Area
+                    type="monotone"
+                    dataKey="weight"
+                    stroke="transparent"
+                    fill="#7c3aed"
+                    fillOpacity={0.15}
+                  />
+
+                  {/* Line */}
+                  <Line
+                    type="monotone"
+                    dataKey="weight"
+                    stroke="#7c3aed"
+                    strokeWidth={3}
+                    dot={{
+                      r: 5,
+                      fill: "#7c3aed",
+                      strokeWidth: 2,
+                      stroke: "#0a0a0a",
+                      fillOpacity: 1,
+                    }}
+                    activeDot={{
+                      r: 7,
+                      fill: "#7c3aed",
+                      strokeWidth: 2,
+                      stroke: "#0a0a0a",
+                    }}
+                  />
+
+                  {/* Custom Tooltip */}
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1a1a24',
+                      border: '1px solid #3a3a4a',
+                      borderRadius: '12px',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+                    }}
+                    itemStyle={{ color: '#fafafa', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}
+                    labelStyle={{ color: '#b0b0b8', fontSize: '12px' }}
+                    formatter={(value: any) => value ? [value.toFixed(1), 'kg'] : ['-', '']}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        )}
+
+        {/* Input */}
+        {showInput && (
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Label htmlFor="weight" className="text-xs text-[#b0b0b8] mb-1 block uppercase tracking-wider font-semibold">
+                Today&apos;s Weight (kg)
+              </Label>
+              <Input
+                id="weight"
+                type="number"
+                step="0.1"
+                placeholder="e.g., 75.5"
+                value={newWeight}
+                onChange={(e) => setNewWeight(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAddWeight()}
+                className="bg-[#050505] border-[#1a1a24] text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] font-mono h-11"
+              />
+            </div>
+            <div className="flex items-end">
+              <Button
+                onClick={handleAddWeight}
+                disabled={adding || !newWeight}
+                className="bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] hover:from-[#7c3aed] hover:to-[#5b21b6] text-white px-6 h-11 rounded-xl font-semibold shadow-[0_4px_12px_rgba(124,58,237,0.3)] hover:shadow-[0_6px_16px_rgba(124,58,237,0.4)] transition-all"
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

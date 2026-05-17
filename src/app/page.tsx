@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import BodyWeightChart from "@/components/dashboard/BodyWeightChart";
 import WorkoutHistoryCard from "@/components/dashboard/WorkoutHistoryCard";
-import { Loader2 } from "lucide-react";
+import { Activity, Dumbbell, Timer, TrendingUp, Loader2 } from "lucide-react";
 
 interface WorkoutHistoryItem {
   id: string;
@@ -92,7 +92,7 @@ export default function DashboardPage() {
   if (status === "loading") {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#7c3aed]" />
       </div>
     );
   }
@@ -114,75 +114,102 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="space-y-12 pb-12 max-w-[800px] mx-auto">
-      {/* Page Header - Typographic, no boxes */}
-      <header className="pt-4">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          Overview
+    <div className="space-y-6">
+      {/* Page Header with Gradient */}
+      <div className="gradient-purple-subtle rounded-2xl p-6 border border-[#1a1a24]">
+        <h1 className="text-3xl font-bold text-white tracking-tight animate-fade-in">
+          Welcome back, {session?.user?.username || session?.user?.name || "Athlete"}!
         </h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Welcome back, {session?.user?.username || session?.user?.name || "Athlete"}.
-        </p>
-      </header>
+        <p className="text-[#b0b0b8] mt-2 animate-fade-in">Your training overview</p>
+      </div>
 
-      {/* Stats - Linear style grid, dense, minimal borders */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden">
-        <div className="bg-background p-4 flex flex-col justify-between">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-2">Workouts</span>
-          <span className="text-2xl tabular-nums font-semibold text-foreground tracking-tight">{totalWorkouts}</span>
+      {/* Stats Cards with Gradients */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] hover-lift card-enter">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+              <Activity className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-[#b0b0b8] uppercase tracking-widest font-semibold">Workouts</p>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-white tracking-tight">{totalWorkouts}</p>
         </div>
-        <div className="bg-background p-4 flex flex-col justify-between">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-2">Volume</span>
-          <span className="text-2xl tabular-nums font-semibold text-foreground tracking-tight">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] hover-lift card-delay-1 card-enter">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+              <Dumbbell className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-[#b0b0b8] uppercase tracking-widest font-semibold">Volume</p>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-white tracking-tight">
             {(totalVolume / 1000).toFixed(1)}k
-          </span>
+          </p>
         </div>
-        <div className="bg-background p-4 flex flex-col justify-between">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-2">Time</span>
-          <span className="text-2xl tabular-nums font-semibold text-foreground tracking-tight">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] hover-lift card-delay-2 card-enter">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+              <Timer className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-[#b0b0b8] uppercase tracking-widest font-semibold">Time</p>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-white tracking-tight">
             {totalMinutes.toFixed(0)}m
-          </span>
+          </p>
         </div>
-        <div className="bg-background p-4 flex flex-col justify-between">
-          <span className="text-[10px] uppercase tracking-wider text-primary font-semibold mb-2">PRs</span>
-          <span className="text-2xl tabular-nums font-semibold text-primary tracking-tight">{totalPRs}</span>
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] hover-lift card-delay-3 card-enter">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+              <TrendingUp className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-[#b0b0b8] uppercase tracking-widest font-semibold">PRs</p>
+            </div>
+          </div>
+          <p className="text-3xl font-bold text-[#7c3aed] tracking-tight">{totalPRs}</p>
         </div>
       </div>
 
       {/* Body Weight Chart */}
-      <section>
-        <h2 className="text-sm font-semibold text-foreground mb-4 border-b border-border pb-2">Body Weight</h2>
-        <div className="mt-4">
-          <BodyWeightChart 
-            logs={weightLogs}
-            loading={weightLoading}
-            showInput={true}
-            chartHeight={200}
-            showTitle={false}
-            onWeightAdded={fetchWeightLogs}
-          />
-        </div>
-      </section>
+      <BodyWeightChart 
+        logs={weightLogs}
+        loading={weightLoading}
+        showInput={true}
+        chartHeight={280}
+        showTitle={true}
+        onWeightAdded={fetchWeightLogs}
+      />
 
       {/* Recent Workouts */}
-      <section>
-        <h2 className="text-sm font-semibold text-foreground mb-4 border-b border-border pb-2">Recent Workouts</h2>
+      <div>
+        <h2 className="text-lg font-semibold text-white mb-4">Recent Workouts</h2>
         {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-[#111118] border border-[#1e1e2a] rounded-xl h-32 animate-pulse shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
+              />
+            ))}
           </div>
         ) : workouts.length === 0 ? (
-          <div className="py-8 text-center">
-            <p className="text-sm text-muted-foreground">No workouts yet. Start your first workout.</p>
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+            <Activity className="w-8 h-8 text-[#5a5a6a] mx-auto mb-3" aria-hidden="true" />
+            <p className="text-[#a3a3aa]">No workouts yet. Start your first workout.</p>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-3">
             {workouts.slice(0, 5).map((workout: WorkoutHistoryItem) => (
               <WorkoutHistoryCard key={workout.id} workout={workout} onDelete={handleDeleteWorkout} />
             ))}
           </div>
         )}
-      </section>
+      </div>
     </div>
   );
 }
