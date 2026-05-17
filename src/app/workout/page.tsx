@@ -63,7 +63,6 @@ export default function WorkoutPage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Async loading states for buttons
   const [quickStartLoading, setQuickStartLoading] = useState(false);
   const [finishWorkoutLoading, setFinishWorkoutLoading] = useState(false);
 
@@ -148,14 +147,12 @@ export default function WorkoutPage() {
   const handleFinishWorkout = async () => {
     if (finishWorkoutLoading) return;
 
-    // Validate session exists
     if (!sessionId) {
       toast.error("No active workout session. Please restart your workout.");
       stopSession();
       return;
     }
 
-    // Validate exercises have sets
     const hasValidSets = activeExercises.some((ex) => ex.sets.length > 0);
     if (!hasValidSets) {
       toast.error("Add at least one set before finishing.");
@@ -170,7 +167,7 @@ export default function WorkoutPage() {
         body: JSON.stringify({
           sessionId,
           routineId: null,
-          name: "Quick Workout",
+          name: routineName || "Quick Workout",
           exercises: activeExercises.map((ex) => ({
             exerciseId: ex.exerciseId,
             exerciseName: ex.exerciseName,
@@ -237,148 +234,165 @@ export default function WorkoutPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Workout</h1>
-          <p className="text-[#8a8a9a] mt-1">Start a workout or choose a routine</p>
-        </div>
-      </div>
-
+    <div className="space-y-8 pb-12 max-w-[800px] mx-auto">
+      
       {/* Active Workout View */}
-      {isActive && (
-        <div className="space-y-4">
-          {/* Active Workout Header */}
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/5 to-[#7c3aed]/0" />
-            <div className="relative">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.15)]">
-                    <Activity className="w-5 h-5 text-[#7c3aed]" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-white">{routineName || "Quick Workout"}</h2>
-                    <p className="text-sm text-[#7c3aed] font-mono">{formatDuration(elapsedSeconds)}</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={handleFinishWorkout}
-                  loading={finishWorkoutLoading}
-                  aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4"
-                >
-                  Finish Workout
-                </Button>
+      {isActive ? (
+        <div className="space-y-6">
+          {/* Active Workout Header - Minimalist */}
+          <div className="sticky top-0 z-10 bg-background/90 backdrop-blur-md pb-4 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-border">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground tracking-tight flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-primary animate-pulse" />
+                  {routineName || "Quick Workout"}
+                </h2>
+                <p className="text-sm font-mono text-muted-foreground mt-0.5">{formatDuration(elapsedSeconds)}</p>
               </div>
+              <Button
+                onClick={handleFinishWorkout}
+                loading={finishWorkoutLoading}
+                aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
+                variant="default"
+                className="bg-foreground text-background hover:bg-foreground/90 font-semibold"
+              >
+                Finish
+              </Button>
             </div>
+            
+            {/* Rest Timer Banner */}
+            {restTimer > 0 && (
+              <div className="mt-3 bg-muted/50 rounded-lg p-2.5 flex items-center justify-center border border-border" role="status" aria-live="polite">
+                <span className="text-foreground font-mono font-semibold text-sm">{restTimer}s</span>
+                <span className="text-muted-foreground text-[10px] ml-2 uppercase tracking-widest font-semibold">Rest</span>
+              </div>
+            )}
           </div>
 
-          {/* Rest Timer */}
-          {restTimer > 0 && (
-            <div className="bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-xl p-3 flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.4)]" role="status" aria-live="polite">
-              <span className="text-[#7c3aed] font-bold text-lg font-mono">{restTimer}s</span>
-              <span className="text-[#7c3aed]/60 text-sm ml-2 uppercase tracking-wider">rest</span>
-            </div>
-          )}
-
           {/* Exercise List */}
-          {activeExercises.map((exercise) => (
-            <WorkoutExerciseCard key={exercise.exerciseId} exercise={exercise} />
-          ))}
+          <div className="space-y-4">
+            {activeExercises.map((exercise) => (
+              <WorkoutExerciseCard key={exercise.exerciseId} exercise={exercise} />
+            ))}
+
+            {activeExercises.length === 0 && (
+              <div className="py-12 text-center text-muted-foreground text-sm">
+                Your workout is empty. Add an exercise to begin.
+              </div>
+            )}
+          </div>
 
           {/* Add Exercise Button */}
           <Button
             variant="outline"
+            size="lg"
             aria-label="Add exercises to current workout"
-            className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all"
+            className="w-full text-muted-foreground hover:text-foreground font-medium border-dashed border-border"
             onClick={() => setShowAddExercise(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Exercise
           </Button>
         </div>
-      )}
+      ) : (
+        /* Not Active - Show Routines */
+        <div className="space-y-10">
+          <header className="pt-4">
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+              Workout
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Start a new session or choose a routine.
+            </p>
+          </header>
 
-      {/* Not Active - Show Routines */}
-      {!isActive && (
-        <div className="space-y-6">
           {/* Quick Start */}
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] hover-lift card-enter">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-white">Quick Start</h2>
-                <p className="text-sm text-[#a3a3aa] mt-1">Start an empty workout session</p>
-              </div>
-              <Button
-                onClick={handleQuickStart}
-                loading={quickStartLoading}
-                aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Start Workout
-              </Button>
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2 className="text-base font-semibold text-foreground tracking-tight">Quick Start</h2>
+              <p className="text-sm text-muted-foreground mt-0.5">Start an empty workout session</p>
             </div>
-          </div>
-
-          {/* Create Routine */}
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">My Routines</h2>
             <Button
-              onClick={() => {
-                setRoutineToEdit(null);
-                setShowRoutineDialog(true);
-              }}
-              aria-label="Create a new workout routine"
-              variant="outline"
-              className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all"
+              onClick={handleQuickStart}
+              loading={quickStartLoading}
+              aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
+              variant="default"
+              className="font-medium"
             >
-              <Plus className="w-4 h-4 mr-2" />
-              New Routine
+              <Play className="w-4 h-4 mr-1.5" />
+              Start Empty
             </Button>
           </div>
 
-          {/* Routines List */}
-          {loading ? (
-            <div className="space-y-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-[#111118] border border-[#1e1e2a] rounded-xl h-24 animate-pulse shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
-                />
-              ))}
+          {/* Routines Section */}
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-semibold text-foreground tracking-tight">My Routines</h2>
+              <Button
+                onClick={() => {
+                  setRoutineToEdit(null);
+                  setShowRoutineDialog(true);
+                }}
+                aria-label="Create a new workout routine"
+                variant="ghost"
+                size="sm"
+                className="text-primary hover:text-primary hover:bg-primary/10 -mr-2"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                New Routine
+              </Button>
             </div>
-          ) : routines.length === 0 ? (
-            <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-              <Dumbbell className="w-8 h-8 text-[#5a5a6a] mx-auto mb-3" />
-              <p className="text-[#a3a3aa]">No routines yet. Create one to get started!</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {routines.map((routine) => (
-                <RoutineCard
-                  key={routine.id}
-                  routine={routine}
-                  onStart={handleStartRoutine}
-                  onStartLoading={quickStartLoading}
-                  onEdit={(r) => {
-                    setRoutineToEdit(r);
+
+            {/* Routines List */}
+            {loading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-muted/30 rounded-lg h-16 animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : routines.length === 0 ? (
+              <div className="py-12 border border-dashed border-border rounded-xl text-center">
+                <Dumbbell className="w-6 h-6 text-muted-foreground/50 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No routines yet.</p>
+                <Button
+                  onClick={() => {
+                    setRoutineToEdit(null);
                     setShowRoutineDialog(true);
                   }}
-                  onDelete={(id) => {
-                    setRoutineToDelete(id);
-                    setShowDeleteConfirm(true);
-                  }}
-                />
-              ))}
-            </div>
-          )}
+                  variant="link"
+                  className="text-primary mt-1 h-auto p-0"
+                >
+                  Create your first routine
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {routines.map((routine) => (
+                  <RoutineCard
+                    key={routine.id}
+                    routine={routine}
+                    onStart={handleStartRoutine}
+                    onStartLoading={quickStartLoading}
+                    onEdit={(r) => {
+                      setRoutineToEdit(r);
+                      setShowRoutineDialog(true);
+                    }}
+                    onDelete={(id) => {
+                      setRoutineToDelete(id);
+                      setShowDeleteConfirm(true);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       )}
 
-      {/* Add Exercise Dialog */}
+      {/* Dialogs */}
       <AddExerciseDialog
         open={showAddExercise}
         onOpenChange={setShowAddExercise}
@@ -404,7 +418,6 @@ export default function WorkoutPage() {
         }}
       />
 
-      {/* Routine Dialog (Create/Edit) */}
       <RoutineDialog
         open={showRoutineDialog}
         onOpenChange={setShowRoutineDialog}
@@ -437,7 +450,6 @@ export default function WorkoutPage() {
         }}
       />
 
-      {/* Delete Routine Confirmation Dialog */}
       <ConfirmDeleteDialog
         isOpen={showDeleteConfirm}
         title="Delete Routine"

@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-full flex flex-col bg-background text-foreground antialiased dark:bg-background dark:text-white dark:font-['Outfit']">
+      <body className="min-h-full flex flex-col bg-background text-foreground antialiased">
         <SessionWrapper>
           <ClientLayout>{children}</ClientLayout>
           <ServiceWorkerRegister />
