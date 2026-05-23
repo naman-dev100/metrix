@@ -28,6 +28,15 @@ const CATEGORIES = [
   "Other",
 ];
 
+interface Exercise {
+  id: string;
+  name: string;
+  muscle_group: string;
+  sub_group: string | null;
+  category: string;
+  image_url?: string;
+}
+
 interface ExerciseListProps {
   onSelect?: (exerciseId: string | string[]) => void;
   selectedExercises?: string[];
@@ -39,7 +48,7 @@ export default function ExerciseList({
   selectedExercises = [],
   multiSelect = false,
 }: ExerciseListProps) {
-  const [exercises, setExercises] = useState<any[]>([]);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<string[]>([]);
@@ -180,7 +189,7 @@ export default function ExerciseList({
                 key={group}
                 type="button"
                 onClick={() => toggleMuscleGroup(group)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all  ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                   selectedMuscleGroups.includes(group)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -199,7 +208,7 @@ export default function ExerciseList({
                   key={subGroup}
                   type="button"
                   onClick={() => toggleSubGroup(subGroup)}
-                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all  ${
+                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
                     selectedSubGroups.includes(subGroup)
                       ? "bg-[#6d28d9] text-white"
                       : "bg-[#1a1a24] border border-[#2e2e3a] text-[#8a8a9a] hover:text-white"
@@ -221,7 +230,7 @@ export default function ExerciseList({
                 key={cat}
                 type="button"
                 onClick={() => toggleCategory(cat)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all  ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                   selectedCategories.includes(cat)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -238,7 +247,7 @@ export default function ExerciseList({
           <button
             type="button"
             onClick={clearFilters}
-            className="text-sm text-[#5a5a6a] hover:text-red-400 transition-colors"
+            className="text-sm text-[#5a5a6a] hover:text-red-400 transition-colors cursor-pointer"
           >
             Clear all filters
           </button>

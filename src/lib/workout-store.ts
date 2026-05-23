@@ -7,7 +7,7 @@ export interface ExerciseSet {
   exerciseName: string;
   setNumber: number;
   weight: number | null;
-  reps: number;
+  reps: number | null;
   isCompleted: boolean;
   isPR?: boolean;
 }
@@ -25,15 +25,16 @@ interface WorkoutState {
   startTime: Date | null;
   elapsedSeconds: number;
   routineName: string | null;
+  routineId: string | null;
   activeExercises: ActiveExercise[];
   
   // Actions
-  startSession: (sessionId: string, routineName?: string) => void;
+  startSession: (sessionId: string, routineName?: string, routineId?: string) => void;
   stopSession: () => void;
   tick: () => void;
-  addExercise: (exerciseId: string, exerciseName: string) => void;
+  addExercise: (exerciseId: string, exerciseName: string, setsCount?: number) => void;
   removeExercise: (exerciseId: string) => void;
-  addSet: (exerciseId: string, weight: number | null, reps: number) => void;
+  addSet: (exerciseId: string, weight: number | null, reps: number | null) => void;
   deleteSet: (exerciseId: string, setId: string) => void;
   updateSet: (exerciseId: string, setId: string, updates: Partial<ExerciseSet>) => void;
   restTimer: number;
@@ -48,16 +49,18 @@ const useWorkoutStore = create<WorkoutState>()(
     startTime: null,
     elapsedSeconds: 0,
     routineName: null,
+    routineId: null,
     activeExercises: [],
     restTimer: 0,
 
-    startSession: (sessionId: string, routineName?: string) => {
+    startSession: (sessionId: string, routineName?: string, routineId?: string) => {
       set({
         isActive: true,
         sessionId,
         startTime: new Date(),
         elapsedSeconds: 0,
         routineName: routineName || null,
+        routineId: routineId || null,
         activeExercises: [],
       });
     },
@@ -69,6 +72,7 @@ const useWorkoutStore = create<WorkoutState>()(
         startTime: null,
         elapsedSeconds: 0,
         routineName: null,
+        routineId: null,
         activeExercises: [],
         restTimer: 0,
       });
@@ -80,16 +84,29 @@ const useWorkoutStore = create<WorkoutState>()(
       }));
     },
 
-    addExercise: (exerciseId: string, exerciseName: string) => {
+    addExercise: (exerciseId: string, exerciseName: string, setsCount?: number) => {
       set((state) => {
         if (state.activeExercises.find((e) => e.exerciseId === exerciseId)) {
           return state;
+        }
+        const count = setsCount || 0;
+        const sets: ExerciseSet[] = [];
+        for (let i = 0; i < count; i++) {
+          sets.push({
+            id: crypto.randomUUID(),
+            exerciseId,
+            exerciseName,
+            setNumber: i + 1,
+            weight: null,
+            reps: null,
+            isCompleted: true,
+          });
         }
         return {
           ...state,
           activeExercises: [
             ...state.activeExercises,
-            { exerciseId, exerciseName, sets: [] },
+            { exerciseId, exerciseName, sets },
           ],
         };
       });
@@ -104,7 +121,7 @@ const useWorkoutStore = create<WorkoutState>()(
       }));
     },
 
-    addSet: (exerciseId: string, weight: number | null, reps: number) => {
+    addSet: (exerciseId: string, weight: number | null, reps: number | null) => {
       set((state) => {
         const exerciseIndex = state.activeExercises.findIndex(
           (e) => e.exerciseId === exerciseId
@@ -115,6 +132,11 @@ const useWorkoutStore = create<WorkoutState>()(
         const exercise = { ...exercises[exerciseIndex] };
         const setNumber = exercise.sets.length + 1;
 
+        // Autofill from previous set in the active session
+        const lastSet = exercise.sets[exercise.sets.length - 1];
+        const autofillWeight = lastSet ? lastSet.weight : weight;
+        const autofillReps = lastSet ? lastSet.reps : reps;
+
         exercise.sets = [
           ...exercise.sets,
           {
@@ -122,8 +144,8 @@ const useWorkoutStore = create<WorkoutState>()(
             exerciseId,
             exerciseName: exercise.exerciseName,
             setNumber,
-            weight,
-            reps,
+            weight: autofillWeight,
+            reps: autofillReps,
             isCompleted: true,
           },
         ];

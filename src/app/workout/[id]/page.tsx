@@ -54,6 +54,7 @@ export default function WorkoutDetailPage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -107,103 +108,103 @@ export default function WorkoutDetailPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-12">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1a1a24] px-4 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => router.back()}
-            className="text-[#a3a3aa] hover:text-white"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-          <h1 className="text-sm font-bold text-white truncate max-w-[150px]">
-            Workout Details
-          </h1>
-          <div className="w-10" /> {/* Spacer */}
-        </div>
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Back Button */}
+      <div>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => router.back()}
+          className="text-[#a3a3aa] hover:text-white -ml-2"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </Button>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 pt-8 space-y-6">
-        {/* Summary Card */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a1a24] to-[#0a0a0a] border border-[#1a1a24] p-6 shadow-2xl">
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <Dumbbell className="w-32 h-32 text-white" />
-          </div>
+      {/* Page Title */}
+      <div>
+        <h1 className="text-3xl font-bold text-white tracking-tight">
+          Workout Details
+        </h1>
+        <p className="text-[#a3a3aa] mt-1">Review your completed workout stats and sets</p>
+      </div>
+
+      {/* Summary Card */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a1a24] to-[#0a0a0a] border border-[#1a1a24] p-6 shadow-2xl">
+        <div className="absolute top-0 right-0 p-8 opacity-5">
+          <Dumbbell className="w-32 h-32 text-white" />
+        </div>
+        
+        <div className="relative">
+          <h2 className="text-2xl font-bold text-white mb-4">{workout.name}</h2>
           
-          <div className="relative">
-            <h2 className="text-2xl font-bold text-white mb-4">{workout.name}</h2>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 text-[#a3a3aa]">
-                <Calendar className="w-4 h-4" />
-                <span className="text-xs">
-                  {mounted ? (format(parseDbDate(workout.start_time)!, "MMM dd, yyyy") || "-") : ""}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-[#a3a3aa]">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs">
-                  {workout.duration_seconds ? formatDuration(workout.duration_seconds) : "-"}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-[#a3a3aa]">
-                <Dumbbell className="w-4 h-4" />
-                <span className="text-xs">
-                  {workout.total_volume.toFixed(0)} kg total
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-[#7c3aed]">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-xs font-bold">
-                  {workout.pr_count} PRs achieved
-                </span>
-              </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-3 text-[#a3a3aa]">
+              <Calendar className="w-4 h-4" />
+              <span className="text-xs">
+                {mounted ? (format(parseDbDate(workout.start_time)!, "MMM dd, yyyy") || "-") : ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-[#a3a3aa]">
+              <Clock className="w-4 h-4" />
+              <span className="text-xs">
+                {workout.duration_seconds ? formatDuration(workout.duration_seconds) : "-"}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-[#a3a3aa]">
+              <Dumbbell className="w-4 h-4" />
+              <span className="text-xs">
+                {workout.total_volume.toFixed(0)} kg total
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-[#7c3aed]">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-xs font-bold">
+                {workout.pr_count} PRs achieved
+              </span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Exercises List */}
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-[#5a5a6a] uppercase tracking-widest px-1">
-            Exercises ({workout.total_sets} sets)
-          </h3>
-          
-          {exerciseGroups.map((group, idx) => (
-            <Card key={idx} className="bg-[#111118] border-[#1a1a24] overflow-hidden">
-              <CardContent className="p-0">
-                <div className="p-4 border-b border-[#1a1a24] bg-[#16161f]">
-                  <h4 className="text-base font-bold text-white">{group.name}</h4>
-                </div>
-                <div className="divide-y divide-[#1a1a24]">
-                  {group.sets.map((set, sIdx) => (
-                    <div key={sIdx} className="flex items-center justify-between p-4 text-sm">
-                      <div className="flex items-center gap-3">
-                        <span className="text-[#5a5a6a] font-mono w-6">
-                          {set.set_number}
-                        </span>
-                        <span className="text-white font-medium">
-                          {set.weight ? `${set.weight} kg` : "-"} × {set.reps}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        {set.is_pr && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#7c3aed]/15 text-[#7c3aed] text-[10px] font-bold border border-[#7c3aed]/30 uppercase">
-                            <CheckCircle2 className="w-3 h-3" />
-                            PR
-                          </span>
-                        )}
-                      </div>
+      {/* Exercises List */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-semibold text-[#5a5a6a] uppercase tracking-widest px-1">
+          Exercises ({workout.total_sets} sets)
+        </h3>
+        
+        {exerciseGroups.map((group, idx) => (
+          <Card key={idx} className="bg-[#111118] border-[#1a1a24] overflow-hidden">
+            <CardContent className="p-0">
+              <div className="p-4 border-b border-[#1a1a24] bg-[#16161f]">
+                <h4 className="text-base font-bold text-white">{group.name}</h4>
+              </div>
+              <div className="divide-y divide-[#1a1a24]">
+                {group.sets.map((set, sIdx) => (
+                  <div key={sIdx} className="flex items-center justify-between p-4 text-sm">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#5a5a6a] font-mono w-6">
+                        {set.set_number}
+                      </span>
+                      <span className="text-white font-medium">
+                        {set.weight && set.weight > 0 ? `${set.weight} kg × ${set.reps}` : `Bodyweight × ${set.reps}`}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    <div className="flex items-center">
+                      {set.is_pr && (
+                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#7c3aed]/15 text-[#7c3aed] text-[10px] font-bold border border-[#7c3aed]/30 uppercase">
+                          <CheckCircle2 className="w-3 h-3" />
+                          PR
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );

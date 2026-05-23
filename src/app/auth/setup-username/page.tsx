@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -17,19 +17,16 @@ export default function SetupUsernamePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Redirect if not logged in
-  if (status === "unauthenticated") {
-    router.push("/login");
-    return null;
-  }
+  // Redirect if not logged in or already has username using useEffect side-effect
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    } else if (status === "authenticated" && session?.user?.username) {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
 
-  // Redirect if already has username
-  if (session?.user?.username) {
-    router.push("/dashboard");
-    return null;
-  }
-
-  if (status === "loading") {
+  if (status === "loading" || status === "unauthenticated" || (status === "authenticated" && session?.user?.username)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-[#7c3aed]" />
@@ -125,16 +122,9 @@ export default function SetupUsernamePage() {
             <Button 
               type="submit" 
               className="w-full bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] hover:from-[#7c3aed] hover:to-[#5b21b6] text-white h-11 font-semibold shadow-[0_4px_12px_rgba(124,58,237,0.3)] transition-all"
-              disabled={isLoading}
+              loading={isLoading}
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Continue"
-              )}
+              Continue
             </Button>
           </form>
         </CardContent>

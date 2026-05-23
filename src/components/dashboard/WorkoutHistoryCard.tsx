@@ -43,6 +43,7 @@ export default function WorkoutHistoryCard({ workout, onDelete }: WorkoutHistory
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

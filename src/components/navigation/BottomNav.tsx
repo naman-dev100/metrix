@@ -44,7 +44,7 @@ export default function BottomNav() {
   const isActive = useWorkoutStore((s) => s.isActive);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0a0f]/95 backdrop-blur-sm border-t border-[#1e1e2a] md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0a0f]/95 backdrop-blur-sm border-t border-[#1e1e2a] md:hidden pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-around py-2 px-1 animate-slide-in">
         {navItems.map((item) => {
           const isActiveTab = pathname === item.href;

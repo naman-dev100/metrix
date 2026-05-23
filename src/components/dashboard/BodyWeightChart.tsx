@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   LineChart,
   Line,
@@ -269,7 +269,7 @@ export default function BodyWeightChart({
                     }}
                     itemStyle={{ color: '#fafafa', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}
                     labelStyle={{ color: '#b0b0b8', fontSize: '12px' }}
-                    formatter={(value: any) => value ? [value.toFixed(1), 'kg'] : ['-', '']}
+                    formatter={(value: number | string) => value ? [Number(value).toFixed(1), 'kg'] : ['-', '']}
                   />
                 </LineChart>
               </ResponsiveContainer>

@@ -19,6 +19,7 @@ interface Routine {
   created_at: string;
   routineExercises: {
     id: string;
+    sets_count?: number;
     exercise: {
       id: string;
       name: string;
@@ -53,15 +54,44 @@ export default function WorkoutPage() {
   const addExercise = useWorkoutStore((s) => s.addExercise);
   const removeExercise = useWorkoutStore((s) => s.removeExercise);
   const routineName = useWorkoutStore((s) => s.routineName);
+  const routineId = useWorkoutStore((s) => s.routineId);
 
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRoutineDialog, setShowRoutineDialog] = useState(false);
   const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
+
+  const checkIfRoutineModified = () => {
+    if (!routineId) return false;
+    const routine = routines.find((r) => r.id === routineId);
+    if (!routine) return false;
+
+    // Compare lengths
+    if (activeExercises.length !== routine.routineExercises.length) return true;
+
+    // Compare each exercise and its sets count
+    for (let i = 0; i < activeExercises.length; i++) {
+      const activeEx = activeExercises[i];
+      const routineEx = routine.routineExercises[i];
+
+      // Check ID
+      if (activeEx.exerciseId !== routineEx.exercise.id) return true;
+
+      // Check sets count
+      const activeSetsCount = activeEx.sets.length;
+      const routineSetsCount = routineEx.sets_count || 3;
+      if (activeSetsCount !== routineSetsCount) return true;
+    }
+
+    return false;
+  };
+
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [routineToDelete, setRoutineToDelete] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showUpdateRoutinePrompt, setShowUpdateRoutinePrompt] = useState(false);
+  const [updatingRoutine, setUpdatingRoutine] = useState(false);
 
   // Async loading states for buttons
   const [quickStartLoading, setQuickStartLoading] = useState(false);
@@ -123,12 +153,13 @@ export default function WorkoutPage() {
 
       if (res.ok) {
         const data = await res.json();
-        startSession(data.sessionId, routineName);
+        startSession(data.sessionId, routineName, routineId);
 
         const routine = routines.find((r) => r.id === routineId);
         if (routine) {
           for (const re of routine.routineExercises) {
-            addExercise(re.exercise.id, re.exercise.name);
+            const setsCount = (re as any).sets_count || 3;
+            addExercise(re.exercise.id, re.exercise.name, setsCount);
           }
         }
 
@@ -145,7 +176,13 @@ export default function WorkoutPage() {
     }
   };
 
-  const handleFinishWorkout = async () => {
+  const handleFinishWorkout = async (forceNoRoutineUpdate = false) => {
+    // Check if the routine was modified and show prompt before saving
+    if (routineId && checkIfRoutineModified() && !forceNoRoutineUpdate) {
+      setShowUpdateRoutinePrompt(true);
+      return;
+    }
+
     if (finishWorkoutLoading) return;
 
     // Validate session exists
@@ -170,7 +207,7 @@ export default function WorkoutPage() {
         body: JSON.stringify({
           sessionId,
           routineId: null,
-          name: "Quick Workout",
+          name: routineName || "Quick Workout",
           exercises: activeExercises.map((ex) => ({
             exerciseId: ex.exerciseId,
             exerciseName: ex.exerciseName,
@@ -199,6 +236,7 @@ export default function WorkoutPage() {
           `Workout finished! Duration: ${formatDuration(data.duration)}`
         );
         stopSession();
+        setShowUpdateRoutinePrompt(false);
       } else {
         console.error("Finish workout failed:", data);
         const msg = data?.error || res.statusText || "Failed to finish workout";
@@ -209,6 +247,44 @@ export default function WorkoutPage() {
       toast.error("Network error. Check your connection and try again.");
     } finally {
       setFinishWorkoutLoading(false);
+    }
+  };
+
+  const handleUpdateRoutineAndSave = async () => {
+    if (!routineId) return;
+    const routine = routines.find((r) => r.id === routineId);
+    if (!routine) return;
+
+    setUpdatingRoutine(true);
+    try {
+      const res = await fetch(`/api/routines/${routineId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: routine.name,
+          notes: routine.notes || "",
+          exercises: activeExercises.map((e) => ({
+            exerciseId: e.exerciseId,
+            setsCount: e.sets.length,
+          })),
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("Original routine updated!");
+        await fetchRoutines();
+        // Force finish the session without another prompt loop
+        await handleFinishWorkout(true);
+      } else {
+        toast.error("Failed to update routine in DB, but saving workout...");
+        await handleFinishWorkout(true);
+      }
+    } catch (error) {
+      console.error("Failed to update routine:", error);
+      toast.error("Failed to update routine in DB, but saving workout...");
+      await handleFinishWorkout(true);
+    } finally {
+      setUpdatingRoutine(false);
     }
   };
 
@@ -264,7 +340,7 @@ export default function WorkoutPage() {
                   </div>
                 </div>
                 <Button
-                  onClick={handleFinishWorkout}
+                  onClick={() => handleFinishWorkout()}
                   loading={finishWorkoutLoading}
                   aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
                   className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4"
@@ -409,8 +485,8 @@ export default function WorkoutPage() {
         open={showRoutineDialog}
         onOpenChange={setShowRoutineDialog}
         initialData={routineToEdit}
-        onSubmit={async (name, notes, exerciseIds) => {
-          if (exerciseIds.length === 0) return;
+        onSubmit={async (name, notes, selectedExercises) => {
+          if (selectedExercises.length === 0) return;
           
           const url = routineToEdit 
             ? `/api/routines/${routineToEdit.id}` 
@@ -424,7 +500,10 @@ export default function WorkoutPage() {
             body: JSON.stringify({ 
               name, 
               notes, 
-              exercises: exerciseIds.map((id) => ({ exerciseId: id })) 
+              exercises: selectedExercises.map((se) => ({ 
+                exerciseId: se.exerciseId, 
+                sets_count: se.setsCount 
+              })) 
             }),
           });
 
@@ -451,6 +530,50 @@ export default function WorkoutPage() {
         }}
         isDeleting={isDeleting}
       />
+
+      {/* Update Routine Prompt Dialog */}
+      {showUpdateRoutinePrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-2xl shadow-[0_20px_60px_-12px_rgba(0,0,0,0.6),_0_8px_24px_-4px_rgba(0,0,0,0.4)] w-full max-w-md p-6 animate-scale-in space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center">
+                <Dumbbell className="w-5 h-5 text-[#7c3aed]" />
+              </div>
+              <h3 className="text-lg font-bold text-white tracking-tight">Update Original Routine?</h3>
+            </div>
+            
+            <p className="text-sm text-[#a3a3aa] leading-relaxed">
+              You modified this routine's exercises or sets during your workout. Would you like to update the original routine so future workouts use these changes?
+            </p>
+            
+            <div className="flex flex-col gap-2 pt-2">
+              <Button
+                onClick={handleUpdateRoutineAndSave}
+                loading={updatingRoutine || finishWorkoutLoading}
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold h-11 rounded-xl shadow-[0_2px_8px_rgba(124,58,237,0.4)] transition-all"
+              >
+                Update and Save
+              </Button>
+              <Button
+                onClick={() => handleFinishWorkout(true)}
+                loading={finishWorkoutLoading}
+                variant="outline"
+                className="border-[#2e2e3a] text-white hover:bg-[#16161f] h-11 rounded-xl transition-all font-semibold"
+              >
+                Save Only (No Update)
+              </Button>
+              <Button
+                onClick={() => setShowUpdateRoutinePrompt(false)}
+                disabled={updatingRoutine || finishWorkoutLoading}
+                variant="ghost"
+                className="text-[#a3a3aa] hover:bg-[#16161f] h-10 rounded-xl transition-all"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

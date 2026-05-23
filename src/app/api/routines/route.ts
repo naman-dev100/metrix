@@ -10,46 +10,36 @@ export async function GET() {
     }
 
     const routines = await query(`
-      SELECT r.id, r.name, r.notes, r.created_at,
-             re.exercise_id, re.order,
-             e.name as exercise_name, e.muscle_group, e.category
+      SELECT 
+        r.id, 
+        r.name, 
+        r.notes, 
+        r.created_at,
+        COALESCE(json_agg(
+          json_build_object(
+            'id', e.id,
+            'exercise', json_build_object(
+              'id', e.id,
+              'name', e.name,
+              'muscle_group', e.muscle_group,
+              'category', e.category
+            ),
+            'order', re.order,
+            'sets_count', re.sets_count
+          )
+          ORDER BY re.order ASC
+        ) FILTER (WHERE re.id IS NOT NULL), '[]') as "routineExercises"
       FROM "Routine" r
       LEFT JOIN "RoutineExercise" re ON re.routine_id = r.id
       LEFT JOIN "Exercise" e ON e.id = re.exercise_id
       WHERE r."userId" = $1
-      ORDER BY r.created_at DESC, re.order ASC
+      GROUP BY r.id
+      ORDER BY r.created_at DESC
     `, [session.user.id]);
 
-    // Group by routine
-    const grouped: any[] = [];
-    for (const row of routines) {
-      let routine = grouped.find((r: any) => r.id === row.id);
-      if (!routine) {
-        routine = {
-          id: row.id,
-          name: row.name,
-          notes: row.notes,
-          created_at: row.created_at,
-          routineExercises: [],
-        };
-        grouped.push(routine);
-      }
-      if (row.exercise_id) {
-        routine.routineExercises.push({
-          id: row.exercise_id,
-          exercise: {
-            id: row.exercise_id, // This is the actual Exercise.id (from re.exercise_id)
-            name: row.exercise_name,
-            muscle_group: row.muscle_group,
-            category: row.category,
-          },
-          order: row.order,
-        });
-      }
-    }
-
-    return NextResponse.json(grouped);
+    return NextResponse.json(routines);
   } catch (error) {
+    console.error("Error in GET /api/routines:", error);
     return NextResponse.json(
       { error: "Failed to fetch routines" },
       { status: 500 }
@@ -83,9 +73,10 @@ export async function POST(request: NextRequest) {
 
       if (exercises?.length) {
         for (let i = 0; i < exercises.length; i++) {
+          const setsCount = exercises[i].setsCount || exercises[i].sets_count || 3;
           await client.query(
-            `INSERT INTO "RoutineExercise" (id, routine_id, exercise_id, "order") VALUES (gen_random_uuid(), $1, $2, $3)`,
-            [routine.id, exercises[i].exerciseId, i]
+            `INSERT INTO "RoutineExercise" (id, routine_id, exercise_id, "order", sets_count) VALUES (gen_random_uuid(), $1, $2, $3, $4)`,
+            [routine.id, exercises[i].exerciseId, i, setsCount]
           );
         }
       }
@@ -101,6 +92,7 @@ export async function POST(request: NextRequest) {
             category: "",
           },
           order: i,
+          sets_count: ex.setsCount || ex.sets_count || 3,
         })) || [],
       };
     });

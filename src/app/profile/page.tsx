@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2, User, Mail, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import { signOut } from "next-auth/react";
@@ -18,17 +18,26 @@ export default function ProfilePage() {
   const [username, setUsername] = useState(session?.user?.username || "");
   const [isLoading, setIsLoading] = useState(false);
 
-  if (status === "loading") {
+  // Redirect if not logged in using useEffect side-effect
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  // Keep username local state in sync with loaded session
+  useEffect(() => {
+    if (session?.user?.username) {
+      setUsername(session.user.username);
+    }
+  }, [session]);
+
+  if (status === "loading" || status === "unauthenticated" || !session?.user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="w-8 h-8 animate-spin text-[#7c3aed]" />
       </div>
     );
-  }
-
-  if (!session?.user) {
-    router.push("/login");
-    return null;
   }
 
   const user = session.user;
@@ -119,10 +128,10 @@ export default function ProfilePage() {
                     <Button
                       size="sm"
                       onClick={handleUpdateUsername}
-                      disabled={isLoading}
+                      loading={isLoading}
                       className="bg-[#7c3aed] hover:bg-[#6d28d9]"
                     >
-                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+                      Save
                     </Button>
                     <Button
                       size="sm"

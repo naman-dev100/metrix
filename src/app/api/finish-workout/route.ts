@@ -13,7 +13,7 @@ interface FinishPayload {
       id: string;
       setNumber: number;
       weight: number | null;
-      reps: number;
+      reps: number | null;
       isPR?: boolean;
     }[];
   }[];
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       const prExercises: { name: string; weight: number; reps: number }[] = [];
 
       for (const exercise of exercises) {
-        // Get historical sets
+        // Get historical sets for PR calculation
         const historicalResult = await client.query(
           `SELECT weight, reps FROM "WorkoutSet" ws
            JOIN "WorkoutSession" s ON s.id = ws.session_id
@@ -106,21 +106,69 @@ export async function POST(request: NextRequest) {
         );
         const historicalSets = historicalResult.rows;
 
+        // Get sets from the last completed session containing this exercise for placeholder fallbacks
+        const lastSessionResult = await client.query(
+          `WITH last_session AS (
+             SELECT ws.session_id
+             FROM "WorkoutSet" ws
+             JOIN "WorkoutSession" wss ON wss.id = ws.session_id
+             WHERE wss."userId" = $1 AND ws.exercise_id = $2 AND wss.end_time IS NOT NULL AND wss.id != $3
+             ORDER BY wss.end_time DESC
+             LIMIT 1
+           )
+           SELECT 
+             ws.set_number,
+             ws.weight,
+             ws.reps
+           FROM "WorkoutSet" ws
+           JOIN last_session ls ON ls.session_id = ws.session_id
+           WHERE ws.exercise_id = $2
+           ORDER BY ws.set_number ASC`,
+          [session.user.id, exercise.exerciseId, sessionId]
+        );
+        const lastSessionSets = lastSessionResult.rows;
+
         for (const set of exercise.sets) {
-          const isPR = calculatePR(set.weight || 0, set.reps, historicalSets);
+          let finalWeight = set.weight;
+          let finalReps = set.reps;
+
+          // Apply fallbacks if user left input empty (so they get placeholder values)
+          if (finalWeight === null || finalReps === null) {
+            const matchingLastSet = lastSessionSets.find((h: any) => h.set_number === set.setNumber);
+            if (matchingLastSet) {
+              if (finalWeight === null) finalWeight = matchingLastSet.weight;
+              if (finalReps === null) finalReps = matchingLastSet.reps;
+            } else {
+              // If there's no matching set number, fallback to first set of the last completed session
+              if (lastSessionSets.length > 0) {
+                if (finalWeight === null) finalWeight = lastSessionSets[0].weight;
+                if (finalReps === null) finalReps = lastSessionSets[0].reps;
+              } else {
+                // If there's no history at all, fallback to standard defaults
+                if (finalWeight === null) finalWeight = null;
+                if (finalReps === null) finalReps = 10;
+              }
+            }
+          }
+
+          if (finalReps === null || finalReps === undefined) {
+            finalReps = 10;
+          }
+
+          const isPR = calculatePR(finalWeight || 0, finalReps, historicalSets);
 
           await client.query(
             `INSERT INTO "WorkoutSet" (id, session_id, exercise_id, set_number, weight, reps, is_pr)
              VALUES ($1, $2, $3, $4, $5, $6, $7)
              ON CONFLICT (id) DO UPDATE SET weight = $5, reps = $6, is_pr = $7, set_number = $4`,
-            [set.id, sessionId, exercise.exerciseId, set.setNumber, set.weight, set.reps, isPR]
+            [set.id, sessionId, exercise.exerciseId, set.setNumber, finalWeight, finalReps, isPR]
           );
 
           if (isPR && !prExercises.find((p) => p.name === exercise.exerciseName)) {
             prExercises.push({
               name: exercise.exerciseName,
-              weight: set.weight || 0,
-              reps: set.reps,
+              weight: finalWeight || 0,
+              reps: finalReps,
             });
           }
         }
@@ -128,6 +176,7 @@ export async function POST(request: NextRequest) {
 
       return { success: true, duration: durationSeconds, prExercises };
     });
+
 
     return NextResponse.json(result);
   } catch (error: any) {

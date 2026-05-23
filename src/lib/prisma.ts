@@ -13,12 +13,6 @@ const client = new PrismaClient({
   log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
 });
 
-client.$connect().then(() => {
-  console.log("[Prisma] Connected to database successfully");
-}).catch((err: any) => {
-  console.error("[Prisma] Connection error:", err.message);
-});
-
 export const prisma = globalForPrisma.prisma || client;
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

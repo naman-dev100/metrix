@@ -189,7 +189,7 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[#8a8a9a] hover:bg-[#16161f] hover:text-white transition-all"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[#8a8a9a] hover:bg-[#16161f] hover:text-white transition-all cursor-pointer"
         >
           {isCollapsed ? (
             <ChevronLast className="w-5 h-5" />

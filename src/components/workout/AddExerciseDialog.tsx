@@ -80,6 +80,7 @@ export default function AddExerciseDialog({
   useEffect(() => {
     if (open) {
       if (!exercisesCache) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchExercises();
       } else {
         setExercises(exercisesCache);

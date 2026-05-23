@@ -44,7 +44,7 @@ export default function ActiveWorkoutBar() {
   if (!isActive) return null;
 
   return (
-    <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30">
+    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-30 md:bottom-6">
       <div className="bg-[#111118] border border-[#1e1e2a] rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.6),_0_4px_12px_rgba(0,0,0,0.4)] px-4 py-2 flex items-center gap-3 animate-scale-in">
         {/* Clickable area - navigates to workout page */}
         <Link
@@ -74,7 +74,7 @@ export default function ActiveWorkoutBar() {
           <button
             onClick={() => setIsPaused(!isPaused)}
             aria-label={isPaused ? "Resume workout" : "Pause workout"}
-            className="w-7 h-7 rounded-full bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center text-[#7c3aed] hover:bg-[#7c3aed]/30 transition-all"
+            className="w-7 h-7 rounded-full bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center text-[#7c3aed] hover:bg-[#7c3aed]/30 transition-all cursor-pointer"
           >
             {isPaused ? (
               <Play className="w-3 h-3" />
@@ -88,7 +88,7 @@ export default function ActiveWorkoutBar() {
               toast.info("Workout discarded");
             }}
             aria-label="Discard workout"
-            className="w-7 h-7 rounded-full bg-[#ef4444]/20 border border-[#ef4444]/30 flex items-center justify-center text-[#ef4444] hover:bg-[#ef4444]/30 transition-all"
+            className="w-7 h-7 rounded-full bg-[#ef4444]/20 border border-[#ef4444]/30 flex items-center justify-center text-[#ef4444] hover:bg-[#ef4444]/30 transition-all cursor-pointer"
           >
             <X className="w-3 h-3" />
           </button>

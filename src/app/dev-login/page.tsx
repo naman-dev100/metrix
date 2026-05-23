@@ -81,16 +81,9 @@ export default function DevLoginPage() {
             <Button 
               type="submit" 
               className="w-full bg-orange-600 hover:bg-orange-700 text-white h-12 text-base font-semibold"
-              disabled={isLoading}
+              loading={isLoading}
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                "Sign In (Dev)"
-              )}
+              Sign In (Dev)
             </Button>
           </form>
           

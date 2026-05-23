@@ -22,9 +22,10 @@ export async function PUT(
       // Insert new exercises
       if (exercises?.length) {
         for (let i = 0; i < exercises.length; i++) {
+          const setsCount = exercises[i].setsCount || exercises[i].sets_count || 3;
           await client.query(
-            `INSERT INTO "RoutineExercise" (id, routine_id, exercise_id, "order") VALUES (gen_random_uuid(), $1, $2, $3)`,
-            [id, exercises[i].exerciseId, i]
+            `INSERT INTO "RoutineExercise" (id, routine_id, exercise_id, "order", sets_count) VALUES (gen_random_uuid(), $1, $2, $3, $4)`,
+            [id, exercises[i].exerciseId, i, setsCount]
           );
         }
       }

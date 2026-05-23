@@ -18,40 +18,26 @@ export async function GET() {
         ws.duration_seconds,
         r.name as routine_name,
         ws.routine_id,
-        (
-          SELECT json_agg(
-            json_build_object(
-              'exerciseName', e.name,
-              'weight', ws_sets.weight,
-              'reps', ws_sets.reps,
-              'set_number', ws_sets.set_number,
-              'is_pr', ws_sets.is_pr
-            )
-            ORDER BY ws_sets.set_number ASC
+        COALESCE(json_agg(
+          json_build_object(
+            'exerciseName', e.name,
+            'weight', ws_sets.weight,
+            'reps', ws_sets.reps,
+            'set_number', ws_sets.set_number,
+            'is_pr', ws_sets.is_pr
           )
-          FROM "WorkoutSet" ws_sets
-          JOIN "Exercise" e ON e.id = ws_sets.exercise_id
-          WHERE ws_sets.session_id = ws.id
-        ) as exercises,
-        (
-          SELECT count(*)
-          FROM "WorkoutSet" ws_sets
-          WHERE ws_sets.session_id = ws.id AND ws_sets.is_pr = true
-        ) as pr_count,
-        (
-          SELECT count(*)
-          FROM "WorkoutSet" ws_sets
-          WHERE ws_sets.session_id = ws.id
-        ) as total_sets,
-        (
-          SELECT COALESCE(SUM(ws_sets.weight * ws_sets.reps), 0)
-          FROM "WorkoutSet" ws_sets
-          WHERE ws_sets.session_id = ws.id
-        ) as total_volume
+          ORDER BY ws_sets.set_number ASC
+        ) FILTER (WHERE ws_sets.id IS NOT NULL), '[]') as exercises,
+        COUNT(ws_sets.id) FILTER (WHERE ws_sets.is_pr = true) as pr_count,
+        COUNT(ws_sets.id) as total_sets,
+        COALESCE(SUM(ws_sets.weight * ws_sets.reps), 0) as total_volume
       FROM "WorkoutSession" ws
       LEFT JOIN "Routine" r ON r.id = ws.routine_id
+      LEFT JOIN "WorkoutSet" ws_sets ON ws_sets.session_id = ws.id
+      LEFT JOIN "Exercise" e ON e.id = ws_sets.exercise_id
       WHERE ws.end_time IS NOT NULL
       AND ws."userId" = $1
+      GROUP BY ws.id, r.name
       ORDER BY ws.start_time DESC
       LIMIT 50
     `, [session.user.id]);

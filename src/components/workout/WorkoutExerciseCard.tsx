@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Plus, Trash2, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WorkoutSetRow from "@/components/workout/WorkoutSetRow";
@@ -13,7 +14,7 @@ interface WorkoutExerciseCardProps {
       id: string;
       setNumber: number;
       weight: number | null;
-      reps: number;
+      reps: number | null;
       isPR?: boolean;
     }[];
   };
@@ -21,9 +22,30 @@ interface WorkoutExerciseCardProps {
 
 export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardProps) {
   const { addSet, removeExercise } = useWorkoutStore();
+  const [prevData, setPrevData] = useState<{
+    previousSets: { set_number: number; weight: number | null; reps: number }[];
+    allTimeMax: { weight: number | null; reps: number } | null;
+  }>({ previousSets: [], allTimeMax: null });
+
+  useEffect(() => {
+    async function fetchPrevious() {
+      try {
+        const res = await fetch(`/api/exercises/${exercise.exerciseId}/previous`);
+        if (res.ok) {
+          const data = await res.json();
+          setPrevData(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    if (exercise.exerciseId) {
+      fetchPrevious();
+    }
+  }, [exercise.exerciseId]);
 
   const totalVolume = exercise.sets.reduce((sum, s) => {
-    return sum + (s.weight ? s.weight * s.reps : 0);
+    return sum + (s.weight && s.reps ? s.weight * s.reps : 0);
   }, 0);
 
   const prCount = exercise.sets.filter(s => s.isPR).length;
@@ -49,13 +71,18 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
 
       {/* Sets */}
       <div className="p-3 space-y-2">
-        {exercise.sets.map((set, index) => (
-          <WorkoutSetRow
-            key={set.id}
-            exerciseId={exercise.exerciseId}
-            set={set}
-          />
-        ))}
+        {exercise.sets.map((set) => {
+          const prevSet = prevData.previousSets.find((p) => p.set_number === set.setNumber);
+          return (
+            <WorkoutSetRow
+              key={set.id}
+              exerciseId={exercise.exerciseId}
+              set={set}
+              prevSet={prevSet}
+              allTimeMax={prevData.allTimeMax}
+            />
+          );
+        })}
       </div>
 
       {/* Footer */}
@@ -76,8 +103,7 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
         </div>
         <Button
           onClick={() => {
-            const newSetNumber = exercise.sets.length + 1;
-            addSet(exercise.exerciseId, null, 10);
+            addSet(exercise.exerciseId, null, null);
           }}
           aria-label={`Add set for ${exercise.exerciseName}`}
           className="w-8 h-8 p-0 rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
