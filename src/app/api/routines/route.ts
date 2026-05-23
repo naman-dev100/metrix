@@ -99,6 +99,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
+    console.error("Error in POST /api/routines:", error);
     return NextResponse.json(
       { error: "Failed to create routine" },
       { status: 500 }

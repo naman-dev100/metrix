@@ -659,7 +659,10 @@ export default function WorkoutPage() {
             toast.success(routineToEdit ? "Routine updated" : "Routine created");
             await fetchRoutines();
           } else {
-            toast.error(routineToEdit ? "Failed to update routine" : "Failed to create routine");
+            const data = await res.json().catch(() => ({}));
+            const msg = data?.error || (routineToEdit ? "Failed to update routine" : "Failed to create routine");
+            toast.error(msg);
+            throw new Error(msg);
           }
         }}
       />

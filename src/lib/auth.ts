@@ -100,7 +100,19 @@ export const authOptions = {
       }
       return true;
     },
-    authorized({ auth }) {
+    authorized({ auth, request }) {
+      // Allow API routes to handle their own auth and return JSON 401
+      // instead of being redirected to the login page (which returns HTML)
+      if (request.nextUrl.pathname.startsWith("/api/")) {
+        return true;
+      }
+      // Allow auth-related pages (login, register)
+      if (
+        request.nextUrl.pathname.startsWith("/login") ||
+        request.nextUrl.pathname.startsWith("/register")
+      ) {
+        return true;
+      }
       return !!auth?.user;
     },
   },
