@@ -126,181 +126,182 @@ export default function RoutineDialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-      <div className="bg-[#111118] border border-[#1e1e2a] rounded-t-2xl sm:rounded-2xl shadow-[0_20px_60px_-12px_rgba(0,0,0,0.6),_0_8px_24px_-4px_rgba(0,0,0,0.4)] w-full sm:max-w-xl max-h-[90vh] sm:max-h-[85vh] overflow-hidden flex flex-col animate-slide-up sm:animate-scale-in">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[#1e1e2a] bg-[#111118]">
-          <h2 id="dialog-title" className="text-lg font-bold text-white tracking-tight">
-            {isEditing ? "Edit Routine" : "Create Routine"}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onOpenChange(false)}
-            aria-label="Close dialog"
-            className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-white hover:bg-[#16161f] rounded-lg"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#0a0a0f] w-full h-full overflow-hidden animate-slide-up" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-4 md:px-6 border-b border-[#1e1e2a] bg-[#111118]/80 backdrop-blur-md flex-shrink-0">
+        <h2 id="dialog-title" className="text-xl font-bold text-white tracking-tight">
+          {isEditing ? "Edit Routine" : "Create Routine"}
+        </h2>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onOpenChange(false)}
+          aria-label="Close dialog"
+          className="w-10 h-10 p-0 text-[#8a8a9a] hover:text-white hover:bg-[#16161f] rounded-xl transition-all"
+        >
+          <X className="w-5 h-5" />
+        </Button>
+      </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {/* Name and Notes */}
-          <div className="space-y-3">
-            <div>
-              <Input
-                type="text"
-                placeholder="Routine name"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  if (nameError) setNameError("");
-                }}
-                className={`bg-[#16161f] border-${nameError ? "[#ef4444]" : "[#1e1e2a]"} text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-10 border focus:border-none`}
-                aria-label="Routine name"
-                autoComplete="off"
-              />
-              {nameError && (
-                <p className="text-[#ef4444] text-xs mt-1 ml-1" role="alert">{nameError}</p>
-              )}
-            </div>
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 max-w-4xl mx-auto w-full">
+        {/* Name and Notes */}
+        <div className="space-y-4">
+          <div>
             <Input
               type="text"
-              placeholder="Notes (optional)"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="bg-[#16161f] border-[#1e1e2a] text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-10 border focus:border-none"
-              aria-label="Notes for routine"
+              placeholder="Routine name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (nameError) setNameError("");
+              }}
+              className={`bg-[#16161f] border-${nameError ? "[#ef4444]" : "[#1e1e2a]"} text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-12 text-base px-4 rounded-xl border focus:border-none`}
+              aria-label="Routine name"
+              autoComplete="off"
             />
-          </div>
-
-          <div className="border-t border-[#1e1e2a]/50 my-2" />
-
-          {/* Exercises list */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Exercises</p>
-              {selectedExercises.length > 1 && (
-                <span className="text-[10px] text-[#5a5a6a] uppercase">Drag exercises to reorder</span>
-              )}
-            </div>
-
-            {selectedExercises.length === 0 ? (
-              <div className="border border-dashed border-[#1e1e2a] rounded-xl p-8 text-center bg-[#111118]/20">
-                <Dumbbell className="w-8 h-8 text-[#5a5a6a] mx-auto mb-2" />
-                <p className="text-sm text-[#8a8a9a]">No exercises added yet.</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {selectedExercises.map((ex, index) => {
-                  const dbEx = exercises.find((e) => e.id === ex.exerciseId);
-                  return (
-                    <div
-                      key={ex.exerciseId}
-                      draggable
-                      onDragStart={(e) => {
-                        setDraggedIndex(index);
-                        e.dataTransfer.effectAllowed = "move";
-                      }}
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                      }}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        if (draggedIndex === null || draggedIndex === index) return;
-                        setSelectedExercises((prev) => {
-                          const list = [...prev];
-                          const [draggedItem] = list.splice(draggedIndex, 1);
-                          list.splice(index, 0, draggedItem);
-                          return list;
-                        });
-                        setDraggedIndex(null);
-                      }}
-                      onDragEnd={() => {
-                        setDraggedIndex(null);
-                      }}
-                      className={`flex items-center justify-between p-3 bg-[#111118] border border-[#1e1e2a] rounded-xl hover:border-[#7c3aed]/40 transition-all ${
-                        draggedIndex === index ? "opacity-40" : ""
-                      }`}
-                    >
-                      <div className="flex items-center flex-1 min-w-0">
-                        {/* Drag Handle */}
-                        <div className="cursor-grab active:cursor-grabbing text-[#5a5a6a] hover:text-[#a3a3aa] p-1 mr-2 transition-colors">
-                          <GripVertical className="w-4 h-4" />
-                        </div>
-                        <div className="flex-1 min-w-0 pr-3">
-                          <p className="text-sm font-bold text-white truncate">
-                            {dbEx ? dbEx.name : "Loading exercise..."}
-                          </p>
-                          <p className="text-xs text-[#5a5a6a] mt-0.5 uppercase tracking-wider font-semibold">
-                            {dbEx ? `${dbEx.muscle_group} • ${dbEx.category}` : "---"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        {/* Sets Config */}
-                        <div className="flex items-center gap-2 bg-[#16161f] border border-[#2e2e3a] rounded-lg px-2 h-8">
-                          <label htmlFor={`sets-${ex.exerciseId}`} className="text-[10px] text-[#8a8a9a] uppercase font-bold tracking-wider">Sets:</label>
-                          <input
-                            id={`sets-${ex.exerciseId}`}
-                            type="number"
-                            min="1"
-                            max="20"
-                            value={ex.setsCount}
-                            onChange={(e) => {
-                              const val = Math.max(1, Math.min(20, parseInt(e.target.value) || 1));
-                              setSelectedExercises((prev) =>
-                                prev.map((p) =>
-                                  p.exerciseId === ex.exerciseId ? { ...p, setsCount: val } : p
-                                )
-                              );
-                            }}
-                            className="w-8 bg-transparent border-none text-white text-xs text-center font-mono font-bold focus:outline-none focus:ring-0 p-0"
-                          />
-                        </div>
-
-                        {/* Remove */}
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeExercise(ex.exerciseId)}
-                          aria-label="Remove exercise from routine"
-                          className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            {nameError && (
+              <p className="text-[#ef4444] text-xs mt-1 ml-1 font-medium" role="alert">{nameError}</p>
             )}
-
-            {/* Add Exercise Trigger Button */}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowAddSelector(true)}
-              className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all py-5 mt-1 rounded-xl"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Exercise
-            </Button>
           </div>
+          <Input
+            type="text"
+            placeholder="Notes (optional)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="bg-[#16161f] border-[#1e1e2a] text-white placeholder-[#5a5a6a] focus:ring-[#7c3aed] h-12 text-base px-4 rounded-xl border focus:border-none"
+            aria-label="Notes for routine"
+          />
         </div>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-[#1e1e2a] flex items-center justify-between bg-[#111118] flex-shrink-0">
-          <p className="text-xs text-[#5a5a6a] uppercase tracking-wider font-semibold">
+        <div className="border-t border-[#1e1e2a]/50 my-2" />
+
+        {/* Exercises list */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-bold">Exercises</p>
+            {selectedExercises.length > 1 && (
+              <span className="text-[10px] text-[#5a5a6a] uppercase tracking-wider font-semibold">Drag exercises to reorder</span>
+            )}
+          </div>
+
+          {selectedExercises.length === 0 ? (
+            <div className="border border-dashed border-[#1e1e2a] rounded-2xl p-12 text-center bg-[#111118]/20 flex flex-col items-center justify-center min-h-[200px]">
+              <Dumbbell className="w-10 h-10 text-[#5a5a6a] mb-3 animate-pulse" />
+              <p className="text-sm font-medium text-[#8a8a9a]">No exercises added yet.</p>
+              <p className="text-xs text-[#5a5a6a] mt-1">Tap below to search and add exercises to this routine.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {selectedExercises.map((ex, index) => {
+                const dbEx = exercises.find((e) => e.id === ex.exerciseId);
+                return (
+                  <div
+                    key={ex.exerciseId}
+                    draggable
+                    onDragStart={(e) => {
+                      setDraggedIndex(index);
+                      e.dataTransfer.effectAllowed = "move";
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (draggedIndex === null || draggedIndex === index) return;
+                      setSelectedExercises((prev) => {
+                        const list = [...prev];
+                        const [draggedItem] = list.splice(draggedIndex, 1);
+                        list.splice(index, 0, draggedItem);
+                        return list;
+                      });
+                      setDraggedIndex(null);
+                    }}
+                    onDragEnd={() => {
+                      setDraggedIndex(null);
+                    }}
+                    className={`flex items-center justify-between p-4 bg-[#111118] border border-[#1e1e2a] rounded-2xl hover:border-[#7c3aed]/40 transition-all ${
+                      draggedIndex === index ? "opacity-40" : ""
+                    }`}
+                  >
+                    <div className="flex items-center flex-1 min-w-0">
+                      {/* Drag Handle */}
+                      <div className="cursor-grab active:cursor-grabbing text-[#5a5a6a] hover:text-[#a3a3aa] p-2 mr-1 transition-colors">
+                        <GripVertical className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0 pr-3">
+                        <p className="text-base font-bold text-white truncate">
+                          {dbEx ? dbEx.name : "Loading exercise..."}
+                        </p>
+                        <p className="text-xs text-[#8a8a9a] mt-0.5 uppercase tracking-wider font-semibold">
+                          {dbEx ? `${dbEx.muscle_group} • ${dbEx.category}` : "---"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      {/* Sets Config */}
+                      <div className="flex items-center gap-2 bg-[#16161f] border border-[#2e2e3a] rounded-xl px-3 h-10">
+                        <label htmlFor={`sets-${ex.exerciseId}`} className="text-xs text-[#8a8a9a] uppercase font-bold tracking-wider">Sets:</label>
+                        <input
+                          id={`sets-${ex.exerciseId}`}
+                          type="number"
+                          min="1"
+                          max="20"
+                          value={ex.setsCount}
+                          onChange={(e) => {
+                            const val = Math.max(1, Math.min(20, parseInt(e.target.value) || 1));
+                            setSelectedExercises((prev) =>
+                              prev.map((p) =>
+                                p.exerciseId === ex.exerciseId ? { ...p, setsCount: val } : p
+                              )
+                            );
+                          }}
+                          className="w-10 bg-transparent border-none text-white text-sm text-center font-mono font-bold focus:outline-none focus:ring-0 p-0"
+                        />
+                      </div>
+
+                      {/* Remove */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeExercise(ex.exerciseId)}
+                        aria-label="Remove exercise from routine"
+                        className="w-10 h-10 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Add Exercise Trigger Button */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowAddSelector(true)}
+            className="w-full border-dashed border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all py-6 mt-1 rounded-2xl text-base font-semibold"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add Exercise
+          </Button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="border-t border-[#1e1e2a] bg-[#111118]/90 backdrop-blur-md flex-shrink-0">
+        <div className="max-w-4xl mx-auto w-full px-4 py-4 md:px-6 flex items-center justify-between pb-[calc(env(safe-area-inset-bottom)+1rem)]">
+          <p className="text-sm text-[#8a8a9a] uppercase tracking-wider font-semibold">
             {selectedExercises.length} exercise{selectedExercises.length !== 1 ? "s" : ""} selected
           </p>
           <div className="flex gap-2">
             <Button
               onClick={() => onOpenChange(false)}
               variant="ghost"
-              className="text-[#a3a3aa] hover:bg-[#16161f]"
+              className="text-[#a3a3aa] hover:bg-[#16161f] text-base font-semibold h-11 px-5 rounded-xl"
             >
               Cancel
             </Button>
@@ -308,7 +309,7 @@ export default function RoutineDialog({
               onClick={handleSubmit}
               disabled={!name.trim() || selectedExercises.length === 0}
               loading={submitting}
-              className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 font-bold"
+              className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 h-11 rounded-xl text-base font-bold shadow-[0_4px_12px_rgba(124,58,237,0.3)]"
             >
               {initialData ? "Update Routine" : "Create Routine"}
             </Button>
