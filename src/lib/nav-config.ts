@@ -1,18 +1,16 @@
 import {
   LayoutDashboard,
-  Dumbbell,
   Activity,
   BookOpen,
-  History,
   LineChart,
 } from "lucide-react";
 
 export const navItems = [
   {
-    name: "Dashboard",
+    name: "Home",
     href: "/",
     icon: LayoutDashboard,
-    ariaLabel: "Navigate to Dashboard",
+    ariaLabel: "Navigate to Dashboard Home",
   },
   {
     name: "Workout",
@@ -32,10 +30,5 @@ export const navItems = [
     icon: LineChart,
     ariaLabel: "Navigate to Metrics",
   },
-  {
-    name: "History",
-    href: "/history",
-    icon: History,
-    ariaLabel: "Navigate to Workout History",
-  },
 ] as const;
+

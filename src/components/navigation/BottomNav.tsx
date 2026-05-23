@@ -2,42 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Dumbbell,
-  Activity,
-  BookOpen,
-  Flame,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import useWorkoutStore from "@/lib/workout-store";
+import { navItems } from "@/lib/nav-config";
 
-const navItems = [
-  {
-    name: "Home",
-    href: "/",
-    icon: LayoutDashboard,
-    ariaLabel: "Navigate to Dashboard",
-  },
-  {
-    name: "Workout",
-    href: "/workout",
-    icon: Activity,
-    ariaLabel: "Navigate to Workout page",
-  },
-  {
-    name: "Exercises",
-    href: "/exercises",
-    icon: BookOpen,
-    ariaLabel: "Navigate to Exercise Library",
-  },
-  {
-    name: "History",
-    href: "/history",
-    icon: Flame,
-    ariaLabel: "Navigate to Workout History",
-  },
-];
 
 export default function BottomNav() {
   const pathname = usePathname();

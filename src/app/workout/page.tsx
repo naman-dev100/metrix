@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Activity, Plus, Play, Dumbbell } from "lucide-react";
+import { Activity, Plus, Play, Dumbbell, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import useWorkoutStore from "@/lib/workout-store";
 import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
@@ -10,7 +11,26 @@ import RoutineCard from "@/components/workout/RoutineCard";
 import RoutineDialog from "@/components/workout/RoutineDialog";
 import AddExerciseDialog from "@/components/workout/AddExerciseDialog";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
+import WorkoutHistoryCard from "@/components/dashboard/WorkoutHistoryCard";
 import { formatDuration } from "@/lib/utils";
+
+interface WorkoutHistoryItem {
+  id: string;
+  name: string;
+  start_time: string;
+  end_time: string | null;
+  duration_seconds: number | null;
+  total_sets: number;
+  total_volume: number;
+  pr_count: number;
+  exercises: {
+    exerciseName: string;
+    weight: number | null;
+    reps: number;
+    set_number: number;
+    is_pr: boolean;
+  }[];
+}
 
 interface Routine {
   id: string;
@@ -93,6 +113,12 @@ export default function WorkoutPage() {
   const [showUpdateRoutinePrompt, setShowUpdateRoutinePrompt] = useState(false);
   const [updatingRoutine, setUpdatingRoutine] = useState(false);
 
+  // Completed workouts and history log states
+  const [workouts, setWorkouts] = useState<WorkoutHistoryItem[]>([]);
+  const [filteredWorkouts, setFilteredWorkouts] = useState<WorkoutHistoryItem[]>([]);
+  const [workoutsLoading, setWorkoutsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
   // Async loading states for buttons
   const [quickStartLoading, setQuickStartLoading] = useState(false);
   const [finishWorkoutLoading, setFinishWorkoutLoading] = useState(false);
@@ -110,10 +136,47 @@ export default function WorkoutPage() {
     }
   }
 
+  async function fetchWorkouts() {
+    setWorkoutsLoading(true);
+    try {
+      const res = await fetch("/api/workouts");
+      const data = await res.json();
+      setWorkouts(data);
+      setFilteredWorkouts(data);
+    } catch (error) {
+      console.error("Failed to fetch workouts:", error);
+    } finally {
+      setWorkoutsLoading(false);
+    }
+  }
+
+  const handleDeleteWorkout = (deletedId: string) => {
+    setWorkouts(prev => prev.filter(w => w.id !== deletedId));
+    setFilteredWorkouts(prev => prev.filter(w => w.id !== deletedId));
+  };
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRoutines();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchWorkouts();
   }, []);
+
+  useEffect(() => {
+    if (search) {
+      setFilteredWorkouts(
+        workouts.filter((w) =>
+          w.name.toLowerCase().includes(search.toLowerCase()) ||
+          w.exercises.some((e) =>
+            e.exerciseName.toLowerCase().includes(search.toLowerCase())
+          )
+        )
+      );
+    } else {
+      setFilteredWorkouts(workouts);
+    }
+  }, [search, workouts]);
+
 
   const handleQuickStart = async () => {
     if (quickStartLoading) return;
@@ -237,6 +300,7 @@ export default function WorkoutPage() {
         );
         stopSession();
         setShowUpdateRoutinePrompt(false);
+        fetchWorkouts();
       } else {
         console.error("Finish workout failed:", data);
         const msg = data?.error || res.statusText || "Failed to finish workout";
@@ -312,15 +376,44 @@ export default function WorkoutPage() {
     }
   };
 
+  // Dynamic stats calculation
+  const totalVolume = workouts.reduce((sum, w) => sum + w.total_volume, 0);
+  const totalSets = workouts.reduce((sum, w) => sum + w.total_sets, 0);
+  const totalPRs = workouts.reduce((sum, w) => sum + w.pr_count, 0);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Workout</h1>
-          <p className="text-[#8a8a9a] mt-1">Start a workout or choose a routine</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight animate-fade-in">Workout</h1>
+          <p className="text-[#8a8a9a] mt-1 animate-fade-in">Start a workout, choose a routine, or view your history</p>
         </div>
       </div>
+
+      {/* Stats Grid - Visible only when NOT in an active workout session */}
+      {!isActive && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-slide-in">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+            <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Workouts</p>
+            <p className="text-2xl font-bold text-white mt-1">{workouts.length}</p>
+          </div>
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+            <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Volume</p>
+            <p className="text-2xl font-bold text-white mt-1">
+              {(totalVolume / 1000).toFixed(1)}k <span className="text-[10px] text-[#5a5a6a]">kg</span>
+            </p>
+          </div>
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+            <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Sets</p>
+            <p className="text-2xl font-bold text-white mt-1">{totalSets}</p>
+          </div>
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+            <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total PRs</p>
+            <p className="text-2xl font-bold text-[#7c3aed] mt-1">{totalPRs}</p>
+          </div>
+        </div>
+      )}
 
       {/* Active Workout View */}
       {isActive && (
@@ -377,7 +470,7 @@ export default function WorkoutPage() {
         </div>
       )}
 
-      {/* Not Active - Show Routines */}
+      {/* Not Active - Show Routines, Quick Start, and Workout History */}
       {!isActive && (
         <div className="space-y-6">
           {/* Quick Start */}
@@ -391,7 +484,7 @@ export default function WorkoutPage() {
                 onClick={handleQuickStart}
                 loading={quickStartLoading}
                 aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6"
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 font-bold"
               >
                 <Play className="w-4 h-4 mr-2" />
                 Start Workout
@@ -399,9 +492,9 @@ export default function WorkoutPage() {
             </div>
           </div>
 
-          {/* Create Routine */}
+          {/* Create Routine Heading */}
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white">My Routines</h2>
+            <h2 className="text-lg font-bold text-white tracking-tight">My Routines</h2>
             <Button
               onClick={() => {
                 setRoutineToEdit(null);
@@ -432,7 +525,7 @@ export default function WorkoutPage() {
               <p className="text-[#a3a3aa]">No routines yet. Create one to get started!</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 animate-slide-in">
               {routines.map((routine) => (
                 <RoutineCard
                   key={routine.id}
@@ -451,6 +544,61 @@ export default function WorkoutPage() {
               ))}
             </div>
           )}
+
+          {/* Separator line */}
+          <div className="border-t border-[#1e1e2a]/50 my-6" />
+
+          {/* Workout History & Log Section */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white tracking-tight">Workout History</h2>
+              <span className="text-[10px] text-[#5a5a6a] uppercase font-bold tracking-wider">
+                {workouts.length} completed session{workouts.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+
+            {/* Search past sessions */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5a5a6a]" />
+              <Input
+                type="text"
+                placeholder="Search workouts or exercises..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-[#111118] border-[#1e1e2a] text-white pl-10 focus:ring-[#7c3aed] placeholder:text-[#5a5a6a]"
+                aria-label="Search workouts or exercises"
+              />
+            </div>
+
+            {/* Workout Log Cards */}
+            {workoutsLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-[#111118] border border-[#1e1e2a] rounded-xl h-32 animate-pulse shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
+                  />
+                ))}
+              </div>
+            ) : filteredWorkouts.length === 0 ? (
+              <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+                <Dumbbell className="w-8 h-8 text-[#5a5a6a] mx-auto mb-3" aria-hidden="true" />
+                <p className="text-sm text-[#a3a3aa]">
+                  {search ? "No workouts match your search" : "No workouts logged yet. Start training!"}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3 animate-slide-in">
+                {filteredWorkouts.map((workout) => (
+                  <WorkoutHistoryCard
+                    key={workout.id}
+                    workout={workout}
+                    onDelete={handleDeleteWorkout}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
