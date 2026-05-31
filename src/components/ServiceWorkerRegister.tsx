@@ -23,9 +23,20 @@ export default function ServiceWorkerRegister() {
             .register("/sw.js")
             .catch(() => {});
         });
+
+        // Clear any stale API caches from previous service worker versions
+        // This ensures fresh data is always fetched from the network
+        if ("caches" in window) {
+          caches.delete("apis").then((deleted) => {
+            if (deleted) {
+              console.log("[PWA] Cleared stale API cache");
+            }
+          });
+        }
       }
     }
   }, []);
 
   return null;
 }
+
