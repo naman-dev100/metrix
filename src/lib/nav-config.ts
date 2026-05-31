@@ -3,6 +3,7 @@ import {
   Activity,
   BookOpen,
   LineChart,
+  User,
 } from "lucide-react";
 
 export const navItems = [
@@ -30,5 +31,10 @@ export const navItems = [
     icon: LineChart,
     ariaLabel: "Navigate to Metrics",
   },
+  {
+    name: "Profile",
+    href: "/profile",
+    icon: User,
+    ariaLabel: "Navigate to Profile",
+  },
 ] as const;
-
