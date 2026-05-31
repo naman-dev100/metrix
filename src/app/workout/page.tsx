@@ -385,8 +385,8 @@ export default function WorkoutPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight animate-fade-in">Workout</h1>
-          <p className="text-[#8a8a9a] mt-1 animate-fade-in">Start a workout, choose a routine, or view your history</p>
+          <h1 className="text-3xl md:text-2xl font-bold text-white tracking-tight animate-fade-in">Workout</h1>
+          <p className="text-base md:text-sm text-[#8a8a9a] mt-1.5 animate-fade-in">Start a workout, choose a routine, or view your history</p>
         </div>
       </div>
 
@@ -423,19 +423,19 @@ export default function WorkoutPage() {
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.15)]">
+                  <div className="w-12 h-12 md:w-10 md:h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.15)]">
                     <Activity className="w-5 h-5 text-[#7c3aed]" aria-hidden="true" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white">{routineName || "Quick Workout"}</h2>
-                    <p className="text-sm text-[#7c3aed] font-mono">{formatDuration(elapsedSeconds)}</p>
+                    <h2 className="text-lg md:text-base font-bold text-white">{routineName || "Quick Workout"}</h2>
+                    <p className="text-base md:text-sm text-[#7c3aed] font-mono leading-none mt-1">{formatDuration(elapsedSeconds)}</p>
                   </div>
                 </div>
                 <Button
                   onClick={() => handleFinishWorkout()}
                   loading={finishWorkoutLoading}
                   aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-4"
+                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer"
                 >
                   Finish Workout
                 </Button>
@@ -451,10 +451,10 @@ export default function WorkoutPage() {
           <Button
             variant="outline"
             aria-label="Add exercises to current workout"
-            className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all"
+            className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all h-12 md:h-10 text-base md:text-sm font-semibold rounded-xl cursor-pointer flex items-center justify-center"
             onClick={() => setShowAddExercise(true)}
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-5 h-5 md:w-4 md:h-4 mr-2" />
             Add Exercise
           </Button>
         </div>
@@ -474,9 +474,9 @@ export default function WorkoutPage() {
                 onClick={handleQuickStart}
                 loading={quickStartLoading}
                 aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 font-bold"
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 h-12 md:h-10 text-base md:text-sm font-bold rounded-xl shadow-[0_4px_12px_rgba(124,58,237,0.2)] transition-all cursor-pointer flex items-center justify-center"
               >
-                <Play className="w-4 h-4 mr-2" />
+                <Play className="w-5 h-5 md:w-4 md:h-4 mr-2" />
                 Start Workout
               </Button>
             </div>
@@ -492,7 +492,7 @@ export default function WorkoutPage() {
               }}
               aria-label="Create a new workout routine"
               variant="outline"
-              className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all"
+              className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all h-11 md:h-9 text-sm md:text-xs px-4 rounded-xl cursor-pointer flex items-center justify-center"
             >
               <Plus className="w-4 h-4 mr-2" />
               New Routine
