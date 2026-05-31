@@ -68,7 +68,6 @@ export default function WorkoutPage() {
   const sessionId = useWorkoutStore((s) => s.sessionId);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const activeExercises = useWorkoutStore((s) => s.activeExercises);
-  const restTimer = useWorkoutStore((s) => s.restTimer);
   const startSession = useWorkoutStore((s) => s.startSession);
   const stopSession = useWorkoutStore((s) => s.stopSession);
   const addExercise = useWorkoutStore((s) => s.addExercise);
@@ -443,15 +442,6 @@ export default function WorkoutPage() {
               </div>
             </div>
           </div>
-
-          {/* Rest Timer */}
-          {restTimer > 0 && (
-            <div className="bg-[#7c3aed]/10 border border-[#7c3aed]/30 rounded-xl p-3 flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.4)]" role="status" aria-live="polite">
-              <span className="text-[#7c3aed] font-bold text-lg font-mono">{restTimer}s</span>
-              <span className="text-[#7c3aed]/60 text-sm ml-2 uppercase tracking-wider">rest</span>
-            </div>
-          )}
-
           {/* Exercise List */}
           {activeExercises.map((exercise) => (
             <WorkoutExerciseCard key={exercise.exerciseId} exercise={exercise} />

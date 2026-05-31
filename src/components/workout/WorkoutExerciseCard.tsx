@@ -69,6 +69,17 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
         </Button>
       </div>
 
+      {/* Column Headers */}
+      {exercise.sets.length > 0 && (
+        <div className="px-3 pt-3 pb-1 flex items-center gap-2 text-[9px] font-bold text-[#5a5a6a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
+          <div className="w-8 text-center flex-shrink-0">Set</div>
+          <div className="flex-1 min-w-0 pl-1">Weight</div>
+          <div className="w-16 text-center flex-shrink-0">Reps</div>
+          <div className="w-14 text-right flex-shrink-0">Volume</div>
+          <div className="w-8 flex-shrink-0" />
+        </div>
+      )}
+
       {/* Sets */}
       <div className="p-3 space-y-2">
         {exercise.sets.map((set) => {

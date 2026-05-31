@@ -59,6 +59,7 @@ const withPWA = require("next-pwa")({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: ["192.168.1.34"],
   async redirects() {
     return [
       {

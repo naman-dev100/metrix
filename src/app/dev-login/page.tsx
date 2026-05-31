@@ -11,7 +11,7 @@ import { Loader2, Lock, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export default function DevLoginPage() {
-  const [email, setEmail] = useState("test@example.com");
+  const [email, setEmail] = useState("dev@testing.com");
   const [password, setPassword] = useState("password");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();

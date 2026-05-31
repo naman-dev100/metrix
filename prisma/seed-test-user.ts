@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding test user and data...");
 
-  const email = "test@example.com";
+  const email = "dev@testing.com";
   const password = "password";
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -16,18 +16,18 @@ async function main() {
     user = await prisma.user.create({
       data: {
         email,
-        name: "Test User",
+        name: "Developer",
         password: hashedPassword,
       },
     });
-    console.log("✅ Created test user");
+    console.log("✅ Created dev user");
   } else {
     // Update password if it's not hashed or just to be sure
     user = await prisma.user.update({
       where: { email },
       data: { password: hashedPassword },
     });
-    console.log("✅ Updated test user password");
+    console.log("✅ Updated dev user password");
   }
 
   // 2. Get some exercises

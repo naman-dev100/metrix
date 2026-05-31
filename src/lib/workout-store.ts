@@ -37,9 +37,6 @@ interface WorkoutState {
   addSet: (exerciseId: string, weight: number | null, reps: number | null) => void;
   deleteSet: (exerciseId: string, setId: string) => void;
   updateSet: (exerciseId: string, setId: string, updates: Partial<ExerciseSet>) => void;
-  restTimer: number;
-  setRestTimer: (seconds: number) => void;
-  decrementRest: () => void;
 }
 
 const useWorkoutStore = create<WorkoutState>()(
@@ -51,7 +48,6 @@ const useWorkoutStore = create<WorkoutState>()(
     routineName: null,
     routineId: null,
     activeExercises: [],
-    restTimer: 0,
 
     startSession: (sessionId: string, routineName?: string, routineId?: string) => {
       set({
@@ -74,7 +70,6 @@ const useWorkoutStore = create<WorkoutState>()(
         routineName: null,
         routineId: null,
         activeExercises: [],
-        restTimer: 0,
       });
     },
 
@@ -99,7 +94,7 @@ const useWorkoutStore = create<WorkoutState>()(
             setNumber: i + 1,
             weight: null,
             reps: null,
-            isCompleted: true,
+            isCompleted: false,
           });
         }
         return {
@@ -146,7 +141,7 @@ const useWorkoutStore = create<WorkoutState>()(
             setNumber,
             weight: autofillWeight,
             reps: autofillReps,
-            isCompleted: true,
+            isCompleted: false,
           },
         ];
 
@@ -195,19 +190,18 @@ const useWorkoutStore = create<WorkoutState>()(
           ...updates,
         };
 
+        // If the set number updated is 1, and weight is changed, propagate to all subsequent sets
+        if (exercise.sets[setIndex].setNumber === 1 && updates.weight !== undefined) {
+          exercise.sets = exercise.sets.map((s) => {
+            if (s.setNumber > 1) {
+              return { ...s, weight: updates.weight! };
+            }
+            return s;
+          });
+        }
+
         exercises[exerciseIndex] = exercise;
         return { ...state, activeExercises: exercises };
-      });
-    },
-
-    setRestTimer: (seconds: number) => {
-      set({ restTimer: seconds });
-    },
-
-    decrementRest: () => {
-      set((state) => {
-        if (state.restTimer <= 0) return state;
-        return { restTimer: state.restTimer - 1 };
       });
     },
   }))

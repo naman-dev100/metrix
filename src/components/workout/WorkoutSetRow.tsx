@@ -44,21 +44,18 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
   );
 
   return (
-    <div className="flex items-center gap-2 py-2">
+    <div className="flex items-center gap-2 py-1.5 px-2 rounded-xl transition-all duration-300 border border-transparent hover:border-[#1e1e2a]/50">
       {/* Set Number */}
-      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#16161f] text-xs font-bold text-[#5a5a6a] flex-shrink-0 shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+      <div className="w-8 h-8 flex items-center justify-center rounded-full text-xs font-extrabold flex-shrink-0 bg-[#16161f] text-[#5a5a6a] shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
         {set.setNumber}
       </div>
 
       {/* Weight */}
       <div className="flex-1 min-w-0">
-        <label className="block text-[10px] font-medium text-[#8a8a9a] uppercase tracking-wider mb-0.5">
-          Weight
-        </label>
         <div className="relative">
           <Input
             type="number"
-            inputMode="numeric"
+            inputMode="decimal"
             step="0.5"
             pattern="[0-9]*([.][0-9]*)?"
             value={set.weight ?? ""}
@@ -69,28 +66,21 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
             }
             placeholder={prevSet && prevSet.weight !== null ? prevSet.weight.toString() : "0"}
             aria-label="Weight in kilograms"
-            className={cn(
-              "bg-[#16161f] border-[#1e1e2a] text-white text-sm h-9 pr-8 focus:ring-[#7c3aed]",
-              "border-none focus:border-none focus:ring-2 focus:ring-offset-0",
-              "placeholder:text-[#5a5a6a] placeholder:font-mono"
-            )}
+            className="bg-[#16161f] border-none text-white text-sm h-9 pr-7 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#3a3a4a] placeholder:font-mono rounded-lg"
           />
-          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8a8a9a] text-xs pointer-events-none">
+          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] pointer-events-none font-semibold text-[#5a5a6a]">
             kg
           </span>
         </div>
         {prevSet && (
-          <p className="text-[10px] text-[#5a5a6a] mt-1 pl-1">
-            Prev: {prevSet.weight !== null && prevSet.weight > 0 ? `${prevSet.weight} kg` : "Bodyweight"}
+          <p className="text-[9px] text-[#5a5a6a] mt-1 pl-1 font-mono leading-none">
+            Prev: {prevSet.weight !== null && prevSet.weight > 0 ? `${prevSet.weight}kg` : "BW"}
           </p>
         )}
       </div>
 
       {/* Reps */}
-      <div className="w-16 min-w-[60px]">
-        <label className="block text-[10px] font-medium text-[#8a8a9a] uppercase tracking-wider mb-0.5">
-          Reps
-        </label>
+      <div className="w-16 flex-shrink-0">
         <Input
           type="number"
           inputMode="numeric"
@@ -102,52 +92,40 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
           }
           placeholder={prevSet ? prevSet.reps.toString() : "10"}
           aria-label="Number of repetitions"
-          className={cn(
-            "bg-[#16161f] border-[#1e1e2a] text-white text-sm h-9 text-center focus:ring-[#7c3aed]",
-            "border-none focus:border-none focus:ring-2 focus:ring-offset-0",
-            "placeholder:text-[#5a5a6a] placeholder:font-mono"
-          )}
+          className="bg-[#16161f] border-none text-white text-sm h-9 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#3a3a4a] placeholder:font-mono rounded-lg"
         />
         {prevSet && (
-          <p className="text-[10px] text-[#5a5a6a] mt-1 text-center">
+          <p className="text-[9px] text-[#5a5a6a] mt-1 text-center font-mono leading-none">
             Prev: {prevSet.reps}
           </p>
         )}
       </div>
 
       {/* Volume */}
-      <div className="w-20 text-right flex-shrink-0">
-        <p className="text-[10px] text-[#8a8a9a] uppercase tracking-wider mb-0.5">Vol</p>
+      <div className="w-14 text-right flex-shrink-0 flex flex-col justify-center select-none pr-1">
         <span className={cn(
-          "text-xs",
-          "font-mono",
-          "letter-spacing-0.02",
+          "text-xs font-mono font-bold transition-colors duration-300",
           set.weight && set.reps ? "text-white" : "text-[#5a5a6a]"
         )}>
           {volume}
         </span>
         {isPR && (
-          <p className="text-[9px] font-bold text-[#7c3aed] mt-1 uppercase tracking-wider flex items-center justify-end gap-0.5 animate-pulse">
+          <p className="text-[8px] font-extrabold text-[#7c3aed] uppercase tracking-wider flex items-center justify-end gap-0.5 animate-pulse mt-0.5">
             🔥 PR
           </p>
         )}
       </div>
 
+      {/* Delete button */}
       <Button
         variant="ghost"
         size="sm"
         onClick={() => deleteSet(exerciseId, set.id)}
         aria-label={`Delete set ${set.setNumber}`}
-        className={cn(
-          "w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 mt-0.5",
-          "rounded-lg transition-all"
-        )}
+        className="w-8 h-8 p-0 text-[#3a3a4a] hover:text-[#ef4444] hover:bg-[#ef4444]/15 rounded-lg flex-shrink-0 transition-colors cursor-pointer"
       >
         <Trash2 className="w-3.5 h-3.5" />
       </Button>
     </div>
   );
 }
-
-
-

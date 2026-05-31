@@ -16,17 +16,14 @@ export default function ActiveWorkoutBar() {
   const stopSession = useWorkoutStore((s) => s.stopSession);
   const tick = useWorkoutStore((s) => s.tick);
 
-  const [restTimer, setRestTimer] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   // Refs to avoid stale closures in interval
   const tickRef = useRef(tick);
-  const restTimerRef = useRef(restTimer);
   const isPausedRef = useRef(isPaused);
 
   useEffect(() => {
     tickRef.current = tick;
-    restTimerRef.current = restTimer;
     isPausedRef.current = isPaused;
   });
 
@@ -35,7 +32,6 @@ export default function ActiveWorkoutBar() {
 
     const interval = setInterval(() => {
       tickRef.current();
-      setRestTimer((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -61,13 +57,6 @@ export default function ActiveWorkoutBar() {
             </span>
           </div>
         </Link>
-
-        {/* Rest Timer */}
-        {restTimer > 0 && (
-          <span className="text-[#7c3aed] text-xs font-mono border-l border-[#1e1e2a] pl-3">
-            {restTimer}s
-          </span>
-        )}
 
         {/* Controls */}
         <div className="flex items-center gap-1 border-l border-[#1e1e2a] pl-3">
