@@ -96,7 +96,7 @@ export default function WorkoutHistoryCard({ workout, onDelete }: WorkoutHistory
       <Link href={`/workout/${workout.id}`} className="block">
         <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] group-hover:border-[#7c3aed]/50 transition-all">
         {/* Header */}
-        <div className="mb-3">
+        <div className="mb-3 pr-10">
           <h3 className="text-sm font-semibold text-white">{workout.name}</h3>
           <div className="flex items-center gap-1 mt-1">
             <Calendar className="w-3 h-3 text-[#5a5a6a]" />
@@ -163,10 +163,10 @@ export default function WorkoutHistoryCard({ workout, onDelete }: WorkoutHistory
       </div>
       </Link>
       
-      {/* Delete Button - center right on hover */}
+      {/* Delete Button - top right, always visible on mobile, hover on desktop */}
       <button
         onClick={handleDeleteClick}
-        className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-[#1a1a24] hover:bg-red-500/20 border border-[#2a2a3a] hover:border-red-500/50 rounded-lg text-[#5a5a6a] hover:text-red-500"
+        className="absolute right-4 top-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity p-2 bg-[#1a1a24] hover:bg-[#ef4444]/15 border border-[#2e2e3a] hover:border-[#ef4444]/40 rounded-lg text-[#5a5a6a] hover:text-[#ef4444] z-10"
         title="Delete workout"
       >
         <Trash2 className="w-4 h-4" />

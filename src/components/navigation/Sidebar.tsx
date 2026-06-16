@@ -24,12 +24,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { navItems } from "@/lib/nav-config";
-import useWorkoutStore from "@/lib/workout-store";
+import useWorkoutStore, { useWorkoutStoreSafe } from "@/lib/workout-store";
 
 export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const isActive = useWorkoutStore((s) => s.isActive);
+  const isActive = useWorkoutStoreSafe((s) => s.isActive, false);
   const [isCollapsed, setIsCollapsed] = useState(collapsed || false);
 
   const user = session?.user;

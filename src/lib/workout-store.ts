@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { subscribeWithSelector } from "zustand/middleware";
+import { subscribeWithSelector, persist } from "zustand/middleware";
+import { useState, useEffect } from "react";
 
 export interface ExerciseSet {
   id: string;
@@ -40,29 +41,9 @@ interface WorkoutState {
 }
 
 const useWorkoutStore = create<WorkoutState>()(
-  subscribeWithSelector((set) => ({
-    isActive: false,
-    sessionId: null,
-    startTime: null,
-    elapsedSeconds: 0,
-    routineName: null,
-    routineId: null,
-    activeExercises: [],
-
-    startSession: (sessionId: string, routineName?: string, routineId?: string) => {
-      set({
-        isActive: true,
-        sessionId,
-        startTime: new Date(),
-        elapsedSeconds: 0,
-        routineName: routineName || null,
-        routineId: routineId || null,
-        activeExercises: [],
-      });
-    },
-
-    stopSession: () => {
-      set({
+  subscribeWithSelector(
+    persist(
+      (set) => ({
         isActive: false,
         sessionId: null,
         startTime: null,
@@ -70,141 +51,183 @@ const useWorkoutStore = create<WorkoutState>()(
         routineName: null,
         routineId: null,
         activeExercises: [],
-      });
-    },
 
-    tick: () => {
-      set((state) => ({
-        elapsedSeconds: state.elapsedSeconds + 1,
-      }));
-    },
-
-    addExercise: (exerciseId: string, exerciseName: string, setsCount?: number) => {
-      set((state) => {
-        if (state.activeExercises.find((e) => e.exerciseId === exerciseId)) {
-          return state;
-        }
-        const count = setsCount || 0;
-        const sets: ExerciseSet[] = [];
-        for (let i = 0; i < count; i++) {
-          sets.push({
-            id: crypto.randomUUID(),
-            exerciseId,
-            exerciseName,
-            setNumber: i + 1,
-            weight: null,
-            reps: null,
-            isCompleted: false,
+        startSession: (sessionId: string, routineName?: string, routineId?: string) => {
+          set({
+            isActive: true,
+            sessionId,
+            startTime: new Date(),
+            elapsedSeconds: 0,
+            routineName: routineName || null,
+            routineId: routineId || null,
+            activeExercises: [],
           });
-        }
-        return {
-          ...state,
-          activeExercises: [
-            ...state.activeExercises,
-            { exerciseId, exerciseName, sets },
-          ],
-        };
-      });
-    },
+        },
 
-    removeExercise: (exerciseId: string) => {
-      set((state) => ({
-        ...state,
-        activeExercises: state.activeExercises.filter(
-          (e) => e.exerciseId !== exerciseId
-        ),
-      }));
-    },
+        stopSession: () => {
+          set({
+            isActive: false,
+            sessionId: null,
+            startTime: null,
+            elapsedSeconds: 0,
+            routineName: null,
+            routineId: null,
+            activeExercises: [],
+          });
+        },
 
-    addSet: (exerciseId: string, weight: number | null, reps: number | null) => {
-      set((state) => {
-        const exerciseIndex = state.activeExercises.findIndex(
-          (e) => e.exerciseId === exerciseId
-        );
-        if (exerciseIndex === -1) return state;
+        tick: () => {
+          set((state) => ({
+            elapsedSeconds: state.elapsedSeconds + 1,
+          }));
+        },
 
-        const exercises = [...state.activeExercises];
-        const exercise = { ...exercises[exerciseIndex] };
-        const setNumber = exercise.sets.length + 1;
-
-        // Autofill from previous set in the active session
-        const lastSet = exercise.sets[exercise.sets.length - 1];
-        const autofillWeight = lastSet ? lastSet.weight : weight;
-        const autofillReps = lastSet ? lastSet.reps : reps;
-
-        exercise.sets = [
-          ...exercise.sets,
-          {
-            id: crypto.randomUUID(),
-            exerciseId,
-            exerciseName: exercise.exerciseName,
-            setNumber,
-            weight: autofillWeight,
-            reps: autofillReps,
-            isCompleted: false,
-          },
-        ];
-
-        exercises[exerciseIndex] = exercise;
-        return { ...state, activeExercises: exercises };
-      });
-    },
-
-    deleteSet: (exerciseId: string, setId: string) => {
-      set((state) => {
-        const exerciseIndex = state.activeExercises.findIndex(
-          (e) => e.exerciseId === exerciseId
-        );
-        if (exerciseIndex === -1) return state;
-
-        const exercises = [...state.activeExercises];
-        const exercise = { ...exercises[exerciseIndex] };
-        exercise.sets = exercise.sets.filter((s) => s.id !== setId);
-
-        // Re-number sets
-        exercise.sets = exercise.sets.map((s, i) => ({
-          ...s,
-          setNumber: i + 1,
-        }));
-
-        exercises[exerciseIndex] = exercise;
-        return { ...state, activeExercises: exercises };
-      });
-    },
-
-    updateSet: (exerciseId: string, setId: string, updates: Partial<ExerciseSet>) => {
-      set((state) => {
-        const exerciseIndex = state.activeExercises.findIndex(
-          (e) => e.exerciseId === exerciseId
-        );
-        if (exerciseIndex === -1) return state;
-
-        const exercises = [...state.activeExercises];
-        const exercise = { ...exercises[exerciseIndex] };
-        const setIndex = exercise.sets.findIndex((s) => s.id === setId);
-        if (setIndex === -1) return state;
-
-        exercise.sets = [...exercise.sets];
-        exercise.sets[setIndex] = {
-          ...exercise.sets[setIndex],
-          ...updates,
-        };
-
-        // If the set number updated is 1, and weight is changed, propagate to all subsequent sets
-        if (exercise.sets[setIndex].setNumber === 1 && updates.weight !== undefined) {
-          exercise.sets = exercise.sets.map((s) => {
-            if (s.setNumber > 1) {
-              return { ...s, weight: updates.weight! };
+        addExercise: (exerciseId: string, exerciseName: string, setsCount?: number) => {
+          set((state) => {
+            if (state.activeExercises.find((e) => e.exerciseId === exerciseId)) {
+              return state;
             }
-            return s;
+            const count = setsCount || 0;
+            const sets: ExerciseSet[] = [];
+            for (let i = 0; i < count; i++) {
+              sets.push({
+                id: crypto.randomUUID(),
+                exerciseId,
+                exerciseName,
+                setNumber: i + 1,
+                weight: null,
+                reps: null,
+                isCompleted: false,
+              });
+            }
+            return {
+              ...state,
+              activeExercises: [
+                ...state.activeExercises,
+                { exerciseId, exerciseName, sets },
+              ],
+            };
           });
-        }
+        },
 
-        exercises[exerciseIndex] = exercise;
-        return { ...state, activeExercises: exercises };
-      });
-    },
-  }))
+        removeExercise: (exerciseId: string) => {
+          set((state) => ({
+            ...state,
+            activeExercises: state.activeExercises.filter(
+              (e) => e.exerciseId !== exerciseId
+            ),
+          }));
+        },
+
+        addSet: (exerciseId: string, weight: number | null, reps: number | null) => {
+          set((state) => {
+            const exerciseIndex = state.activeExercises.findIndex(
+              (e) => e.exerciseId === exerciseId
+            );
+            if (exerciseIndex === -1) return state;
+
+            const exercises = [...state.activeExercises];
+            const exercise = { ...exercises[exerciseIndex] };
+            const setNumber = exercise.sets.length + 1;
+
+            // Autofill from previous set in the active session
+            const lastSet = exercise.sets[exercise.sets.length - 1];
+            const autofillWeight = lastSet ? lastSet.weight : weight;
+            const autofillReps = lastSet ? lastSet.reps : reps;
+
+            exercise.sets = [
+              ...exercise.sets,
+              {
+                id: crypto.randomUUID(),
+                exerciseId,
+                exerciseName: exercise.exerciseName,
+                setNumber,
+                weight: autofillWeight,
+                reps: autofillReps,
+                isCompleted: false,
+              },
+            ];
+
+            exercises[exerciseIndex] = exercise;
+            return { ...state, activeExercises: exercises };
+          });
+        },
+
+        deleteSet: (exerciseId: string, setId: string) => {
+          set((state) => {
+            const exerciseIndex = state.activeExercises.findIndex(
+              (e) => e.exerciseId === exerciseId
+            );
+            if (exerciseIndex === -1) return state;
+
+            const exercises = [...state.activeExercises];
+            const exercise = { ...exercises[exerciseIndex] };
+            exercise.sets = exercise.sets.filter((s) => s.id !== setId);
+
+            // Re-number sets
+            exercise.sets = exercise.sets.map((s, i) => ({
+              ...s,
+              setNumber: i + 1,
+            }));
+
+            exercises[exerciseIndex] = exercise;
+            return { ...state, activeExercises: exercises };
+          });
+        },
+
+        updateSet: (exerciseId: string, setId: string, updates: Partial<ExerciseSet>) => {
+          set((state) => {
+            const exerciseIndex = state.activeExercises.findIndex(
+              (e) => e.exerciseId === exerciseId
+            );
+            if (exerciseIndex === -1) return state;
+
+            const exercises = [...state.activeExercises];
+            const exercise = { ...exercises[exerciseIndex] };
+            const setIndex = exercise.sets.findIndex((s) => s.id === setId);
+            if (setIndex === -1) return state;
+
+            exercise.sets = [...exercise.sets];
+            exercise.sets[setIndex] = {
+              ...exercise.sets[setIndex],
+              ...updates,
+            };
+
+            // If the set number updated is 1, and weight is changed, propagate to all subsequent sets
+            if (exercise.sets[setIndex].setNumber === 1 && updates.weight !== undefined) {
+              exercise.sets = exercise.sets.map((s) => {
+                if (s.setNumber > 1) {
+                  return { ...s, weight: updates.weight! };
+                }
+                return s;
+              });
+            }
+
+            exercises[exerciseIndex] = exercise;
+            return { ...state, activeExercises: exercises };
+          });
+        },
+      }),
+      {
+        name: "metrix-active-workout-store",
+      }
+    )
+  )
 );
+
+// Safe custom hook wrapper to avoid Next.js hydration issues
+export function useWorkoutStoreSafe<T>(
+  selector: (state: WorkoutState) => T,
+  defaultValue: T
+): T {
+  const storeValue = useWorkoutStore(selector);
+  const [value, setValue] = useState<T>(defaultValue);
+
+  useEffect(() => {
+    setValue(storeValue);
+  }, [storeValue]);
+
+  return value;
+}
 
 export default useWorkoutStore;

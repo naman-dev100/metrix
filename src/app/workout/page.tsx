@@ -5,7 +5,7 @@ import { Activity, Plus, Play, Dumbbell, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import useWorkoutStore from "@/lib/workout-store";
+import useWorkoutStore, { useWorkoutStoreSafe } from "@/lib/workout-store";
 import WorkoutExerciseCard from "@/components/workout/WorkoutExerciseCard";
 import RoutineCard from "@/components/workout/RoutineCard";
 import RoutineDialog from "@/components/workout/RoutineDialog";
@@ -64,16 +64,16 @@ interface PRRecord {
 }
 
 export default function WorkoutPage() {
-  const isActive = useWorkoutStore((s) => s.isActive);
-  const sessionId = useWorkoutStore((s) => s.sessionId);
-  const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
-  const activeExercises = useWorkoutStore((s) => s.activeExercises);
+  const isActive = useWorkoutStoreSafe((s) => s.isActive, false);
+  const sessionId = useWorkoutStoreSafe((s) => s.sessionId, null);
+  const elapsedSeconds = useWorkoutStoreSafe((s) => s.elapsedSeconds, 0);
+  const activeExercises = useWorkoutStoreSafe((s) => s.activeExercises, []);
   const startSession = useWorkoutStore((s) => s.startSession);
   const stopSession = useWorkoutStore((s) => s.stopSession);
   const addExercise = useWorkoutStore((s) => s.addExercise);
   const removeExercise = useWorkoutStore((s) => s.removeExercise);
-  const routineName = useWorkoutStore((s) => s.routineName);
-  const routineId = useWorkoutStore((s) => s.routineId);
+  const routineName = useWorkoutStoreSafe((s) => s.routineName, null);
+  const routineId = useWorkoutStoreSafe((s) => s.routineId, null);
 
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [loading, setLoading] = useState(true);

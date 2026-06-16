@@ -5,15 +5,15 @@ import { X, Play, Pause, Dumbbell } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
-import useWorkoutStore from "@/lib/workout-store";
+import useWorkoutStore, { useWorkoutStoreSafe } from "@/lib/workout-store";
 import { formatDuration } from "@/lib/utils";
 
 export default function ActiveWorkoutBar() {
   const router = useRouter();
   const pathname = usePathname();
-  const isActive = useWorkoutStore((s) => s.isActive);
-  const sessionId = useWorkoutStore((s) => s.sessionId);
-  const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
+  const isActive = useWorkoutStoreSafe((s) => s.isActive, false);
+  const sessionId = useWorkoutStoreSafe((s) => s.sessionId, null);
+  const elapsedSeconds = useWorkoutStoreSafe((s) => s.elapsedSeconds, 0);
   const stopSession = useWorkoutStore((s) => s.stopSession);
   const tick = useWorkoutStore((s) => s.tick);
 
