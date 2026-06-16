@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Play, Pause, Dumbbell } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 import useWorkoutStore from "@/lib/workout-store";
 import { formatDuration } from "@/lib/utils";
 
 export default function ActiveWorkoutBar() {
   const router = useRouter();
+  const pathname = usePathname();
   const isActive = useWorkoutStore((s) => s.isActive);
   const sessionId = useWorkoutStore((s) => s.sessionId);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
@@ -37,7 +38,7 @@ export default function ActiveWorkoutBar() {
     return () => clearInterval(interval);
   }, [isActive, isPaused, sessionId, tick]);
 
-  if (!isActive) return null;
+  if (!isActive || pathname === "/workout") return null;
 
   return (
     <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-30 md:bottom-6">

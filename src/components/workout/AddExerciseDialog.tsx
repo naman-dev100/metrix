@@ -307,7 +307,14 @@ export default function AddExerciseDialog({
                     <button
                       key={exercise.id}
                       type="button"
-                      onClick={() => isSelected ? onRemove(exercise.id) : onAdd(exercise.id)}
+                      onClick={() => {
+                        if (isSelected) {
+                          onRemove(exercise.id);
+                        } else {
+                          onAdd(exercise.id);
+                          setSearch(""); // Reset search query to show all exercises again
+                        }
+                      }}
                       className={`text-left p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between h-24 ${
                         isSelected
                           ? "bg-[#7c3aed]/15 border-[#7c3aed] text-white shadow-[0_0_15px_rgba(124,58,237,0.15)]"

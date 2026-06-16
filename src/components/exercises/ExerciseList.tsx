@@ -21,7 +21,7 @@ const CATEGORIES = [
   "Machine",
   "Cable",
   "Bodyweight",
-  "Cardio",
+  "Cardio Equipment",
   "Kettlebell",
   "Suspension",
   "Band",
@@ -78,7 +78,8 @@ export default function ExerciseList({
         params.set("sub_groups", selectedSubGroups.join(","));
       }
       if (selectedCategories.length > 0) {
-        params.set("categories", selectedCategories.join(","));
+        const mappedCategories = selectedCategories.map((c) => c === "Cardio Equipment" ? "Cardio" : c);
+        params.set("categories", mappedCategories.join(","));
       }
       if (search) {
         params.set("search", search);

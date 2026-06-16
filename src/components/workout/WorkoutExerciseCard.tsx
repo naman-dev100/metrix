@@ -71,12 +71,12 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
 
       {/* Column Headers */}
       {exercise.sets.length > 0 && (
-        <div className="px-3.5 pt-3 pb-1 flex items-center gap-2.5 text-[10px] md:text-[9px] font-bold text-[#5a5a6a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
-          <div className="w-10 md:w-8 text-center flex-shrink-0">Set</div>
-          <div className="flex-1 min-w-0 pl-1">Weight</div>
-          <div className="w-20 md:w-16 text-center flex-shrink-0">Reps</div>
-          <div className="w-16 md:w-14 text-right flex-shrink-0">Volume</div>
-          <div className="w-10 md:w-8 flex-shrink-0" />
+        <div className="px-[18px] md:px-[22px] pt-3 pb-1 flex items-center gap-1.5 md:gap-2.5 text-[10px] md:text-[9px] font-bold text-[#5a5a6a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
+          <div className="w-8 md:w-8 text-center flex-shrink-0">Set</div>
+          <div className="flex-1 min-w-[72px] md:min-w-[80px] pl-1">Weight</div>
+          <div className="w-16 md:w-16 text-center flex-shrink-0">Reps</div>
+          <div className="w-12 md:w-14 text-right flex-shrink-0">Volume</div>
+          <div className="w-8 md:w-8 flex-shrink-0" />
         </div>
       )}
 

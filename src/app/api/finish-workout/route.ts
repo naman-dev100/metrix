@@ -89,9 +89,40 @@ export async function POST(request: NextRequest) {
         [endTime, durationSeconds, sessionId, session.user.id]
       );
 
-      if (name) {
-        await client.query(`UPDATE "WorkoutSession" SET name = $1 WHERE id = $2 AND "userId" = $3`, [name, sessionId, session.user.id]);
+      // Generate a dynamic name based on muscle groups and start time if it's a Quick Workout
+      const exerciseIds = exercises.map((e) => e.exerciseId);
+      const exerciseDetails = await client.query(
+        `SELECT id, name, muscle_group FROM "Exercise" WHERE id = ANY($1)`,
+        [exerciseIds]
+      );
+      
+      const muscleGroups = [...new Set(exerciseDetails.rows.map((row: any) => row.muscle_group))];
+      
+      let finalName = name || "Workout";
+      if (!routineId && (!name || name === "Quick Workout")) {
+        const startTimestamp = new Date(startTime);
+        const dayOfWeek = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(startTimestamp);
+        const hour = startTimestamp.getHours();
+        let timeOfDay = "Morning";
+        if (hour >= 12 && hour < 17) timeOfDay = "Afternoon";
+        else if (hour >= 17 && hour < 22) timeOfDay = "Evening";
+        else if (hour >= 22 || hour < 5) timeOfDay = "Night";
+
+        if (muscleGroups.length === 0) {
+          finalName = `${dayOfWeek} ${timeOfDay} Workout`;
+        } else if (muscleGroups.length === 1) {
+          finalName = `${dayOfWeek} ${timeOfDay} ${muscleGroups[0]} Workout`;
+        } else if (muscleGroups.length === 2) {
+          finalName = `${dayOfWeek} ${timeOfDay} ${muscleGroups[0]} & ${muscleGroups[1]} Workout`;
+        } else {
+          finalName = `${dayOfWeek} ${timeOfDay} Full Body Workout`;
+        }
       }
+
+      await client.query(
+        `UPDATE "WorkoutSession" SET name = $1 WHERE id = $2 AND "userId" = $3`,
+        [finalName, sessionId, session.user.id]
+      );
 
       // Calculate PRs and save sets
       const prExercises: { name: string; weight: number; reps: number }[] = [];

@@ -106,7 +106,7 @@
         "type": "Dumbbell"
       },
       {
-        "name": "one-handed kettlebell curls",
+        "name": "One-Handed Kettlebell Curls",
         "type": "Kettlebell"
       },
       {
@@ -262,7 +262,7 @@
         "type": "Dumbbell"
       },
       {
-        "name": "High-Cable Cross Tricep Extention - NB",
+        "name": "High-Cable Cross Tricep Extension - NB",
         "type": "Cable"
       },
       {
@@ -297,10 +297,7 @@
         "name": "Tricep Dips",
         "type": "Bodyweight"
       },
-      {
-        "name": "Tricep Dumbbell Kickback",
-        "type": "Dumbbell"
-      },
+
       {
         "name": "Tricep Extension (Cable)",
         "type": "Cable"
@@ -381,10 +378,7 @@
         "name": "Cable Straight Arm Pulldown",
         "type": "Cable"
       },
-      {
-        "name": "Chin Up",
-        "type": "Bodyweight"
-      },
+
       {
         "name": "Chin-ups",
         "type": "Bodyweight"
@@ -488,7 +482,7 @@
         "type": "Kettlebell"
       },
       {
-        "name": "kettlebell sumo deadlift",
+        "name": "Kettlebell Sumo Deadlift",
         "type": "Kettlebell"
       },
       {
@@ -842,7 +836,7 @@
         "type": "Bodyweight"
       },
       {
-        "name": "knee push-ups",
+        "name": "Knee Push-ups",
         "type": "Bodyweight"
       },
       {
@@ -877,10 +871,7 @@
         "name": "Pseudo Planche Push-up",
         "type": "Bodyweight"
       },
-      {
-        "name": "Push-Up",
-        "type": "Bodyweight"
-      },
+
       {
         "name": "Push-ups",
         "type": "Bodyweight"
@@ -1198,7 +1189,7 @@
         "type": "Machine"
       },
       {
-        "name": "rubber band glute kickback",
+        "name": "Rubber Band Glute Kickback",
         "type": "Band"
       },
       {

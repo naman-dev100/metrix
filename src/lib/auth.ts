@@ -78,6 +78,7 @@ export const authOptions = {
         if (dbUser) {
           token.username = dbUser.username;
           token.name = dbUser.name;
+          token.email = dbUser.email;
         }
       }
       return token;
@@ -86,6 +87,8 @@ export const authOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         (session.user as any).username = token.username as string | null;
+        session.user.name = token.name as string | null;
+        session.user.email = token.email as string;
       }
       return session;
     },

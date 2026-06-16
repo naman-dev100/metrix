@@ -421,13 +421,15 @@ export default function WorkoutPage() {
           <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/5 to-[#7c3aed]/0" />
             <div className="relative">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 md:w-10 md:h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center shadow-[0_0_20px_rgba(124,58,237,0.15)]">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-12 h-12 md:w-10 md:h-10 rounded-xl bg-[#7c3aed]/20 border border-[#7c3aed]/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(124,58,237,0.15)]">
                     <Activity className="w-5 h-5 text-[#7c3aed]" aria-hidden="true" />
                   </div>
-                  <div>
-                    <h2 className="text-lg md:text-base font-bold text-white">{routineName || "Quick Workout"}</h2>
+                  <div className="min-w-0">
+                    <h2 className="text-lg md:text-base font-bold text-white truncate" title={routineName || "Quick Workout"}>
+                      {routineName || "Quick Workout"}
+                    </h2>
                     <p className="text-base md:text-sm text-[#7c3aed] font-mono leading-none mt-1">{formatDuration(elapsedSeconds)}</p>
                   </div>
                 </div>
@@ -435,7 +437,7 @@ export default function WorkoutPage() {
                   onClick={() => handleFinishWorkout()}
                   loading={finishWorkoutLoading}
                   aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer"
+                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer flex-shrink-0"
                 >
                   Finish Workout
                 </Button>

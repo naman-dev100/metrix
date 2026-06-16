@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Activity,
+  History,
   BookOpen,
   LineChart,
   User,
@@ -18,6 +19,12 @@ export const navItems = [
     href: "/workout",
     icon: Activity,
     ariaLabel: "Navigate to Workout page",
+  },
+  {
+    name: "History",
+    href: "/history",
+    icon: History,
+    ariaLabel: "Navigate to Workout History",
   },
   {
     name: "Exercises",
