@@ -9,6 +9,7 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 export const metadata: Metadata = {
   title: "Metrix - Workout Tracker",
   description: "Track your workouts, monitor progress, and crush your fitness goals.",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -34,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark bg-[#0a0a0f]" style={{ colorScheme: "dark" }}>
       <body className="min-h-full flex flex-col bg-background text-foreground antialiased dark:bg-background dark:text-white dark:font-['Outfit']">
         <SessionWrapper>
           <ClientLayout>{children}</ClientLayout>
