@@ -318,3 +318,12 @@
 .text-purple-accent {
   color: #7c3aed !important;
 }
+
+/* Hide scrollbars for horizontal lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

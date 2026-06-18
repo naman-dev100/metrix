@@ -47,7 +47,7 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
     <div className="flex items-start gap-1.5 md:gap-2.5 py-1.5 px-1 md:px-2.5 rounded-xl transition-all duration-300 border border-transparent hover:border-[#1e1e2a]/50">
       {/* Set Number */}
       <div className="w-8 md:w-8 h-10 md:h-9 flex items-center justify-center flex-shrink-0">
-        <div className="w-8 h-8 flex items-center justify-center rounded-full text-xs font-extrabold bg-[#16161f] text-[#5a5a6a] shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+        <div className="w-8 h-8 flex items-center justify-center rounded-full text-xs font-extrabold bg-[#16161f] text-[#a3a3aa] shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
           {set.setNumber}
         </div>
       </div>
@@ -68,14 +68,14 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
             }
             placeholder={prevSet && prevSet.weight !== null ? prevSet.weight.toString() : "0"}
             aria-label="Weight in kilograms"
-            className="bg-[#16161f] border-none text-white text-base md:text-sm h-10 md:h-9 pr-7 md:pr-8 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#3a3a4a] placeholder:font-mono rounded-lg"
+            className="bg-[#16161f] border-none text-white text-base md:text-sm h-10 md:h-9 pr-7 md:pr-8 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#6a6a7a] placeholder:font-mono rounded-lg"
           />
-          <span className="absolute right-2 md:right-2.5 top-1/2 -translate-y-1/2 text-[10px] md:text-[10px] pointer-events-none font-semibold text-[#5a5a6a]">
+          <span className="absolute right-2 md:right-2.5 top-1/2 -translate-y-1/2 text-[10px] md:text-[10px] pointer-events-none font-semibold text-[#8a8a9a]">
             kg
           </span>
         </div>
         {prevSet && (
-          <p className="text-[10px] md:text-[9px] text-[#5a5a6a] mt-1 pl-1 font-mono leading-none">
+          <p className="text-[10px] md:text-[9px] text-[#8a8a9a] mt-1 pl-1 font-mono leading-none">
             Prev: {prevSet.weight !== null && prevSet.weight > 0 ? `${prevSet.weight}kg` : "BW"}
           </p>
         )}
@@ -94,10 +94,10 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
           }
           placeholder={prevSet ? prevSet.reps.toString() : "10"}
           aria-label="Number of repetitions"
-          className="bg-[#16161f] border-none text-white text-base md:text-sm h-10 md:h-9 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#3a3a4a] placeholder:font-mono rounded-lg"
+          className="bg-[#16161f] border-none text-white text-base md:text-sm h-10 md:h-9 text-center focus:ring-[#7c3aed] focus:ring-2 focus:ring-offset-0 transition-all placeholder:text-[#6a6a7a] placeholder:font-mono rounded-lg"
         />
         {prevSet && (
-          <p className="text-[10px] md:text-[9px] text-[#5a5a6a] mt-1 text-center font-mono leading-none">
+          <p className="text-[10px] md:text-[9px] text-[#8a8a9a] mt-1 text-center font-mono leading-none">
             Prev: {prevSet.reps}
           </p>
         )}
@@ -108,7 +108,7 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
         <div className="h-10 md:h-9 flex items-center justify-end">
           <span className={cn(
             "text-sm md:text-xs font-mono font-bold transition-colors duration-300",
-            set.weight && set.reps ? "text-white" : "text-[#5a5a6a]"
+            set.weight && set.reps ? "text-white" : "text-[#8a8a9a]"
           )}>
             {volume}
           </span>
@@ -121,13 +121,13 @@ export default function WorkoutSetRow({ exerciseId, set, prevSet, allTimeMax }: 
       </div>
 
       {/* Delete button */}
-      <div className="w-8 md:w-8 h-10 md:h-9 flex items-center justify-center flex-shrink-0">
+      <div className="w-10 md:w-8 h-10 md:h-9 flex items-center justify-center flex-shrink-0">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => deleteSet(exerciseId, set.id)}
           aria-label={`Delete set ${set.setNumber}`}
-          className="w-8 h-8 p-0 text-[#3a3a4a] hover:text-[#ef4444] hover:bg-[#ef4444]/15 rounded-lg flex-shrink-0 transition-colors cursor-pointer flex items-center justify-center"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/15 rounded-xl md:rounded-lg flex-shrink-0 transition-colors cursor-pointer flex items-center justify-center"
         >
           <Trash2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
         </Button>

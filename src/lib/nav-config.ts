@@ -26,12 +26,7 @@ export const navItems = [
     icon: History,
     ariaLabel: "Navigate to Workout History",
   },
-  {
-    name: "Exercises",
-    href: "/exercises",
-    icon: BookOpen,
-    ariaLabel: "Navigate to Exercise Library",
-  },
+
   {
     name: "Metrics",
     href: "/metrics",

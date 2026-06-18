@@ -103,7 +103,7 @@ export default function RoutineCard({ routine, onStart, onEdit, onDelete, onStar
         <Button
           onClick={() => onStart(routine.id, routine.name)}
           loading={onStartLoading}
-          className="flex-1 bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-3 py-2 text-sm"
+          className="flex-1 bg-[#7c3aed] hover:bg-[#6d28d9] text-white h-11 md:h-9 text-base md:text-sm rounded-xl md:rounded-lg font-bold flex items-center justify-center cursor-pointer transition-all shadow-[0_2px_8px_rgba(124,58,237,0.3)]"
         >
           Start
         </Button>
@@ -111,7 +111,7 @@ export default function RoutineCard({ routine, onStart, onEdit, onDelete, onStar
           variant="outline"
           onClick={() => onEdit(routine)}
           aria-label={`Edit routine ${routine.name}`}
-          className="px-3 py-2 text-sm border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all"
+          className="px-4 h-11 md:h-9 text-base md:text-sm border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all rounded-xl md:rounded-lg flex items-center justify-center cursor-pointer"
         >
           Edit
         </Button>

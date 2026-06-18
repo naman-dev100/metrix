@@ -165,7 +165,7 @@ export default function ExerciseList({
             placeholder="Search exercises..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#111118] border border-[#1e1e2a] rounded-xl pl-10 pr-12 py-2.5 text-sm text-white placeholder-[#5a5a6a] focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-none transition-all shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
+            className="w-full bg-[#111118] border border-[#1e1e2a] rounded-xl pl-10 pr-12 py-2.5 text-base md:text-sm text-white placeholder-[#5a5a6a] focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-none transition-all shadow-[0_1px_3px_rgba(0,0,0,0.4)]"
             autoComplete="off"
             aria-label="Search exercises"
           />
@@ -184,13 +184,13 @@ export default function ExerciseList({
         {/* Muscle Groups - Toggleable */}
         <div className="space-y-2">
           <p className="text-xs text-[#5a5a6a] uppercase tracking-wider">Muscle Groups</p>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar md:flex-wrap">
             {Object.keys(MUSCLE_GROUPS).map((group) => (
               <button
                 key={group}
                 type="button"
                 onClick={() => toggleMuscleGroup(group)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                className={`px-4 py-2.5 rounded-xl text-base md:text-sm md:px-3 md:py-2 md:rounded-lg font-medium transition-all cursor-pointer ${
                   selectedMuscleGroups.includes(group)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -203,7 +203,7 @@ export default function ExerciseList({
 
           {/* Sub-Groups (only show if Arms is selected) */}
           {availableSubGroups.length > 0 && (
-            <div className="flex gap-2 flex-wrap pl-4">
+            <div className="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar md:flex-wrap pl-4">
               {availableSubGroups.map((subGroup) => (
                 <button
                   key={subGroup}
@@ -225,13 +225,13 @@ export default function ExerciseList({
         {/* Categories - Toggleable */}
         <div className="space-y-2">
           <p className="text-xs text-[#5a5a6a] uppercase tracking-wider">Categories</p>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar md:flex-wrap">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => toggleCategory(cat)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                className={`px-4 py-2.5 rounded-xl text-base md:text-sm md:px-3 md:py-2 md:rounded-lg font-medium transition-all cursor-pointer ${
                   selectedCategories.includes(cat)
                     ? "bg-[#7c3aed] text-white shadow-[0_2px_8px_rgba(124,58,237,0.4)]"
                     : "bg-[#111118] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"

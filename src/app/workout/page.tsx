@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Activity, Plus, Play, Dumbbell, Search } from "lucide-react";
+import { Activity, Plus, Play, Dumbbell, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -106,6 +106,7 @@ export default function WorkoutPage() {
   };
 
   const [showAddExercise, setShowAddExercise] = useState(false);
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [routineToDelete, setRoutineToDelete] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -433,14 +434,24 @@ export default function WorkoutPage() {
                     <p className="text-base md:text-sm text-[#7c3aed] font-mono leading-none mt-1">{formatDuration(elapsedSeconds)}</p>
                   </div>
                 </div>
-                <Button
-                  onClick={() => handleFinishWorkout()}
-                  loading={finishWorkoutLoading}
-                  aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
-                  className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer flex-shrink-0"
-                >
-                  Finish Workout
-                </Button>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Button
+                    onClick={() => setShowDiscardConfirm(true)}
+                    variant="outline"
+                    aria-label="Discard current workout"
+                    className="border-[#ef4444]/30 hover:border-[#ef4444]/60 hover:bg-[#ef4444]/10 text-[#ef4444] p-2 h-11 w-11 md:h-9 md:w-9 rounded-xl transition-all cursor-pointer flex items-center justify-center flex-shrink-0"
+                  >
+                    <Trash2 className="w-5 h-5 md:w-4 md:h-4" />
+                  </Button>
+                  <Button
+                    onClick={() => handleFinishWorkout()}
+                    loading={finishWorkoutLoading}
+                    aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
+                    className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer flex-shrink-0"
+                  >
+                    Finish Workout
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -451,9 +462,8 @@ export default function WorkoutPage() {
 
           {/* Add Exercise Button */}
           <Button
-            variant="outline"
             aria-label="Add exercises to current workout"
-            className="w-full border-dashed border-[#1e1e2a] text-[#8a8a9a] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all h-12 md:h-10 text-base md:text-sm font-semibold rounded-xl cursor-pointer flex items-center justify-center"
+            className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white transition-all h-12 md:h-10 text-base md:text-sm font-bold rounded-xl cursor-pointer flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.35)] border border-[#7c3aed]"
             onClick={() => setShowAddExercise(true)}
           >
             <Plus className="w-5 h-5 md:w-4 md:h-4 mr-2" />
@@ -672,6 +682,20 @@ export default function WorkoutPage() {
           }
         }}
         isDeleting={isDeleting}
+      />
+
+      {/* Discard Workout Confirmation Dialog */}
+      <ConfirmDeleteDialog
+        isOpen={showDiscardConfirm}
+        title="Discard Workout"
+        description="Are you sure you want to discard this workout? All progress will be lost."
+        onConfirm={() => {
+          stopSession();
+          setShowDiscardConfirm(false);
+          toast.info("Workout discarded");
+        }}
+        onCancel={() => setShowDiscardConfirm(false)}
+        isDeleting={false}
       />
 
       {/* Update Routine Prompt Dialog */}

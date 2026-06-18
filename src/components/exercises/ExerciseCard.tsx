@@ -63,7 +63,7 @@ export default function ExerciseCard({
       aria-label={`${exercise.name} exercise, ${exercise.muscle_group} muscle group, ${exercise.category} category`}
     >
       {/* Image */}
-      <div className="relative h-32 bg-[#16161f] overflow-hidden">
+      <div className="relative h-24 md:h-32 bg-[#16161f] overflow-hidden">
         {exercise.image_url ? (
           <img
             src={exercise.image_url}

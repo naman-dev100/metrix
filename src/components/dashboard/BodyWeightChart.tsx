@@ -114,7 +114,7 @@ export default function BodyWeightChart({
   };
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#1a1a24] rounded-2xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+    <Card className="bg-[#0a0a0a] border-[#1a1a24] rounded-2xl p-4 md:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
       {/* Header */}
       {showTitle && (
         <CardHeader className="pb-2">
@@ -155,7 +155,7 @@ export default function BodyWeightChart({
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3">
           {/* Min */}
-          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+          <div className="bg-[#1a1a24] rounded-xl p-3 md:p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
             <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
               Min
             </p>
@@ -165,7 +165,7 @@ export default function BodyWeightChart({
           </div>
 
           {/* Avg */}
-          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+          <div className="bg-[#1a1a24] rounded-xl p-3 md:p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
             <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
               Avg
             </p>
@@ -175,7 +175,7 @@ export default function BodyWeightChart({
           </div>
 
           {/* Max */}
-          <div className="bg-[#1a1a24] rounded-xl p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
+          <div className="bg-[#1a1a24] rounded-xl p-3 md:p-4 text-center border border-[#2a2a3a] hover:border-[#7c3aed]/50 transition-colors">
             <p className="text-[10px] text-[#b0b0b8] uppercase tracking-widest font-semibold mb-1">
               Max
             </p>

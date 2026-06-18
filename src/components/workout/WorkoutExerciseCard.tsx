@@ -63,20 +63,20 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
           size="sm"
           onClick={() => removeExercise(exercise.exerciseId)}
           aria-label={`Delete exercise ${exercise.exerciseName}`}
-          className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl md:rounded-lg flex items-center justify-center"
         >
-          <Trash2 className="w-3.5 h-3.5" />
+          <Trash2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
         </Button>
       </div>
 
       {/* Column Headers */}
       {exercise.sets.length > 0 && (
-        <div className="px-[18px] md:px-[22px] pt-3 pb-1 flex items-center gap-1.5 md:gap-2.5 text-[10px] md:text-[9px] font-bold text-[#5a5a6a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
+        <div className="px-[18px] md:px-[22px] pt-3 pb-1 flex items-center gap-1.5 md:gap-2.5 text-[10px] md:text-[9px] font-bold text-[#8a8a9a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
           <div className="w-8 md:w-8 text-center flex-shrink-0">Set</div>
           <div className="flex-1 min-w-[72px] md:min-w-[80px] pl-1">Weight</div>
           <div className="w-16 md:w-16 text-center flex-shrink-0">Reps</div>
           <div className="w-12 md:w-14 text-right flex-shrink-0">Volume</div>
-          <div className="w-8 md:w-8 flex-shrink-0" />
+          <div className="w-10 md:w-8 flex-shrink-0" />
         </div>
       )}
 
@@ -100,13 +100,13 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
       <div className="p-3 border-t border-[#1e1e2a] flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <p className="text-[10px] text-[#8a8a9a] uppercase tracking-wider">Total Volume</p>
+            <p className="text-[10px] text-[#a3a3aa] uppercase tracking-wider">Total Volume</p>
             <p className="text-sm font-mono text-white letter-spacing-0.02">
               {totalVolume.toLocaleString()} kg
             </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] text-[#8a8a9a] uppercase tracking-wider">PRs</p>
+            <p className="text-[10px] text-[#a3a3aa] uppercase tracking-wider">PRs</p>
             <p className="text-sm font-mono text-[#7c3aed] letter-spacing-0.02">
               {prCount}
             </p>
@@ -117,9 +117,9 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
             addSet(exercise.exerciseId, null, null);
           }}
           aria-label={`Add set for ${exercise.exerciseName}`}
-          className="w-8 h-8 p-0 rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 rounded-xl md:rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white flex items-center justify-center"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-5 h-5 md:w-4 h-4" />
         </Button>
       </div>
     </div>

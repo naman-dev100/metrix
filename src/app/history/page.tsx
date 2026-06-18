@@ -116,7 +116,7 @@ export default function WorkoutHistoryPage() {
   return (
     <div className="space-y-6">
       {/* Page Header with Gradient */}
-      <div className="gradient-purple-subtle rounded-2xl p-6 border border-[#1a1a24] relative overflow-hidden">
+      <div className="gradient-purple-subtle rounded-2xl p-4 md:p-6 border border-[#1a1a24] relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/5 to-[#7c3aed]/0 pointer-events-none" />
         <div className="relative z-10">
           <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3 animate-fade-in">
@@ -131,9 +131,9 @@ export default function WorkoutHistoryPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-enter">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-enter">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
               <Activity className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -143,9 +143,9 @@ export default function WorkoutHistoryPage() {
           <p className="text-3xl font-bold text-white tracking-tight">{totalWorkouts}</p>
         </div>
 
-        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-1 card-enter">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-1 card-enter">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
               <Dumbbell className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -157,9 +157,9 @@ export default function WorkoutHistoryPage() {
           </p>
         </div>
 
-        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-2 card-enter">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-2 card-enter">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
               <Timer className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -173,9 +173,9 @@ export default function WorkoutHistoryPage() {
           </p>
         </div>
 
-        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-3 card-enter">
+        <div className="bg-[#0a0a0a] border border-[#1a1a24] rounded-2xl p-4 md:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.5)] transition-all hover:shadow-[0_8px_24px_rgba(124,58,237,0.15)] hover-lift card-delay-3 card-enter">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#5b21b6] flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(124,58,237,0.3)]">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>

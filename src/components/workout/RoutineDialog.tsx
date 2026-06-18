@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Dumbbell, GripVertical, Trash2, Plus } from "lucide-react";
+import { X, Dumbbell, GripVertical, Trash2, Plus, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AddExerciseDialog from "./AddExerciseDialog";
@@ -91,6 +91,17 @@ export default function RoutineDialog({
 
   const removeExercise = (exerciseId: string) => {
     setSelectedExercises((prev) => prev.filter((p) => p.exerciseId !== exerciseId));
+  };
+
+  const moveExercise = (index: number, direction: number) => {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= selectedExercises.length) return;
+    setSelectedExercises((prev) => {
+      const list = [...prev];
+      const [movedItem] = list.splice(index, 1);
+      list.splice(targetIndex, 0, movedItem);
+      return list;
+    });
   };
 
   const handleAddExercise = (exerciseId: string) => {
@@ -225,9 +236,31 @@ export default function RoutineDialog({
                     }`}
                   >
                     <div className="flex items-center flex-1 min-w-0">
-                      {/* Drag Handle */}
-                      <div className="cursor-grab active:cursor-grabbing text-[#5a5a6a] hover:text-[#a3a3aa] p-2 mr-1 transition-colors">
+                      {/* Desktop Drag Handle */}
+                      <div className="hidden md:flex items-center cursor-grab active:cursor-grabbing text-[#5a5a6a] hover:text-[#a3a3aa] p-2 mr-1 transition-colors">
                         <GripVertical className="w-5 h-5" />
+                      </div>
+                      
+                      {/* Mobile Reordering Buttons */}
+                      <div className="flex md:hidden flex-col items-center mr-1 flex-shrink-0">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => moveExercise(index, -1)}
+                          className="p-0.5 text-[#5a5a6a] hover:text-white disabled:opacity-20 transition-colors cursor-pointer"
+                          aria-label="Move exercise up"
+                        >
+                          <ChevronUp className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === selectedExercises.length - 1}
+                          onClick={() => moveExercise(index, 1)}
+                          className="p-0.5 text-[#5a5a6a] hover:text-white disabled:opacity-20 transition-colors cursor-pointer"
+                          aria-label="Move exercise down"
+                        >
+                          <ChevronDown className="w-4 h-4" />
+                        </button>
                       </div>
                       <div className="flex-1 min-w-0 pr-3">
                         <p className="text-base font-bold text-white truncate">
@@ -257,7 +290,7 @@ export default function RoutineDialog({
                               )
                             );
                           }}
-                          className="w-10 bg-transparent border-none text-white text-sm text-center font-mono font-bold focus:outline-none focus:ring-0 p-0"
+                          className="w-10 bg-transparent border-none text-white text-base md:text-sm text-center font-mono font-bold focus:outline-none focus:ring-0 p-0"
                         />
                       </div>
 
@@ -281,9 +314,8 @@ export default function RoutineDialog({
           {/* Add Exercise Trigger Button */}
           <Button
             type="button"
-            variant="outline"
             onClick={() => setShowAddSelector(true)}
-            className="w-full border-dashed border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#333348] hover:bg-[#16161f] transition-all py-6 mt-1 rounded-2xl text-base font-semibold"
+            className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white transition-all py-4 mt-1 rounded-xl text-base font-bold flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.35)] border border-[#7c3aed] cursor-pointer"
           >
             <Plus className="w-5 h-5 mr-2" />
             Add Exercise

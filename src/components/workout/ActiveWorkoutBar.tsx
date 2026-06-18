@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Play, Pause, Dumbbell } from "lucide-react";
+import { Play, Pause, Dumbbell, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ export default function ActiveWorkoutBar() {
   const isActive = useWorkoutStoreSafe((s) => s.isActive, false);
   const sessionId = useWorkoutStoreSafe((s) => s.sessionId, null);
   const elapsedSeconds = useWorkoutStoreSafe((s) => s.elapsedSeconds, 0);
+  const routineName = useWorkoutStoreSafe((s) => s.routineName, null);
   const stopSession = useWorkoutStore((s) => s.stopSession);
   const tick = useWorkoutStore((s) => s.tick);
 
@@ -37,6 +38,62 @@ export default function ActiveWorkoutBar() {
 
     return () => clearInterval(interval);
   }, [isActive, isPaused, sessionId, tick]);
+
+  // Notification management for mobile / active workout
+  useEffect(() => {
+    if (typeof window === "undefined" || !("Notification" in window) || !("serviceWorker" in navigator)) {
+      return;
+    }
+
+    // Request notification permission if workout is active and permission is default
+    if (isActive && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+
+    const showOrUpdateNotification = async () => {
+      if (Notification.permission !== "granted") return;
+
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const minutes = Math.floor(elapsedSeconds / 60);
+        const timeStr = minutes > 0 ? ` (${minutes}m)` : "";
+
+        await reg.showNotification("Active Workout", {
+          body: `${routineName || "Quick Workout"} in progress${timeStr}`,
+          icon: "/icons/icon-192x192.png",
+          badge: "/icons/icon-192x192.png",
+          tag: "active-workout-session",
+          silent: true,  // Do not play sound/vibrate on update
+          requireInteraction: true,
+          ...({ ongoing: true } as any), // Android persistent notification (non-standard option)
+        } as any);
+      } catch (err) {
+        console.error("Failed to show notification:", err);
+      }
+    };
+
+    const closeNotification = async () => {
+      if (Notification.permission !== "granted") return;
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const notifications = await reg.getNotifications({ tag: "active-workout-session" });
+        notifications.forEach((notification) => notification.close());
+      } catch (err) {
+        console.error("Failed to close notification:", err);
+      }
+    };
+
+    if (isActive && sessionId) {
+      // Show/update notification when active
+      // To avoid constant spamming, only show at start and update every 60 seconds (when seconds = 0)
+      if (elapsedSeconds === 0 || elapsedSeconds % 60 === 0) {
+        showOrUpdateNotification();
+      }
+    } else {
+      // Close notification when workout is not active
+      closeNotification();
+    }
+  }, [isActive, sessionId, elapsedSeconds, routineName]);
 
   if (!isActive || pathname === "/workout") return null;
 
@@ -80,7 +137,7 @@ export default function ActiveWorkoutBar() {
             aria-label="Discard workout"
             className="w-7 h-7 rounded-full bg-[#ef4444]/20 border border-[#ef4444]/30 flex items-center justify-center text-[#ef4444] hover:bg-[#ef4444]/30 transition-all cursor-pointer"
           >
-            <X className="w-3 h-3" />
+            <Trash2 className="w-3 h-3" />
           </button>
         </div>
       </div>

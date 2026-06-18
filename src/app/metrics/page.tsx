@@ -134,12 +134,12 @@ export default function MetricsPage() {
                       {formatDate(log.date)}
                     </span>
                   </div>                    
-                  {/* Delete button - shows on hover */}
+                  {/* Delete button - always visible on mobile, hover on desktop */}
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDeleteClick(log.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-[#5a5a6a] hover:text-red-500 hover:bg-red-500/10"
+                    className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-[#5a5a6a] hover:text-red-500 hover:bg-red-500/10"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

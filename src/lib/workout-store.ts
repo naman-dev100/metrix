@@ -87,7 +87,7 @@ const useWorkoutStore = create<WorkoutState>()(
             if (state.activeExercises.find((e) => e.exerciseId === exerciseId)) {
               return state;
             }
-            const count = setsCount || 0;
+            const count = setsCount !== undefined && setsCount > 0 ? setsCount : 1;
             const sets: ExerciseSet[] = [];
             for (let i = 0; i < count; i++) {
               sets.push({

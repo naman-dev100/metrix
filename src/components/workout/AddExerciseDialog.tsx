@@ -222,7 +222,7 @@ export default function AddExerciseDialog({
             {/* Muscle Groups */}
             <div className="space-y-3">
               <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-bold">Filter Muscle Groups</p>
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar md:flex-wrap">
                 {Object.keys(MUSCLE_GROUPS).map((group) => {
                   const isSelected = selectedMuscleGroups.includes(group);
                   return (
@@ -230,7 +230,7 @@ export default function AddExerciseDialog({
                       key={group}
                       type="button"
                       onClick={() => toggleMuscleGroup(group)}
-                      className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+                      className={`px-4 py-2.5 rounded-xl text-base md:text-sm font-semibold transition-all cursor-pointer ${
                         isSelected
                           ? "bg-[#7c3aed] text-white shadow-[0_4px_12px_rgba(124,58,237,0.35)]"
                           : "bg-[#16161f] border border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:border-[#2e2e3a]"
@@ -249,7 +249,7 @@ export default function AddExerciseDialog({
                     <Dumbbell className="w-4 h-4 text-[#7c3aed] animate-pulse" />
                     <span className="text-xs text-white uppercase font-bold tracking-wider">Target Subgroups</span>
                   </div>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar md:flex-wrap">
                     {availableSubGroups.map((subGroup) => {
                       const isSelected = selectedSubGroups.includes(subGroup);
                       return (
@@ -257,7 +257,7 @@ export default function AddExerciseDialog({
                           key={subGroup}
                           type="button"
                           onClick={() => toggleSubGroup(subGroup)}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                          className={`px-3.5 py-2 rounded-xl text-sm md:text-xs font-semibold transition-all cursor-pointer ${
                             isSelected
                               ? "bg-[#7c3aed]/20 border border-[#7c3aed] text-white"
                               : "bg-[#16161f] border border-[#1e1e2a] text-[#8a8a9a] hover:text-white"
