@@ -44,8 +44,8 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-[#1e1e2a]">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#7c3aed] flex-shrink-0 animate-scale-in">
-          <Dumbbell className="w-5 h-5 text-white" aria-hidden="true" />
+        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-[#7c3aed] flex-shrink-0 animate-scale-in overflow-hidden">
+          <img src="/icons/icon.png" alt="Metrix Logo" className="w-7 h-7 object-contain" />
         </div>
         {!isCollapsed && (
           <span className="text-xl font-bold text-white tracking-tight">
