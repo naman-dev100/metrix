@@ -2,15 +2,15 @@
   "Arms": {
     "Biceps": [
       {
-        "name": "Alternating Biceps Curls With Dumbbell",
+        "name": "Alternating Biceps Curls With DB",
         "type": "Dumbbell"
       },
       {
-        "name": "Alternating dumbbell hammer curl",
+        "name": "Alternating DB hammer curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Barbell Curl",
+        "name": "BB Curl",
         "type": "Barbell"
       },
       {
@@ -26,11 +26,11 @@
         "type": "Cable"
       },
       {
-        "name": "Biceps Curls With Barbell",
+        "name": "Biceps Curls With BB",
         "type": "Barbell"
       },
       {
-        "name": "Biceps Curls With Dumbbell",
+        "name": "Biceps Curls With DB",
         "type": "Dumbbell"
       },
       {
@@ -58,35 +58,35 @@
         "type": "Kettlebell"
       },
       {
-        "name": "Dumbbell Bicep Curl",
+        "name": "DB Bicep Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell bicep curl to press",
+        "name": "DB bicep curl to press",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Cheat Curl",
+        "name": "DB Cheat Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Concentration Curl",
+        "name": "DB Concentration Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Curl",
+        "name": "DB Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell drag curls",
+        "name": "DB drag curls",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Incline Curl",
+        "name": "DB Incline Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell wide bicep curls",
+        "name": "DB wide bicep curls",
         "type": "Dumbbell"
       },
       {
@@ -98,11 +98,11 @@
         "type": "Cable"
       },
       {
-        "name": "Incline Dumbbell Curl",
+        "name": "Incline DB Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Lying Dumbbell Curls",
+        "name": "Lying DB Curls",
         "type": "Dumbbell"
       },
       {
@@ -122,11 +122,11 @@
         "type": "Cable"
       },
       {
-        "name": "Reverse Grip Barbell Curls",
+        "name": "Reverse Grip BB Curls",
         "type": "Barbell"
       },
       {
-        "name": "Seated Dumbbell Curls",
+        "name": "Seated DB Curls",
         "type": "Dumbbell"
       },
       {
@@ -156,15 +156,15 @@
     ],
     "Forearms": [
       {
-        "name": "Barbell Reverse Curl",
+        "name": "BB Reverse Curl",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Reverse Wrist Curl",
+        "name": "BB Reverse Wrist Curl",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Wrist Curl",
+        "name": "BB Wrist Curl",
         "type": "Barbell"
       },
       {
@@ -188,19 +188,19 @@
         "type": "Bodyweight"
       },
       {
-        "name": "Dumbbell Hammer Curl",
+        "name": "DB Hammer Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Pronation / Supination",
+        "name": "DB Pronation / Supination",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Reverse Curl",
+        "name": "DB Reverse Curl",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Reverse Wrist Curl",
+        "name": "DB Reverse Wrist Curl",
         "type": "Dumbbell"
       },
       {
@@ -238,7 +238,7 @@
     ],
     "Triceps": [
       {
-        "name": "Barbell Triceps Extension",
+        "name": "BB Triceps Extension",
         "type": "Barbell"
       },
       {
@@ -254,11 +254,11 @@
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Tricep Kickback",
+        "name": "DB Tricep Kickback",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Triceps Extension",
+        "name": "DB Triceps Extension",
         "type": "Dumbbell"
       },
       {
@@ -297,13 +297,12 @@
         "name": "Tricep Dips",
         "type": "Bodyweight"
       },
-
       {
         "name": "Tricep Extension (Cable)",
         "type": "Cable"
       },
       {
-        "name": "Tricep Extension (Dumbbell)",
+        "name": "Tricep Extension (DB)",
         "type": "Dumbbell"
       },
       {
@@ -316,10 +315,6 @@
       },
       {
         "name": "Tricep Pushdown (Straight Bar)",
-        "type": "Cable"
-      },
-      {
-        "name": "Tricep Pushdown on Cable",
         "type": "Cable"
       },
       {
@@ -339,7 +334,7 @@
         "type": "Machine"
       },
       {
-        "name": "Triceps Overhead (Dumbbell)",
+        "name": "Triceps Overhead (DB)",
         "type": "Dumbbell"
       },
       {
@@ -378,7 +373,6 @@
         "name": "Cable Straight Arm Pulldown",
         "type": "Cable"
       },
-
       {
         "name": "Chin-ups",
         "type": "Bodyweight"
@@ -462,15 +456,15 @@
     ],
     "Lower Back": [
       {
-        "name": "Barbell Deadlift",
+        "name": "BB Deadlift",
         "type": "Barbell"
       },
       {
-        "name": "Dumbbell Deadlift",
+        "name": "DB Deadlift",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell sumo deadlift",
+        "name": "DB sumo deadlift",
         "type": "Dumbbell"
       },
       {
@@ -486,7 +480,7 @@
         "type": "Kettlebell"
       },
       {
-        "name": "Single-Leg Deadlift with Dumbbell",
+        "name": "Single-Leg Deadlift with DB",
         "type": "Dumbbell"
       },
       {
@@ -500,15 +494,15 @@
     ],
     "Traps": [
       {
-        "name": "Barbell Shrugs",
+        "name": "BB Shrugs",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Silverback Shrug",
+        "name": "BB Silverback Shrug",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Upright Row",
+        "name": "BB Upright Row",
         "type": "Barbell"
       },
       {
@@ -516,11 +510,11 @@
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Shrug",
+        "name": "DB Shrug",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Shrugs",
+        "name": "DB Shrugs",
         "type": "Dumbbell"
       },
       {
@@ -542,23 +536,23 @@
         "type": "Cable"
       },
       {
-        "name": "Barbell Bent Over Row",
+        "name": "BB Bent Over Row",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Reverse Row",
+        "name": "BB Reverse Row",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Row (Overhand)",
+        "name": "BB Row (Overhand)",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Row (Underhand)",
+        "name": "BB Row (Underhand)",
         "type": "Barbell"
       },
       {
-        "name": "Bent Over Dumbbell Rows",
+        "name": "Bent Over DB Rows",
         "type": "Dumbbell"
       },
       {
@@ -574,23 +568,23 @@
         "type": "Machine"
       },
       {
-        "name": "Dumbbell Chest Supported Row",
+        "name": "DB Chest Supported Row",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Row",
+        "name": "DB Row",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Underhand Dead Row",
+        "name": "DB Underhand Dead Row",
         "type": "Dumbbell"
       },
       {
-        "name": "Incline Chest-Supported Dumbbell Row",
+        "name": "Incline Chest-Supported DB Row",
         "type": "Dumbbell"
       },
       {
-        "name": "Incline Dumbbell Row",
+        "name": "Incline DB Row",
         "type": "Dumbbell"
       },
       {
@@ -626,7 +620,7 @@
         "type": "Machine"
       },
       {
-        "name": "Single-Arm Dumbbell Row",
+        "name": "Single-Arm DB Row",
         "type": "Dumbbell"
       },
       {
@@ -726,19 +720,11 @@
         "type": "Bodyweight"
       },
       {
-        "name": "Decline Barbell Bench Press",
+        "name": "Decline BB Bench Press",
         "type": "Barbell"
       },
       {
-        "name": "Decline Bench Press Barbell",
-        "type": "Barbell"
-      },
-      {
-        "name": "Decline Bench Press Dumbbell",
-        "type": "Dumbbell"
-      },
-      {
-        "name": "Decline Dumbbell Bench Press",
+        "name": "Decline DB Bench Press",
         "type": "Dumbbell"
       },
       {
@@ -776,11 +762,15 @@
       {
         "name": "TRX dips",
         "type": "Suspension"
+      },
+      {
+        "name": "Cable Fly (High to Low)",
+        "type": "Cable"
       }
     ],
     "Mid Chest": [
       {
-        "name": "Barbell Bench Press",
+        "name": "BB Bench Press",
         "type": "Barbell"
       },
       {
@@ -812,23 +802,23 @@
         "type": "Bodyweight"
       },
       {
-        "name": "Dumbbell Bench Press",
+        "name": "DB Bench Press",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Chest Press",
+        "name": "DB Chest Press",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell close grip bench press",
+        "name": "DB close grip bench press",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Hex Press",
+        "name": "DB Hex Press",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Push-Up",
+        "name": "DB Push-Up",
         "type": "Dumbbell"
       },
       {
@@ -844,11 +834,7 @@
         "type": "Machine"
       },
       {
-        "name": "Machine Chest Fly",
-        "type": "Machine"
-      },
-      {
-        "name": "Machine Chest Press",
+        "name": "Pec Dec Fly",
         "type": "Machine"
       },
       {
@@ -856,7 +842,7 @@
         "type": "Machine"
       },
       {
-        "name": "No Leg Drive Dumbbell Chest Press",
+        "name": "No Leg Drive DB Chest Press",
         "type": "Dumbbell"
       },
       {
@@ -871,7 +857,6 @@
         "name": "Pseudo Planche Push-up",
         "type": "Bodyweight"
       },
-
       {
         "name": "Push-ups",
         "type": "Bodyweight"
@@ -879,10 +864,6 @@
       {
         "name": "Push-Ups | Parallettes",
         "type": "Bodyweight"
-      },
-      {
-        "name": "Seated Cable chest fly",
-        "type": "Cable"
       },
       {
         "name": "Shoulder width three-point push-up",
@@ -915,23 +896,15 @@
         "type": "Cable"
       },
       {
-        "name": "Incline Barbell Bench Press",
+        "name": "Incline BB Bench Press",
         "type": "Barbell"
       },
       {
-        "name": "Incline Bench Press - Barbell",
+        "name": "Incline Close Grip BB Bench Press",
         "type": "Barbell"
       },
       {
-        "name": "Incline Bench Press - Dumbbell",
-        "type": "Dumbbell"
-      },
-      {
-        "name": "Incline Close Grip Barbell Bench Press",
-        "type": "Barbell"
-      },
-      {
-        "name": "Incline Dumbbell Bench Press",
+        "name": "Incline DB Bench Press",
         "type": "Dumbbell"
       },
       {
@@ -945,6 +918,10 @@
       {
         "name": "Push-Ups | Incline",
         "type": "Bodyweight"
+      },
+      {
+        "name": "Cable Fly (Low to High)",
+        "type": "Cable"
       }
     ]
   },
@@ -1009,7 +986,7 @@
         "type": "Bodyweight"
       },
       {
-        "name": "Dumbbell Side Bend",
+        "name": "DB Side Bend",
         "type": "Dumbbell"
       },
       {
@@ -1053,7 +1030,7 @@
         "type": "Kettlebell"
       },
       {
-        "name": "Woodchop (Dumbbell)",
+        "name": "Woodchop (DB)",
         "type": "Dumbbell"
       }
     ],
@@ -1091,11 +1068,11 @@
         "type": "Bodyweight"
       },
       {
-        "name": "Dumbbell Crunches",
+        "name": "DB Crunches",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Pullover Crunch",
+        "name": "DB Pullover Crunch",
         "type": "Dumbbell"
       },
       {
@@ -1147,17 +1124,17 @@
         "type": "Machine"
       },
       {
-        "name": "Dumbbell Calf Raise",
+        "name": "DB Calf Raise",
         "type": "Dumbbell"
       },
       {
-        "name": "Seated Dumbbell Calf Raise",
+        "name": "Seated DB Calf Raise",
         "type": "Dumbbell"
       }
     ],
     "Glutes": [
       {
-        "name": "Barbell Hip Thrust",
+        "name": "BB Hip Thrust",
         "type": "Barbell"
       },
       {
@@ -1169,11 +1146,11 @@
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Hip Thrust",
+        "name": "DB Hip Thrust",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Single-leg Hip Thrust",
+        "name": "DB Single-leg Hip Thrust",
         "type": "Dumbbell"
       },
       {
@@ -1199,19 +1176,19 @@
     ],
     "Hamstrings": [
       {
-        "name": "Barbell Good Morning",
+        "name": "BB Good Morning",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Romanian Deadlift",
+        "name": "BB Romanian Deadlift",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Romanian Deadlift (RDL)",
+        "name": "BB Romanian Deadlift (RDL)",
         "type": "Barbell"
       },
       {
-        "name": "Dumbbell Romanian Deadlift",
+        "name": "DB Romanian Deadlift",
         "type": "Dumbbell"
       },
       {
@@ -1229,39 +1206,39 @@
     ],
     "Quads": [
       {
-        "name": "Barbell Back Squat",
+        "name": "BB Back Squat",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Front Squat",
+        "name": "BB Front Squat",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Full Squat",
+        "name": "BB Full Squat",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Hack Squats",
+        "name": "BB Hack Squats",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Lunges",
+        "name": "BB Lunges",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Lunges Standing",
+        "name": "BB Lunges Standing",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Lunges Walking",
+        "name": "BB Lunges Walking",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Step Back Lunge",
+        "name": "BB Step Back Lunge",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Step-up",
+        "name": "BB Step-up",
         "type": "Barbell"
       },
       {
@@ -1285,43 +1262,43 @@
         "type": "Kettlebell"
       },
       {
-        "name": "Dumbbell Front Squat",
+        "name": "DB Front Squat",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Goblet Squat",
+        "name": "DB Goblet Squat",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Lunges",
+        "name": "DB Lunges",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Lunges Standing",
+        "name": "DB Lunges Standing",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Lunges Walking",
+        "name": "DB Lunges Walking",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Rear Lunge",
+        "name": "DB Rear Lunge",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Side Squat",
+        "name": "DB Side Squat",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Split Squat",
+        "name": "DB Split Squat",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Squat",
+        "name": "DB Squat",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Step-ups",
+        "name": "DB Step-ups",
         "type": "Dumbbell"
       },
       {
@@ -1373,11 +1350,11 @@
         "type": "Dumbbell"
       },
       {
-        "name": "Barbell Front Raise",
+        "name": "BB Front Raise",
         "type": "Barbell"
       },
       {
-        "name": "Barbell Overhead Press",
+        "name": "BB Overhead Press",
         "type": "Barbell"
       },
       {
@@ -1389,11 +1366,11 @@
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Front Raise",
+        "name": "DB Front Raise",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Shoulder Press",
+        "name": "DB Shoulder Press",
         "type": "Dumbbell"
       },
       {
@@ -1413,16 +1390,12 @@
         "type": "Machine"
       },
       {
-        "name": "Shoulder Press, Barbell",
+        "name": "Shoulder Press, BB",
         "type": "Barbell"
       },
       {
         "name": "Shoulder Press, Dumbbells",
         "type": "Dumbbell"
-      },
-      {
-        "name": "Shoulder Press, on Machine",
-        "type": "Machine"
       },
       {
         "name": "Straight Bar Cable Front Raise",
@@ -1439,15 +1412,15 @@
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Bent Over Face Pull",
+        "name": "DB Bent Over Face Pull",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell rear delt row",
+        "name": "DB rear delt row",
         "type": "Dumbbell"
       },
       {
-        "name": "Dumbbell Reverse Fly",
+        "name": "DB Reverse Fly",
         "type": "Dumbbell"
       },
       {
@@ -1469,15 +1442,11 @@
         "type": "Cable"
       },
       {
-        "name": "Cable Lateral Raises (Single Arm)",
-        "type": "Cable"
-      },
-      {
         "name": "Cross-Body Cable Y-Raise",
         "type": "Cable"
       },
       {
-        "name": "Dumbbell Lateral Raise",
+        "name": "DB Lateral Raise",
         "type": "Dumbbell"
       },
       {
