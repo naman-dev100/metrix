@@ -57,15 +57,15 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
       {/* Nav Items */}
       <nav className="flex-1 py-4 px-3 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActiveTab = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              aria-label={isActive ? `Current page: ${item.name}` : item.ariaLabel}
+              aria-label={isActiveTab ? `Current page: ${item.name}` : item.ariaLabel}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
-                isActive
+                isActiveTab
                   ? "bg-[#7c3aed]/15 text-[#7c3aed]"
                   : "text-[#a3a3aa] hover:bg-[#16161f] hover:text-white"
               )}
@@ -74,7 +74,7 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
                 <item.icon
                   className={cn(
                     "w-5 h-5",
-                    isActive && "text-[#7c3aed]"
+                    isActiveTab && "text-[#7c3aed]"
                   )}
                   aria-hidden="true"
                 />
@@ -85,7 +85,7 @@ export default function Sidebar({ collapsed }: { collapsed?: boolean }) {
               {!isCollapsed && (
                 <span className="font-medium">{item.name}</span>
               )}
-              {!isCollapsed && isActive && (
+              {!isCollapsed && isActiveTab && (
                 <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#7c3aed]" />
               )}
             </Link>

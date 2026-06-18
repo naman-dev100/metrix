@@ -384,31 +384,33 @@ export default function WorkoutPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl md:text-2xl font-bold text-white tracking-tight animate-fade-in">Workout</h1>
-          <p className="text-base md:text-sm text-[#8a8a9a] mt-1.5 animate-fade-in">Start a workout, choose a routine, or view your history</p>
+      {!isActive && (
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl md:text-2xl font-bold text-white tracking-tight animate-fade-in">Workout</h1>
+            <p className="text-base md:text-sm text-[#8a8a9a] mt-1.5 animate-fade-in">Start a workout, choose a routine, or view your history</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Stats Grid - Visible only when NOT in an active workout session */}
       {!isActive && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-slide-in">
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+        <div className="flex overflow-x-auto pb-2 gap-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 no-scrollbar animate-slide-in">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all min-w-[140px] flex-shrink-0 md:min-w-0 flex-1">
             <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Workouts</p>
             <p className="text-2xl font-bold text-white mt-1">{workouts.length}</p>
           </div>
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all min-w-[140px] flex-shrink-0 md:min-w-0 flex-1">
             <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Volume</p>
             <p className="text-2xl font-bold text-white mt-1">
               {(totalVolume / 1000).toFixed(1)}k <span className="text-[10px] text-[#5a5a6a]">kg</span>
             </p>
           </div>
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all min-w-[140px] flex-shrink-0 md:min-w-0 flex-1">
             <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total Sets</p>
             <p className="text-2xl font-bold text-white mt-1">{totalSets}</p>
           </div>
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all">
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4)] hover-lift transition-all min-w-[140px] flex-shrink-0 md:min-w-0 flex-1">
             <p className="text-xs text-[#8a8a9a] uppercase tracking-wider font-semibold">Total PRs</p>
             <p className="text-2xl font-bold text-[#7c3aed] mt-1">{totalPRs}</p>
           </div>
@@ -419,8 +421,8 @@ export default function WorkoutPage() {
       {isActive && (
         <div className="space-y-4">
           {/* Active Workout Header */}
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/5 to-[#7c3aed]/0" />
+          <div className="sticky top-0 z-20 bg-[#0b0b0f] border-b border-[#1e1e2a] -mx-4 px-4 py-3 md:mx-0 md:px-6 md:py-4 md:rounded-xl md:border shadow-md relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/5 to-[#7c3aed]/0 pointer-events-none" />
             <div className="relative">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -449,7 +451,7 @@ export default function WorkoutPage() {
                     aria-label={finishWorkoutLoading ? "Finishing workout..." : "Finish current workout"}
                     className="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 h-11 md:h-9 text-base md:text-sm font-extrabold rounded-xl shadow-[0_4px_12px_rgba(239,68,68,0.2)] transition-all cursor-pointer flex-shrink-0"
                   >
-                    Finish Workout
+                    Finish<span className="hidden sm:inline"> Workout</span>
                   </Button>
                 </div>
               </div>
@@ -460,14 +462,25 @@ export default function WorkoutPage() {
             <WorkoutExerciseCard key={exercise.exerciseId} exercise={exercise} />
           ))}
 
-          {/* Add Exercise Button */}
+          {/* Add Exercise Button - Desktop Sticky Footer */}
+          <div className="hidden md:block sticky bottom-0 z-10 bg-[#0b0b0f] border-t border-[#1e1e2a] py-4 mt-6">
+            <Button
+              aria-label="Add exercises to current workout"
+              className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white transition-all h-10 text-sm font-bold rounded-xl cursor-pointer flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.35)] border border-[#7c3aed]"
+              onClick={() => setShowAddExercise(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Exercise
+            </Button>
+          </div>
+
+          {/* Add Exercise Button - Mobile FAB */}
           <Button
             aria-label="Add exercises to current workout"
-            className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white transition-all h-12 md:h-10 text-base md:text-sm font-bold rounded-xl cursor-pointer flex items-center justify-center shadow-[0_4px_12px_rgba(124,58,237,0.35)] border border-[#7c3aed]"
+            className="md:hidden fixed bottom-[calc(76px+env(safe-area-inset-bottom))] right-6 z-40 w-14 h-14 rounded-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white shadow-[0_8px_30px_rgba(124,58,237,0.5)] border border-[#7c3aed] flex items-center justify-center cursor-pointer transition-all active:scale-95"
             onClick={() => setShowAddExercise(true)}
           >
-            <Plus className="w-5 h-5 md:w-4 md:h-4 mr-2" />
-            Add Exercise
+            <Plus className="w-6 h-6" />
           </Button>
         </div>
       )}
@@ -475,27 +488,27 @@ export default function WorkoutPage() {
       {/* Not Active - Show Routines, Quick Start, and Workout History */}
       {!isActive && (
         <div className="space-y-6">
-          {/* Quick Start */}
-          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] hover-lift card-enter">
-            <div className="flex items-center justify-between">
+          {/* Quick Start Card */}
+          <div className="bg-[#111118] border border-[#1e1e2a] rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.4),_0_1px_2px_rgba(0,0,0,0.3)] hover-lift card-enter py-3 px-4 md:py-3.5 md:px-5">
+            <div className="flex flex-col items-center text-center gap-3 md:flex-row md:justify-between md:text-left md:gap-0">
               <div>
-                <h2 className="text-lg font-semibold text-white">Quick Start</h2>
-                <p className="text-sm text-[#a3a3aa] mt-1">Start an empty workout session</p>
+                <h2 className="text-base font-semibold text-white">Quick Start</h2>
+                <p className="text-xs text-[#a3a3aa] mt-0.5">Start an empty workout session</p>
               </div>
               <Button
                 onClick={handleQuickStart}
                 loading={quickStartLoading}
                 aria-label={quickStartLoading ? "Starting workout..." : "Start a new quick workout session"}
-                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 h-12 md:h-10 text-base md:text-sm font-bold rounded-xl shadow-[0_4px_12px_rgba(124,58,237,0.2)] transition-all cursor-pointer flex items-center justify-center"
+                className="w-full md:w-auto bg-[#7c3aed] hover:bg-[#6d28d9] text-white px-6 h-10 text-sm font-bold rounded-xl shadow-[0_4px_12px_rgba(124,58,237,0.2)] transition-all cursor-pointer flex items-center justify-center"
               >
-                <Play className="w-5 h-5 md:w-4 md:h-4 mr-2" />
+                <Play className="w-4 h-4 mr-2" />
                 Start Workout
               </Button>
             </div>
           </div>
 
           {/* Create Routine Heading */}
-          <div className="flex items-center justify-between">
+          <div className="sticky top-0 z-10 bg-[#0b0b0f] py-3 -mx-4 px-4 border-b border-[#1e1e2a]/50 md:relative md:top-auto md:z-0 md:bg-transparent md:py-0 md:border-none md:mx-0 md:px-0 flex items-center justify-between animate-fade-in">
             <h2 className="text-lg font-bold text-white tracking-tight">My Routines</h2>
             <Button
               onClick={() => {
@@ -504,16 +517,16 @@ export default function WorkoutPage() {
               }}
               aria-label="Create a new workout routine"
               variant="outline"
-              className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all h-11 md:h-9 text-sm md:text-xs px-4 rounded-xl cursor-pointer flex items-center justify-center"
+              className="border-[#1e1e2a] text-[#a3a3aa] hover:text-white hover:bg-[#16161f] transition-all h-11 md:h-9 text-sm md:text-xs px-4 rounded-xl cursor-pointer flex items-center justify-center bg-[#111118]"
             >
               <Plus className="w-4 h-4 mr-2" />
               New Routine
             </Button>
           </div>
 
-          {/* Routines List */}
+          {/* Routines Grid */}
           {loading ? (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
@@ -527,7 +540,7 @@ export default function WorkoutPage() {
               <p className="text-[#a3a3aa]">No routines yet. Create one to get started!</p>
             </div>
           ) : (
-            <div className="space-y-3 animate-slide-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-slide-in">
               {routines.map((routine) => (
                 <RoutineCard
                   key={routine.id}

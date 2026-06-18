@@ -5,6 +5,7 @@ import { Plus, Trash2, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WorkoutSetRow from "@/components/workout/WorkoutSetRow";
 import useWorkoutStore from "@/lib/workout-store";
+import { cn } from "@/lib/utils";
 
 interface WorkoutExerciseCardProps {
   exercise: {
@@ -15,6 +16,7 @@ interface WorkoutExerciseCardProps {
       setNumber: number;
       weight: number | null;
       reps: number | null;
+      isCompleted: boolean;
       isPR?: boolean;
     }[];
   };
@@ -22,6 +24,7 @@ interface WorkoutExerciseCardProps {
 
 export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardProps) {
   const { addSet, removeExercise } = useWorkoutStore();
+  const [isEditing, setIsEditing] = useState(false);
   const [prevData, setPrevData] = useState<{
     previousSets: { set_number: number; weight: number | null; reps: number }[];
     allTimeMax: { weight: number | null; reps: number } | null;
@@ -58,25 +61,40 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
           <Activity className="w-4 h-4 text-[#7c3aed]" />
           <h3 className="text-sm font-semibold text-white">{exercise.exerciseName}</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => removeExercise(exercise.exerciseId)}
-          aria-label={`Delete exercise ${exercise.exerciseName}`}
-          className="w-10 h-10 md:w-8 md:h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl md:rounded-lg flex items-center justify-center"
-        >
-          <Trash2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsEditing(!isEditing)}
+            className={cn(
+              "h-8 px-2.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer",
+              isEditing 
+                ? "bg-[#7c3aed]/20 text-[#a78bfa] hover:bg-[#7c3aed]/30" 
+                : "text-[#8a8a9a] hover:text-white hover:bg-[#16161f]"
+            )}
+          >
+            {isEditing ? "Done" : "Edit"}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => removeExercise(exercise.exerciseId)}
+            aria-label={`Delete exercise ${exercise.exerciseName}`}
+            className="w-8 h-8 p-0 text-[#5a5a6a] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg flex items-center justify-center cursor-pointer"
+          >
+            <Trash2 className="w-4 h-4 md:w-3.5 md:h-3.5" />
+          </Button>
+        </div>
       </div>
 
       {/* Column Headers */}
       {exercise.sets.length > 0 && (
-        <div className="px-[18px] md:px-[22px] pt-3 pb-1 flex items-center gap-1.5 md:gap-2.5 text-[10px] md:text-[9px] font-bold text-[#8a8a9a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
-          <div className="w-8 md:w-8 text-center flex-shrink-0">Set</div>
-          <div className="flex-1 min-w-[72px] md:min-w-[80px] pl-1">Weight</div>
-          <div className="w-16 md:w-16 text-center flex-shrink-0">Reps</div>
-          <div className="w-12 md:w-14 text-right flex-shrink-0">Volume</div>
-          <div className="w-10 md:w-8 flex-shrink-0" />
+        <div className="px-3 md:px-4 pt-3 pb-1 flex items-center gap-1.5 md:gap-2.5 text-[10px] md:text-[9px] font-bold text-[#8a8a9a] uppercase tracking-wider border-b border-[#1e1e2a]/30 bg-[#0c0c12]/30">
+          <div className="w-8 text-center flex-shrink-0">Set</div>
+          <div className="flex-1 text-center pl-1">Weight</div>
+          <div className="flex-1 text-center">Reps</div>
+          <div className="w-14 text-right flex-shrink-0">Volume</div>
+          <div className="w-8 flex-shrink-0" />
         </div>
       )}
 
@@ -91,6 +109,7 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
               set={set}
               prevSet={prevSet}
               allTimeMax={prevData.allTimeMax}
+              isEditing={isEditing}
             />
           );
         })}
@@ -117,7 +136,7 @@ export default function WorkoutExerciseCard({ exercise }: WorkoutExerciseCardPro
             addSet(exercise.exerciseId, null, null);
           }}
           aria-label={`Add set for ${exercise.exerciseName}`}
-          className="w-10 h-10 md:w-8 md:h-8 p-0 rounded-xl md:rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white flex items-center justify-center"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 rounded-xl md:rounded-lg bg-[#7c3aed] hover:bg-[#6d28d9] text-white flex items-center justify-center cursor-pointer"
         >
           <Plus className="w-5 h-5 md:w-4 h-4" />
         </Button>
